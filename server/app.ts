@@ -1,7 +1,30 @@
-// We first import the 'express' module, which is a popular Node.js framework for building web applications. 
-// The 'express' module simplifies the process of creating robust and scalable web servers.
 import express from "express";
+import { Request, Response, NextFunction } from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+require("dotenv").config();
 
-// Next, we create an instance of the Express application by calling the 'express()' function. 
-// This instance, represented by the constant 'app', will be used to define routes, middleware, and other functionalities required for our web application.
 export const app = express();
+
+app.use(express.json({ limit: "50mb" }));
+
+app.use(cookieParser());
+
+app.use(
+  cors({
+    origin: process.env.ORIGIN,
+  })
+);
+
+app.get("/test", (req: Request, res: Response, next: NextFunction) => {
+  res.status(200).json({
+    success: true,
+    message: "API is working",
+  });
+});
+
+app.all("*", (req: Request, res: Response, next: NextFunction) => {
+  const err = new Error(`Route ${req.originalUrl} not found!`) as any;
+  err.statusCode = 404;
+  next(err);
+});
