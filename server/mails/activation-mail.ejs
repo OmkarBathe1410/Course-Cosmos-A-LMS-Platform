@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Course Cosmos</title>
+    <style>
+        body {
+            font-family: 'Trebuchet MS', Arial, sans-serif;
+            background: linear-gradient(to bottom right, #000428, #004e92);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #00171f; /* Dark blue for container */
+            border-radius: 7px;
+            box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+        }
+        h1 {
+            color: #f0f0f0;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        p {
+            color: #ccc;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        h2 {
+            color: #007bff;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        @media (max-width: 640px) {
+            .container {
+                width: 80vw;
+                padding: 10px;
+                background-color: #00171f;
+            }
+             h1, h2, p {
+                text-align: center;
+            }
+        }
+        .copyright {
+            color: #999;
+            font-size: 12px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Course Cosmos!</h1>
+        <p>Hello <%=user.name %>,</p>
+        <p>Thank you for registering with Course Cosmos. To complete your registration, please use the following OTP within the next 5 minutes:</p>
+        <h2><%= activationCode %></h2>
+        <p>Please enter this OTP on the registration page to successfully create your account.</p>
+        <p>We are excited to have you on board!</p>
+        <p>Best regards,<br>Course Cosmos Team</p>
+    </div>
+    <div class="copyright">
+        &copy; <%= new Date().getFullYear() %> Course Cosmos. All rights reserved.
+    </div>
+</body>
+</html>

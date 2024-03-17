@@ -3,6 +3,7 @@ import { ErrorMiddleWare } from "./middleware/error";
 import { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import userRouter from "./routes/user.route";
 
 require("dotenv").config(); // Load environment variables from .env file
 
@@ -17,6 +18,8 @@ app.use(
     origin: process.env.ORIGIN, // Enable CORS with the specified origin from environment variables
   })
 );
+
+app.use("/api/v1", userRouter);
 
 // Test route to check if the API is working
 app.get("/test", (req: Request, res: Response, next: NextFunction) => {
