@@ -5,20 +5,24 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.route";
 
-require("dotenv").config(); // Load environment variables from .env file
+require("dotenv").config();
 
-export const app = express(); // Create an instance of Express application
+export const app = express();
 
-app.use(express.json({ limit: "50mb" })); // Parse incoming requests with JSON payloads
+// Parse incoming requests with JSON payloads and set payload size limit to 50mb
+app.use(express.json({ limit: "50mb" }));
 
-app.use(cookieParser()); // Parse Cookie header and populate req.cookies with an object keyed by the cookie names
+// Parse Cookie header and populate req.cookies with an object keyed by the cookie names
+app.use(cookieParser());
 
+// Enable CORS with the specified origin from environment variables
 app.use(
   cors({
-    origin: process.env.ORIGIN, // Enable CORS with the specified origin from environment variables
+    origin: process.env.ORIGIN,
   })
 );
 
+// Mount the userRouter under the "/api/v1" path prefix
 app.use("/api/v1", userRouter);
 
 // Test route to check if the API is working
@@ -36,6 +40,7 @@ app.all("*", (req: Request, res: Response, next: NextFunction) => {
   next(err); // Pass the error to the error handling middleware
 });
 
-app.use(ErrorMiddleWare); // Apply custom error handling middleware to handle errors
+// Apply custom error handling middleware to handle errors
+app.use(ErrorMiddleWare);
 
-export default app; // Export the Express application for external use
+export default app;
