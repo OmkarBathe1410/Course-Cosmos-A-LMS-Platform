@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import userModel from "../models/user.model";
+import userModel, { IUser } from "../models/user.model";
 import ErrorHandler from "../utils/ErrorHandler";
 import { CatchAsyncError } from "../middleware/catchAsyncError";
 import jwt, { Secret } from "jsonwebtoken";
@@ -16,7 +16,7 @@ interface IRegistrationBody {
   avatar?: string;
 }
 
-// Handle user registration with error catching middleware
+// Controller function to handle user registration
 export const registrationUser = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -41,14 +41,14 @@ export const registrationUser = CatchAsyncError(
       const activationCode = activationToken.activationCode;
       const data = { user: { name: user.name }, activationCode };
 
-      // Render the email template using EJS
+      // Render the email template for activation mail
       const html = await ejs.renderFile(
         path.join(__dirname, "../mails/activation-mail.ejs"),
         data
       );
 
       try {
-        // Send the activation email to the user
+        // Send activation email to the user
         await sendEmail({
           email: user.email,
           subject: "Activate your Course Cosmos Account",
@@ -71,17 +71,16 @@ export const registrationUser = CatchAsyncError(
   }
 );
 
-// Define the structure of the activation token
+// Interface for the activation token structure
 interface IActivationToken {
   token: string;
   activationCode: string;
 }
 
-// Create an activation token for email verification
+// Function to create an activation token for email verification
 export const createActivationToken = (user: any): IActivationToken => {
   const activationCode = Math.floor(1000 + Math.random() * 9000).toString();
 
-  // Generate a JWT token with user details and activation code
   const token = jwt.sign(
     {
       user,
@@ -95,3 +94,51 @@ export const createActivationToken = (user: any): IActivationToken => {
 
   return { token, activationCode };
 };
+
+// Interface for the activation request body
+interface IActivationRequest {
+  activation_token: string;
+  activation_code: string;
+}
+
+// Controller function to activate a user account
+export const activateUser = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { activation_token, activation_code } =
+        req.body as IActivationRequest;
+
+      // Verify the activation token and extract user details
+      const newUser: { user: IUser; activationCode: string } = jwt.verify(
+        activation_token,
+        process.env.ACTIVATION_SECRET as string
+      ) as { user: IUser; activationCode: string };
+
+      // Check if the activation code matches
+      if (newUser.activationCode !== activation_code) {
+        return next(new ErrorHandler("Invalid Activation Code", 400));
+      }
+
+      const { name, email, password } = newUser.user;
+      const existUser = await userModel.findOne({ email });
+
+      if (existUser) {
+        return next(new ErrorHandler("User already exist!", 400));
+      }
+
+      // Create a new user in the database
+      const user = await userModel.create({
+        name,
+        email,
+        password,
+      });
+
+      // Respond with success message
+      res.status(201).json({
+        success: true,
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);

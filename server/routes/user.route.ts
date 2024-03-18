@@ -1,11 +1,11 @@
 import express from "express";
-import { registrationUser } from "../controllers/user.controller";
-
-// Create a new router instance for user-related routes
+import { activateUser, registrationUser } from "../controllers/user.controller";
 const userRouter = express.Router();
 
-// Handle POST requests to "/registration" endpoint by calling registrationUser controller function
+// Route to handle user registration
 userRouter.post("/registration", registrationUser);
 
-// Export the userRouter to be used in the main application
+// Route to handle user account activation
+userRouter.post("/activate-user", activateUser);
+
 export default userRouter;
