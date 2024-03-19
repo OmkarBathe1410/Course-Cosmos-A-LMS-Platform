@@ -1,6 +1,8 @@
-// Importing necessary modules from 'mongoose' for MongoDB object modeling and 'bcryptjs' for password hashing
+// Importing necessary modules for MongoDB object modeling, password hashing, and token generation
 import mongoose, { Document, Model, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+require("dotenv").config();
 
 // Regular expression pattern for validating email addresses
 const emailRegExPattern: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -18,6 +20,9 @@ export interface IUser extends Document {
   isVerified: boolean;
   courses: Array<{ courseId: string }>;
   comparePassword: (password: string) => Promise<boolean>;
+
+  SignAccessToken: () => string;
+  SignRefreshToken: () => string;
 }
 
 // Defining the user schema using Mongoose Schema
@@ -72,6 +77,20 @@ userSchema.pre<IUser>("save", async function (next) {
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
+
+// Method to generate an access token for the user
+userSchema.methods.SignAccessToken = function () {
+  return jwt.sign({ id: this._id }, process.env.ACCESS_TOKEN || "", {
+    expiresIn: "5m",
+  });
+};
+
+// Method to generate a refresh token for the user
+userSchema.methods.SignRefreshToken = function () {
+  return jwt.sign({ id: this._id }, process.env.REFRESH_TOKEN || "", {
+    expiresIn: "3d",
+  });
+};
 
 // Method to compare entered password with the hashed password in the database
 userSchema.methods.comparePassword = async function (
