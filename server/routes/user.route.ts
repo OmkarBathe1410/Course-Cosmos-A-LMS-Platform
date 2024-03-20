@@ -6,6 +6,7 @@ import {
   logoutUser,
   registrationUser,
 } from "../controllers/user.controller";
+import { authorizeRoles, isAuthenticated } from "../middleware/auth";
 
 // Create a new Express router
 const userRouter = express.Router();
@@ -20,7 +21,7 @@ userRouter.post("/activate-user", activateUser);
 userRouter.post("/login", loginUser);
 
 // Route for user logout
-userRouter.get("/logout", logoutUser);
+userRouter.get("/logout", isAuthenticated, authorizeRoles("admin"), logoutUser);
 
 // Export the user router for use in the main application
 export default userRouter;
