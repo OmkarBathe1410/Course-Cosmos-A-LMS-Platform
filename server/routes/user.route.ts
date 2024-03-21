@@ -2,9 +2,12 @@
 import express from "express";
 import {
   activateUser,
+  getUserInfo,
   loginUser,
   logoutUser,
   registrationUser,
+  socialAuth,
+  updateAccessToken,
 } from "../controllers/user.controller";
 import { authorizeRoles, isAuthenticated } from "../middleware/auth";
 
@@ -22,6 +25,15 @@ userRouter.post("/login", loginUser);
 
 // Route for user logout
 userRouter.get("/logout", isAuthenticated, authorizeRoles("admin"), logoutUser);
+
+// Route for updating and refreshing user's access and refresh token
+userRouter.get("/refresh", updateAccessToken);
+
+// Route for retrieving user info
+userRouter.get("/me", isAuthenticated, getUserInfo);
+
+// Route for authentication through socials
+userRouter.get("/social-auth", socialAuth);
 
 // Export the user router for use in the main application
 export default userRouter;

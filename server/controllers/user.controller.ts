@@ -3,13 +3,18 @@ import { Request, Response, NextFunction } from "express";
 import userModel, { IUser } from "../models/user.model";
 import ErrorHandler from "../utils/ErrorHandler";
 import { CatchAsyncError } from "../middleware/catchAsyncError";
-import jwt, { Secret } from "jsonwebtoken";
+import jwt, { JwtPayload, Secret } from "jsonwebtoken";
 require("dotenv").config();
 import ejs from "ejs";
 import path from "path";
 import sendEmail from "../utils/sendEmail";
-import { sendToken } from "../utils/jwt";
+import {
+  accessTokenOptions,
+  refreshTokenOptions,
+  sendToken,
+} from "../utils/jwt";
 import { redis } from "../utils/redis";
+import { getUserById } from "../services/user.service";
 
 // Define interface for user registration body
 interface IRegistrationBody {
@@ -202,6 +207,130 @@ export const logoutUser = CatchAsyncError(
         message: "Logged out successfully!",
       });
     } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+export const updateAccessToken = CatchAsyncError(
+  // CatchAsyncError is likely a utility function to handle asynchronous errors
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // Retrieve the refresh token from the request cookies
+      const refresh_token = req.cookies.refresh_token;
+
+      // Verify and decode the refresh token using the JSON Web Token (JWT) library and the secret key
+      const decoded = jwt.verify(
+        refresh_token,
+        process.env.REFRESH_TOKEN as string
+      ) as JwtPayload;
+
+      // Define an error message
+      const message = "Could not refresh token";
+
+      // If the refresh token is not valid or cannot be decoded, return a 400 error response
+      if (!decoded) {
+        return next(new ErrorHandler(message, 400));
+      }
+
+      // Retrieve the user's session data from a Redis database using the decoded user ID
+      const session = await redis.get(decoded.id as string);
+
+      // If the session data is not found, return a 400 error response prompting the user to log in
+      if (!session) {
+        return next(
+          new ErrorHandler("Please login to access this resource", 400)
+        );
+      }
+
+      // Parse the session data as a JSON object to get the user object
+      const user = JSON.parse(session);
+
+      // Generate a new access token using the JWT library and the secret key
+      const accessToken = jwt.sign(
+        { id: user._id },
+        process.env.ACCESS_TOKEN as string,
+        {
+          expiresIn: "5m", // Set the access token to expire in 5 minutes
+        }
+      );
+
+      // Generate a new refresh token using the JWT library and the secret key
+      const refreshToken = jwt.sign(
+        { id: user._id },
+        process.env.REFRESH_TOKEN as string,
+        {
+          expiresIn: "3d", // Set the refresh token to expire in 3 days
+        }
+      );
+
+      // Attach the user object to the request object
+      req.user = user;
+
+      // Set the updated access token and refresh token as cookies in the HTTP response
+      res.cookie("access_token", accessToken, accessTokenOptions);
+      res.cookie("refresh_token", refreshToken, refreshTokenOptions);
+
+      // Store the user's session data back in the Redis database with an expiration of 7 days (604800 seconds)
+      redis.set(user._id, JSON.stringify(user), "EX", 604800);
+
+      // Return a 200 status code with a JSON object containing the updated access token and a success message
+      res.status(200).json({
+        status: "success",
+        accessToken,
+      });
+    } catch (error: any) {
+      // If an error occurs during the process, return a 400 error response with the error message
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+// Retrieves user information based on the user's ID
+export const getUserInfo = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // Retrieve the user's ID from the user object attached to the request (req.user)
+      const userId = req.user?._id;
+
+      // Call the getUserById function (defined elsewhere in the codebase) with the user's ID and the Express.js Response object (res)
+      getUserById(userId, res);
+    } catch (error: any) {
+      // If an error occurs during the execution of getUserById, catch the error and pass it to the next function with an ErrorHandler instance
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+// Define an interface ISocialAuthBody specifying the structure of the user data provided by the social media authentication service
+interface ISocialAuthBody {
+  email: string;
+  name: string;
+  avatar: string;
+}
+
+// For handling user authentication through a social media provider
+export const socialAuth = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // Extract the user's email, name, and avatar from the request body, assuming the structure matches the ISocialAuthBody interface
+      const { email, name, avatar } = req.body as ISocialAuthBody;
+
+      // Attempt to find an existing user in the database based on the provided email
+      const user = await userModel.findOne({ email });
+
+      // If no user is found, create a new user in the database with the provided email, name, and avatar
+      if (!user) {
+        const newUser = await userModel.create({ email, name, avatar });
+        // Call the sendToken function with the newly created user, an HTTP status code of 200 (OK), and the Response object (res) to send an authentication token to the user
+        sendToken(newUser, 200, res);
+      }
+      // If a user is found in the database, call the sendToken function with the existing user, an HTTP status code of 200 (OK), and the Response object (res) to send an authentication token to the user
+      else {
+        sendToken(user, 200, res);
+      }
+    } catch (error: any) {
+      // If any errors occur during the execution of the function, catch them and pass them to the next function with an ErrorHandler instance
       return next(new ErrorHandler(error.message, 400));
     }
   }
