@@ -1,6 +1,7 @@
-import { Response } from "express"; // Import the Response object type from the 'express' package
-import { redis } from "../utils/redis"; // Import the redis client instance from the '../utils/redis' module
-import userModel from "../models/user.model"; // Import the userModel from the '../models/user.model' module
+import { Response } from "express";
+import { redis } from "../utils/redis";
+import userModel from "../models/user.model";
+
 // Define an asynchronous function getUserById that takes a user's ID and an Express.js Response object as parameters
 export const getUserById = async (id: string, res: Response) => {
   // Use the redis client instance to fetch the user data from the Redis database based on the provided user ID
