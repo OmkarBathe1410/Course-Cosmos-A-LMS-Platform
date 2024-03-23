@@ -1,11 +1,15 @@
 // Importing the 'app' instance from the './app' file, which contains our Express application setup
 import { app } from "./app";
-
-// Loading environment variables from a '.env' file using the 'dotenv' module
+import { v2 as cloudinary } from "cloudinary";
 require("dotenv").config();
-
-// Importing the 'connectDB' function from the './utils/db' file for connecting to the database
 import connectDB from "./utils/db";
+
+// Configuring Cloudinary with API credentials from environment variables
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_SECRET_KEY,
+});
 
 // Starting the Express server to listen on the specified PORT from the environment variables
 app.listen(process.env.PORT, () => {

@@ -8,6 +8,9 @@ import {
   registrationUser,
   socialAuth,
   updateAccessToken,
+  updateUserAvatar,
+  updateUserInfo,
+  updateUserPassword,
 } from "../controllers/user.controller";
 import { authorizeRoles, isAuthenticated } from "../middleware/auth";
 
@@ -35,5 +38,13 @@ userRouter.get("/me", isAuthenticated, getUserInfo);
 // Route for authentication through socials
 userRouter.get("/social-auth", socialAuth);
 
-// Export the user router for use in the main application
+// Route to update user information
+userRouter.put("/update-user-info", isAuthenticated, updateUserInfo);
+
+// Route to update user password
+userRouter.put("/update-user-password", isAuthenticated, updateUserPassword);
+
+// Route to update user avatar
+userRouter.put("/update-user-avatar", isAuthenticated, updateUserAvatar); // Export the user router for use in the main application
+
 export default userRouter;

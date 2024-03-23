@@ -15,6 +15,7 @@ import {
 } from "../utils/jwt";
 import { redis } from "../utils/redis";
 import { getUserById } from "../services/user.service";
+import cloudinary from "cloudinary";
 
 // Define interface for user registration body
 interface IRegistrationBody {
@@ -331,6 +332,204 @@ export const socialAuth = CatchAsyncError(
       }
     } catch (error: any) {
       // If any errors occur during the execution of the function, catch them and pass them to the next function with an ErrorHandler instance
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+/**
+ * Interface defining the structure of data required to update a user's information.
+ */
+interface IUpdateUserInfo {
+  name?: string;
+  email?: string;
+}
+
+/**
+ * Function to update a user's name and email information.
+ * @param req - Express Request object
+ * @param res - Express Response object
+ * @param next - Express NextFunction for error handling
+ */
+export const updateUserInfo = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // Destructuring name and email from the request body
+      const { name, email } = req.body as IUpdateUserInfo;
+      const userId = req.user?._id;
+
+      // Finding the user by ID
+      const user = await userModel.findById(userId);
+
+      // Checking if email is provided and user exists
+      if (email && user) {
+        // Checking if the provided email already exists in the database
+        const isEmailExist = await userModel.findOne({ email });
+        if (isEmailExist) {
+          return next(new ErrorHandler("Email Already Exist!", 400));
+        }
+
+        // Updating user's email if it's unique
+        user.email = email;
+      }
+
+      // Checking if name is provided and user exists
+      if (name && user) {
+        // Updating user's name
+        user.name = name;
+      }
+
+      // Saving the updated user information
+      await user?.save();
+
+      // Updating user data in Redis cache
+      await redis.set(userId, JSON.stringify(user));
+
+      // Sending a success response with the updated user information
+      res.status(201).json({
+        success: true,
+        user,
+      });
+    } catch (error: any) {
+      // Handling any errors that occur during the process
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+/**
+ * Interface defining the structure of data required to update a user's password.
+ */
+interface IUpdateUserPassword {
+  oldPassword: string;
+  newPassword: string;
+}
+
+/**
+ * Function to update a user's password securely.
+ * @param req - Express Request object
+ * @param res - Express Response object
+ * @param next - Express NextFunction for error handling
+ */
+export const updateUserPassword = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // Destructuring oldPassword and newPassword from the request body
+      const { oldPassword, newPassword } = req.body as IUpdateUserPassword;
+
+      // Checking if both oldPassword and newPassword are provided
+      if (!oldPassword || !newPassword) {
+        return next(
+          new ErrorHandler("Please enter old and new password!", 400)
+        );
+      }
+
+      // Finding the user by ID and selecting the password field
+      const user = await userModel.findById(req.user?._id).select("+password");
+
+      // Handling case where user or password is not found
+      if (user?.password === undefined) {
+        return next(new ErrorHandler("Invalid User!", 400));
+      }
+
+      // Comparing the old password provided with the user's current password
+      const isPasswordMatch = await user?.comparePassword(oldPassword);
+
+      // Handling case where old password does not match
+      if (!isPasswordMatch) {
+        return next(new ErrorHandler("Invalid Old Password!", 400));
+      }
+
+      // Updating the user's password with the new password
+      user.password = newPassword;
+
+      // Saving the updated user information
+      await user.save();
+
+      // Updating user data in Redis cache
+      await redis.set(req.user?._id, JSON.stringify(user));
+
+      // Sending a success response with the updated user information
+      res.status(201).json({
+        success: true,
+        user,
+      });
+    } catch (error: any) {
+      // Handling any errors that occur during the process
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+/**
+ * Interface defining the structure of data required to update a user's avatar.
+ */
+interface IUpdateUserAvatar {
+  avatar: string;
+}
+
+/**
+ * Function to update a user's avatar using Cloudinary service.
+ * @param req - Express Request object
+ * @param res - Express Response object
+ * @param next - Express NextFunction for error handling
+ */
+export const updateUserAvatar = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // Destructuring avatar from the request body
+      const { avatar } = req.body as IUpdateUserAvatar;
+      const userId = req.user?._id;
+
+      // Finding the user by ID
+      const user = await userModel.findById(userId);
+
+      // Checking if avatar is provided and user exists
+      if (avatar && user) {
+        // Handling existing avatar deletion and uploading new avatar to Cloudinary
+        if (user?.avatar?.public_id) {
+          // Deleting existing avatar from Cloudinary
+          await cloudinary.v2.uploader.destroy(user?.avatar?.public_id);
+
+          // Uploading new avatar to Cloudinary with specified settings
+          const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+            folder: "avatars",
+            width: 150,
+          });
+
+          // Updating user's avatar information with new Cloudinary details
+          user.avatar = {
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url,
+          };
+        } else {
+          // Uploading new avatar to Cloudinary if no existing avatar found
+          const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+            folder: "avatars",
+            width: 150,
+          });
+
+          // Updating user's avatar information with new Cloudinary details
+          user.avatar = {
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url,
+          };
+        }
+      }
+
+      // Saving the updated user information
+      await user?.save();
+
+      // Updating user data in Redis cache
+      await redis.set(userId, JSON.stringify(user));
+
+      // Sending a success response with the updated user information
+      res.status(201).json({
+        success: true,
+        user,
+      });
+    } catch (error: any) {
+      // Handling any errors that occur during the process
       return next(new ErrorHandler(error.message, 400));
     }
   }
