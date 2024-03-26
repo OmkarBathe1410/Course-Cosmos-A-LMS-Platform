@@ -4,6 +4,7 @@ import { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.route";
+import courseRouter from "./routes/course.route";
 
 require("dotenv").config();
 
@@ -23,7 +24,7 @@ app.use(
 );
 
 // Mount the userRouter under the "/api/v1" path prefix
-app.use("/api/v1", userRouter);
+app.use("/api/v1", userRouter, courseRouter);
 
 // Test route to check if the API is working
 app.get("/test", (req: Request, res: Response, next: NextFunction) => {

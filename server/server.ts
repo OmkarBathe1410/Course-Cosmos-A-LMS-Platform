@@ -1,8 +1,8 @@
 // Importing the 'app' instance from the './app' file, which contains our Express application setup
 import { app } from "./app";
-import { v2 as cloudinary } from "cloudinary";
 require("dotenv").config();
 import connectDB from "./utils/db";
+import { v2 as cloudinary } from "cloudinary";
 
 // Configuring Cloudinary with API credentials from environment variables
 cloudinary.config({
