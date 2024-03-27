@@ -1,6 +1,12 @@
 import express from "express"; // Importing the Express framework
-import { editCourse, uploadCourse } from "../controllers/course.controller"; // Importing course controller functions
+import {
+  editCourse,
+  getAllCourses,
+  getSingleCourse,
+  uploadCourse,
+} from "../controllers/course.controller"; // Importing course controller functions
 import { authorizeRoles, isAuthenticated } from "../middleware/auth"; // Importing authentication and authorization middleware
+
 // Creating a new Express router for handling course-related routes
 const courseRouter = express.Router();
 
@@ -21,6 +27,12 @@ courseRouter.put(
   authorizeRoles("admin"),
   editCourse
 );
+
+// Setting up a GET route for fetching a single course
+courseRouter.get("/get-course/:id", getSingleCourse);
+
+// Setting up a GET route for fetching all the courses
+courseRouter.get("/get-courses", getAllCourses);
 
 // Exporting the courseRouter for use in the main application
 export default courseRouter;
