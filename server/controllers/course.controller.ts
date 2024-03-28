@@ -132,3 +132,43 @@ export const getAllCourses = CatchAsyncError(
     }
   }
 );
+
+// Define an asynchronous function getCourseByUser that catches asynchronous errors using CatchAsyncError
+export const getCourseByUser = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // Extract the user's course list from the request object
+      const userCourseList = req.user?.courses;
+
+      // Extract the course ID from the request params
+      const courseId = req.params.id;
+
+      // Check if the course exists in the user's course list by comparing the course ID
+      const isCourseExist = userCourseList?.find(
+        (course: any) => course._id.toString() === courseId
+      );
+
+      // If the course does not exist, return an error response with a custom message and 404 status code
+      if (!isCourseExist) {
+        return next(
+          new ErrorHandler("You're not eligible to access this course", 404)
+        );
+      }
+
+      // Fetch the course data from the database using CourseModel and the provided course ID
+      const course = await CourseModel.findById(courseId);
+
+      // Extract the course content from the fetched course data
+      const courseContent = course?.courseData;
+
+      // Send a JSON response with 200 status code and the retrieved course content
+      res.status(200).json({
+        success: true,
+        courseContent,
+      });
+    } catch (error: any) {
+      // If an error occurs, return a custom ErrorHandler object with the error message and 500 status code
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }
+);

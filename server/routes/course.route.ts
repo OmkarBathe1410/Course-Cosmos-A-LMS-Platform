@@ -2,6 +2,7 @@ import express from "express"; // Importing the Express framework
 import {
   editCourse,
   getAllCourses,
+  getCourseByUser,
   getSingleCourse,
   uploadCourse,
 } from "../controllers/course.controller"; // Importing course controller functions
@@ -33,6 +34,9 @@ courseRouter.get("/get-course/:id", getSingleCourse);
 
 // Setting up a GET route for fetching all the courses
 courseRouter.get("/get-courses", getAllCourses);
+
+// Setting up a GET route for fetching a single course's content [only for valid user]
+courseRouter.get("/get-course-content/:id", isAuthenticated, getCourseByUser);
 
 // Exporting the courseRouter for use in the main application
 export default courseRouter;
