@@ -1,5 +1,7 @@
 import express from "express"; // Importing the Express framework
 import {
+  addAnswer,
+  addQuestion,
   editCourse,
   getAllCourses,
   getCourseByUser,
@@ -37,6 +39,12 @@ courseRouter.get("/get-courses", getAllCourses);
 
 // Setting up a GET route for fetching a single course's content [only for valid user]
 courseRouter.get("/get-course-content/:id", isAuthenticated, getCourseByUser);
+
+// Setting up a PUT route for adding a new question to the specified course
+courseRouter.put("/add-question", isAuthenticated, addQuestion);
+
+// Setting up a PUT route for adding a new answwer to the specified question in a course
+courseRouter.put("/add-answer", isAuthenticated, addAnswer);
 
 // Exporting the courseRouter for use in the main application
 export default courseRouter;
