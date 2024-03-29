@@ -226,11 +226,6 @@ export const addQuestion = CatchAsyncError(
       courseContent.questions.push(newQuestion);
 
       // Notification will be added here in upcoming days
-      // await NotificationModel.create({
-      //   user: req.user?._id,
-      //   title: "New Question Received",
-      //   message: `You have a new question in ${courseContent.title}`,
-      // });
 
       /** Save the updated course to the database. */
       await course?.save();
