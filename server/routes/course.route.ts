@@ -2,6 +2,8 @@ import express from "express"; // Importing the Express framework
 import {
   addAnswer,
   addQuestion,
+  addReplyToReview,
+  addReview,
   editCourse,
   getAllCourses,
   getCourseByUser,
@@ -45,6 +47,17 @@ courseRouter.put("/add-question", isAuthenticated, addQuestion);
 
 // Setting up a PUT route for adding a new answwer to the specified question in a course
 courseRouter.put("/add-answer", isAuthenticated, addAnswer);
+
+// Setting up a PUT route for adding a new review to the specified course
+courseRouter.put("/add-review/:id", isAuthenticated, addReview);
+
+// Setting up a PUT route for adding an answer to a review to the specified course
+courseRouter.put(
+  "/add-review-reply/",
+  isAuthenticated,
+  authorizeRoles("admin"),
+  addReplyToReview
+);
 
 // Exporting the courseRouter for use in the main application
 export default courseRouter;
