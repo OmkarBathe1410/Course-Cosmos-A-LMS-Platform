@@ -368,42 +368,56 @@ export const addReview = CatchAsyncError(
     // Asynchronous function to handle adding reviews
     try {
       const courseList = req.user?.courses; // Retrieve the list of courses from the user
+  
       const courseId = req.params.id; // Get the course ID from the request parameters
+  
       const courseExists = courseList?.some(
         // Check if the course exists in the user's course list
         (course: any) => course._id.toString() === courseId.toString()
       );
+  
       if (!courseExists) {
         // If course doesn't exist, return an error
         return next(
           new ErrorHandler("You're not eligible to access this course", 404)
         );
       }
+  
       const course = await CourseModel.findById(courseId); // Find the course by its ID
+  
       const { review, rating } = req.body as IAddReviewData; // Extract review and rating from the request body
+  
       const reviewData: any = {
         // Create review data object
         user: req.user, // Include the user who submitted the review
         comment: review, // Add the review comment
         rating, // Add the rating
       };
+  
       course?.reviews.push(reviewData); // Add the review data to the course's reviews
+  
       let avg = 0; // Initialize average rating variable
+  
       course?.reviews.forEach((rev: any) => {
         // Calculate the average rating
         avg += rev.rating;
       });
+  
       if (course) {
         // If course exists
         course.ratings = avg / course.reviews.length; // Calculate and update the average rating
       }
+  
       await course?.save(); // Save the updated course data
+  
       const notification = {
         // Create a notification object
         title: "New Review Received", // Notification title
         message: `${req.user?.name} has given a review on ${course?.name}`, // Notification message
       };
-      // Create Notification:
+  
+      // Create Notification here in upcoming days:
+  
       res.status(200).json({
         // Send success response with course data
         success: true,
@@ -428,30 +442,39 @@ export const addReplyToReview = CatchAsyncError(
     // Async function with request, response, and next function parameters
     try {
       const { comment, courseId, reviewId } = req.body as IAddReviewReplyData; // Destructuring comment, courseId, and reviewId from request body
+
       const course = await CourseModel.findById(courseId); // Finding the course by courseId
+
       if (!course) {
         // If course not found, return error
         return next(new ErrorHandler("Course not found!", 404));
       }
+
       const review = course?.reviews?.find(
         // Finding the review within the course
         (rev: any) => rev._id.toString() === reviewId
       );
+
       if (!review) {
         // If review not found, return error
         return next(new ErrorHandler("Review not found!", 404));
       }
+
       const reviewReplyData: any = {
         // Creating data for the review reply
         user: req.user, // Assigning the user from request
         comment, // Assigning the comment for the reply
       };
+
       if (!review.commentReplies) {
         // If commentReplies array doesn't exist, create it
         review.commentReplies = [];
       }
+
       review.commentReplies?.push(reviewReplyData); // Adding the reply data to the commentReplies array
+
       await course?.save(); // Saving the course
+
       res.status(200).json({
         // Sending success response with updated course
         success: true,
