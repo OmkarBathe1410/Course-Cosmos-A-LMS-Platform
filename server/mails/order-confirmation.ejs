@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Course Purchase Confirmation</title>
+    <style>
+      body {
+        font-family: "Trebuchet MS";
+        background: linear-gradient(to bottom right, #000428, #004e92);
+        color: #fff;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #00171f; /* Dark blue for container */
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+      }
+      h1 {
+        color: #f0f0f0;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      p {
+        color: #ccc;
+        font-size: 16px;
+        line-height: 1.5;
+        margin-bottom: 10px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #fff;
+        padding: 8px;
+      }
+      th {
+        background-color: #004e92; /* Dark blue for table header */
+        color: #fff;
+      }
+      td {
+        background-color: #00171f; /* Dark blue for table cells */
+        color: #fff;
+      }
+      h2 {
+        color: #007bff;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      @media (max-width: 600px) {
+        .container {
+          width: 80vw;
+          padding: 10px;
+          background-color: #00171f; /* Dark blue for container on smaller screens */
+        }
+        table {
+          width: 50%;
+        }
+        h1,
+        h2,
+        p {
+          text-align: center;
+        }
+      }
+      .copyright {
+        color: #999;
+        font-size: 12px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Course Purchase Confirmation</h1>
+      <p>Hi <%= order.user_name %>,</p>
+      <p>
+        Thank you for purchasing courses on our platform. Your order has been
+        confirmed and is being processed.
+      </p>
+
+      <h2>Order Details:</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Course</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Sub-Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><%= order._id %></td>
+            <td><%= order.date %></td>
+            <td><%= order.name %></td>
+            <td>1</td>
+            <!-- Assuming quantity is always 1 per course -->
+            <td><%= order.price %></td>
+            <td><%= order.price %></td>
+            <!-- Sub-total same as price for single quantity -->
+          </tr>
+
+          <!-- Total row -->
+          <tr style="background-color: #004e92">
+            <td colspan="5" style="text-align: right">
+              <strong>Total:</strong>
+            </td>
+            <td><%= order.price %></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>Enjoy learning with us!</p>
+    </div>
+
+    <div class="copyright">
+      &copy; <%= new Date().getFullYear() %> Course Cosmos. All rights reserved.
+    </div>
+  </body>
+</html>
