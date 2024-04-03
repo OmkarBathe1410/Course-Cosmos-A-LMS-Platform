@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.route";
 import courseRouter from "./routes/course.route";
 import orderRouter from "./routes/order.route";
+import notificationRoute from "./routes/notification.route";
 
 require("dotenv").config();
 
@@ -25,7 +26,7 @@ app.use(
 );
 
 // Mount the userRouter under the "/api/v1" path prefix
-app.use("/api/v1", userRouter, courseRouter, orderRouter);
+app.use("/api/v1", userRouter, courseRouter, orderRouter, notificationRoute);
 
 // Test route to check if the API is working
 app.get("/test", (req: Request, res: Response, next: NextFunction) => {

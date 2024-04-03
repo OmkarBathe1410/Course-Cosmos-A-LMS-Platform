@@ -9,6 +9,7 @@ import mongoose from "mongoose";
 import sendEmail from "../utils/sendEmail";
 import ejs from "ejs";
 import path from "path";
+import NotificationModel from "../models/notification.model";
 
 // Handles course thumbnail upload to Cloudinary and creates a new course using the uploaded thumbnail details
 export const uploadCourse = CatchAsyncError(
@@ -225,7 +226,11 @@ export const addQuestion = CatchAsyncError(
       /** Add the new question to the course content's list of questions. */
       courseContent.questions.push(newQuestion);
 
-      // Notification will be added here in upcoming days
+      await NotificationModel.create({
+        user: req.user?._id,
+        title: "New Question Received",
+        message: `You have a new question in ${courseContent.title}`,
+      });
 
       /** Save the updated course to the database. */
       await course?.save();
@@ -319,9 +324,13 @@ export const addAnswer = CatchAsyncError(
       /** Save the updated course to the database. */
       await course?.save();
 
-      /** If the user adding the answer is the same as the user who asked the question, a notification will be added here in upcoming days (currently commented out). */
+      /** If the user adding the answer is the same as the user who asked the question, a notification will be added. */
       if (req.user?._id === question.user._id) {
-        // Create a notification.
+        await NotificationModel.create({
+          user: req.user?._id,
+          title: "New Question Reply Received",
+          message: `You have a new question reply in ${courseContent.title}`,
+        });
       } else {
         /** Generate an HTML email template using the ejs library and send an email notification to the user who asked the question,*/
         const data = {
@@ -368,56 +377,56 @@ export const addReview = CatchAsyncError(
     // Asynchronous function to handle adding reviews
     try {
       const courseList = req.user?.courses; // Retrieve the list of courses from the user
-  
+
       const courseId = req.params.id; // Get the course ID from the request parameters
-  
+
       const courseExists = courseList?.some(
         // Check if the course exists in the user's course list
         (course: any) => course._id.toString() === courseId.toString()
       );
-  
+
       if (!courseExists) {
         // If course doesn't exist, return an error
         return next(
           new ErrorHandler("You're not eligible to access this course", 404)
         );
       }
-  
+
       const course = await CourseModel.findById(courseId); // Find the course by its ID
-  
+
       const { review, rating } = req.body as IAddReviewData; // Extract review and rating from the request body
-  
+
       const reviewData: any = {
         // Create review data object
         user: req.user, // Include the user who submitted the review
         comment: review, // Add the review comment
         rating, // Add the rating
       };
-  
+
       course?.reviews.push(reviewData); // Add the review data to the course's reviews
-  
+
       let avg = 0; // Initialize average rating variable
-  
+
       course?.reviews.forEach((rev: any) => {
         // Calculate the average rating
         avg += rev.rating;
       });
-  
+
       if (course) {
         // If course exists
         course.ratings = avg / course.reviews.length; // Calculate and update the average rating
       }
-  
+
       await course?.save(); // Save the updated course data
-  
+
       const notification = {
         // Create a notification object
         title: "New Review Received", // Notification title
         message: `${req.user?.name} has given a review on ${course?.name}`, // Notification message
       };
-  
+
       // Create Notification here in upcoming days:
-  
+
       res.status(200).json({
         // Send success response with course data
         success: true,
