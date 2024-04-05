@@ -8,7 +8,7 @@ import path from "path"; // Importing Node's path module
 import ejs from "ejs"; // Importing EJS library for templating
 import sendEmail from "../utils/sendEmail"; // Importing sendEmail utility function
 import NotificationModel from "../models/notification.model"; // Importing notification model
-import { newOrder } from "../services/order.service"; // Importing newOrder function
+import { getAllOrdersService, newOrder } from "../services/order.service"; // Importing newOrder function
 
 export const createOrder = CatchAsyncError(
   // Exporting createOrder function wrapped in CatchAsyncError middleware
@@ -98,6 +98,19 @@ export const createOrder = CatchAsyncError(
       newOrder(data, res, next); // Calling the newOrder function with the order data, response, and next function
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500)); // Returning an error if there's an issue during the process
+    }
+  }
+);
+
+// Define an asynchronous function getAllOrdersForAdmin wrapped with CatchAsyncError to handle any errors
+export const getAllOrdersForAdmin = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // Call getAllOrdersService to fetch and send all orders as a JSON response
+      getAllOrdersService(res);
+    } catch (error: any) {
+      // If an error occurs, create a new ErrorHandler with the error message and status code 400 (Bad Request)
+      return next(new ErrorHandler(error.message, 400));
     }
   }
 );

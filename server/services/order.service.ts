@@ -14,3 +14,15 @@ export const newOrder = CatchAsyncError(
     });
   }
 );
+
+// Define an asynchronous function getAllOrdersService
+export const getAllOrdersService = async (res: Response) => {
+  // Use the OrderModel to fetch all orders from the database and sort them by the 'createdAt' field in descending order
+  const orders = await OrderModel.find().sort({ createdAt: -1 });
+
+  // Send a JSON response with a status code of 201 (indicating success in this context) and the array of order objects
+  res.status(201).json({
+    success: true,
+    orders,
+  });
+};

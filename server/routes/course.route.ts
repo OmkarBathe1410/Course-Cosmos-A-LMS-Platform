@@ -6,6 +6,7 @@ import {
   addReview,
   editCourse,
   getAllCourses,
+  getAllCoursesForAdmin,
   getCourseByUser,
   getSingleCourse,
   uploadCourse,
@@ -57,6 +58,15 @@ courseRouter.put(
   isAuthenticated,
   authorizeRoles("admin"),
   addReplyToReview
+);
+
+// Define a GET route "/get-all-courses/" using courseRouter
+// Call the getAllCoursesForAdmin middleware function to fetch and send all courses as a JSON response
+courseRouter.get(
+  "/get-all-courses/",
+  isAuthenticated,
+  authorizeRoles("admin"),
+  getAllCoursesForAdmin
 );
 
 // Exporting the courseRouter for use in the main application

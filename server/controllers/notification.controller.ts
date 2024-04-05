@@ -2,6 +2,7 @@ import NotificationModel from "../models/notification.model"; // Import the Noti
 import { CatchAsyncError } from "../middleware/catchAsyncError"; // Import the CatchAsyncError middleware for error handling
 import ErrorHandler from "../utils/ErrorHandler"; // Import the ErrorHandler for custom error handling
 import { NextFunction, Request, Response } from "express"; // Import Express types for request handling
+import cron from "node-cron";
 
 export const getNotification = CatchAsyncError(
   // Define an asynchronous function to retrieve notifications from the database
@@ -61,3 +62,18 @@ export const updateNotification = CatchAsyncError(
     }
   }
 );
+
+// Schedule a task to run daily at midnight using the cron pattern
+cron.schedule("0 0 0 * * *", async () => {
+  // Calculate the date and time 30 days ago
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+
+  // Delete all read notifications that were created more than 30 days ago
+  await NotificationModel.deleteMany({
+    status: "read", // Filter for notifications with status "read"
+    createdAt: { $lt: thirtyDaysAgo }, // Filter for notifications created before thirtyDaysAgo
+  });
+
+  // Log a message to confirm the deletion of old notifications
+  console.log("Deleted read notifications");
+});

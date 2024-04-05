@@ -3,7 +3,7 @@ import { CatchAsyncError } from "../middleware/catchAsyncError";
 import ErrorHandler from "../utils/ErrorHandler";
 import cloudinary from "cloudinary";
 import CourseModel from "../models/course.model";
-import { createCourse } from "../services/course.service";
+import { createCourse, getAllCoursesService } from "../services/course.service";
 import { redis } from "../utils/redis";
 import mongoose from "mongoose";
 import sendEmail from "../utils/sendEmail";
@@ -492,6 +492,19 @@ export const addReplyToReview = CatchAsyncError(
     } catch (error: any) {
       // Catching any errors
       return next(new ErrorHandler(error.message, 500)); // Returning error response
+    }
+  }
+);
+
+// Function to get all courses for an admin with error handling:
+export const getAllCoursesForAdmin = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // Call getAllCoursesService to fetch and send all courses as a JSON response
+      getAllCoursesService(res);
+    } catch (error: any) {
+      // Pass the error message and status code 400 (Bad Request) to the next middleware using ErrorHandler
+      return next(new ErrorHandler(error.message, 400));
     }
   }
 );

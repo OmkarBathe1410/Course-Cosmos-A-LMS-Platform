@@ -14,7 +14,7 @@ import {
   sendToken,
 } from "../utils/jwt";
 import { redis } from "../utils/redis";
-import { getUserById } from "../services/user.service";
+import { getAllUsersService, getUserById } from "../services/user.service";
 import cloudinary from "cloudinary";
 
 // Define interface for user registration body
@@ -530,6 +530,19 @@ export const updateUserAvatar = CatchAsyncError(
       });
     } catch (error: any) {
       // Handling any errors that occur during the process
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+// Define an asynchronous function getAllUsersForAdmin wrapped with CatchAsyncError to handle any errors
+export const getAllUsersForAdmin = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // Call getAllUsersService to fetch and send all users as a JSON response
+      getAllUsersService(res);
+    } catch (error: any) {
+      // If an error occurs, create a new ErrorHandler with the error message and status code 400 (Bad Request)
       return next(new ErrorHandler(error.message, 400));
     }
   }

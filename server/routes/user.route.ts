@@ -2,6 +2,7 @@
 import express from "express";
 import {
   activateUser,
+  getAllUsersForAdmin,
   getUserInfo,
   loginUser,
   logoutUser,
@@ -46,5 +47,14 @@ userRouter.put("/update-user-password", isAuthenticated, updateUserPassword);
 
 // Route to update user avatar
 userRouter.put("/update-user-avatar", isAuthenticated, updateUserAvatar); // Export the user router for use in the main application
+
+// Define a GET route "/get-all-users" using userRouter
+// Call the getAllUsersForAdmin middleware function to fetch and send all users as a JSON response
+userRouter.get(
+  "/get-all-users",
+  isAuthenticated,
+  authorizeRoles("admin"),
+  getAllUsersForAdmin
+);
 
 export default userRouter;
