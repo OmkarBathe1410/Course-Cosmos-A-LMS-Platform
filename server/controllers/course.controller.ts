@@ -508,3 +508,37 @@ export const getAllCoursesForAdmin = CatchAsyncError(
     }
   }
 );
+
+/* This asynchronous function deletes a course and handles errors. */
+export const deleteCourse = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      /* Extract the id from the request parameters. */
+      const { id } = req.params;
+
+      /* Find the course with the given id. */
+      const course = await CourseModel.findById(id);
+
+      /* Check if the course exists. */
+      if (!course) {
+        /* If the course does not exist, create an ErrorHandler instance with the error message "Course not found!" and HTTP status code 404 (Not Found), and pass it to next(). */
+        return next(new ErrorHandler("Course not found!", 404));
+      }
+
+      /* Delete the course with the given id. */
+      await course.deleteOne({ id });
+
+      /* Delete the course from Redis cache. */
+      await redis.del(id);
+
+      /* Set the HTTP status code to 200 (OK) and send a JSON response with a success message. */
+      res.status(200).json({
+        success: true,
+        message: "Course deleted successfully!",
+      });
+    } catch (error: any) {
+      /* Handle the error by creating an ErrorHandler instance with the error message and HTTP status code 400 (Bad Request), and pass it to next(). */
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);

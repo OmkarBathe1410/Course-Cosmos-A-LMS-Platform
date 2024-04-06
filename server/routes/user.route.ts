@@ -2,6 +2,7 @@
 import express from "express";
 import {
   activateUser,
+  deleteUser,
   getAllUsersForAdmin,
   getUserInfo,
   loginUser,
@@ -12,6 +13,7 @@ import {
   updateUserAvatar,
   updateUserInfo,
   updateUserPassword,
+  updateUserRole,
 } from "../controllers/user.controller";
 import { authorizeRoles, isAuthenticated } from "../middleware/auth";
 
@@ -55,6 +57,22 @@ userRouter.get(
   isAuthenticated,
   authorizeRoles("admin"),
   getAllUsersForAdmin
+);
+
+/* Define a PUT route at the path '/update-user' on the userRouter. */
+userRouter.put(
+  "/update-user",
+  isAuthenticated,
+  authorizeRoles("admin"),
+  updateUserRole
+);
+
+/* Define a DELETE route at the path '/delete-user/:id' on the userRouter. The ':id' parameter captures the user ID from the URL. */
+userRouter.delete(
+  "/delete-user/:id",
+  isAuthenticated,
+  authorizeRoles("admin"),
+  deleteUser
 );
 
 export default userRouter;

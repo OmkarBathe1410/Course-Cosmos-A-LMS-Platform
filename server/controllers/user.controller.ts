@@ -14,7 +14,11 @@ import {
   sendToken,
 } from "../utils/jwt";
 import { redis } from "../utils/redis";
-import { getAllUsersService, getUserById } from "../services/user.service";
+import {
+  getAllUsersService,
+  getUserById,
+  updateUserRoleService,
+} from "../services/user.service";
 import cloudinary from "cloudinary";
 
 // Define interface for user registration body
@@ -543,6 +547,56 @@ export const getAllUsersForAdmin = CatchAsyncError(
       getAllUsersService(res);
     } catch (error: any) {
       // If an error occurs, create a new ErrorHandler with the error message and status code 400 (Bad Request)
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+/* This asynchronous function updates the user role and handles errors. */
+export const updateUserRole = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      /* Extract the id and role from the request body. */
+      const { id, role } = req.body;
+
+      /* Call the updateUserRoleService function with the id, role, and response object. */
+      updateUserRoleService(id, role, res);
+    } catch (error: any) {
+      /* Handle the error by creating an ErrorHandler instance with the error message and HTTP status code 400 (Bad Request), and pass it to next(). */
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+/* This asynchronous function deletes a user and handles errors. */
+export const deleteUser = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      /* Extract the id from the request parameters. */
+      const { id } = req.params;
+
+      /* Find the user with the given id. */
+      const user = await userModel.findById(id);
+
+      /* Check if the user exists. */
+      if (!user) {
+        /* If the user does not exist, create an ErrorHandler instance with the error message "User not found!" and HTTP status code 404 (Not Found), and pass it to next(). */
+        return next(new ErrorHandler("User not found!", 404));
+      }
+
+      /* Delete the user with the given id. */
+      await user.deleteOne({ id });
+
+      /* Delete the user from Redis cache. */
+      await redis.del(id);
+
+      /* Set the HTTP status code to 200 (OK) and send a JSON response with a success message. */
+      res.status(200).json({
+        success: true,
+        message: "User deleted successfully!",
+      });
+    } catch (error: any) {
+      /* Handle the error by creating an ErrorHandler instance with the error message and HTTP status code 400 (Bad Request), and pass it to next(). */
       return next(new ErrorHandler(error.message, 400));
     }
   }
