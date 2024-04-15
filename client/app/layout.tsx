@@ -1,4 +1,3 @@
-
 "use client";
 
 import { ThemeProvider } from "./utils/theme-provider";
