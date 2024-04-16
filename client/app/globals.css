@@ -41,6 +41,22 @@ body {
     opacity: 0.4;
   }
 }
+
+.text-gradient {
+  background: linear-gradient(90deg, #4d88c4 2.34%, #964be1 100.78%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+}
+
+.dark-explore-gradient {
+  background: linear-gradient(90deg, #4d88c4 2.34%, #964be1 100.78%);
+}
+
+.white-explore-gradient {
+  background: linear-gradient(90deg, #964be1 2.34%, #4d88c4 100.78%);
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
