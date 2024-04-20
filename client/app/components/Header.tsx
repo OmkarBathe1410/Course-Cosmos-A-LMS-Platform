@@ -6,26 +6,20 @@ import NavItems from "../utils/NavItems";
 import { ThemeSwitcher } from "../utils/ThemeSwitcher";
 import { HiOutlineUserCircle } from "react-icons/hi";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
-// import CustomModal from "../utils/CustomModal";
-// import Login from "../components/Auth/Login";
-// import SignUp from "../components/Auth/SignUp";
-// import Verification from "../components/Auth/Verification";
-// import { useSelector } from "react-redux";
-// import avatar from "../../public/assets/avatar.png";
-// import { useSession } from "next-auth/react";
-// import {
-//   useLogoutQuery,
-//   useSocialAuthMutation,
-// } from "@/redux/features/auth/authApi";
-// import { toast } from "react-hot-toast";
+import CustomModal from "../utils/CustomModal";
+import Login from "../components/Auth/Login";
+import SignUp from "../components/Auth/SignUp";
+import Verification from "../components/Auth/Verification";
 
 type Props = {
   open: boolean;
   setOpen: (open: boolean) => void;
   activeItem: number;
+  route: string;
+  setRoute: (route: string) => void;
 };
 
-const Header: FC<Props> = ({ activeItem, setOpen, open }) => {
+const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
   const [active, setActive] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
 
@@ -119,6 +113,45 @@ const Header: FC<Props> = ({ activeItem, setOpen, open }) => {
         {/* Above code is only for mobile sidebar */}
 
       </div>
+      {route == "Login" && (
+        <>
+          {open && (
+            <CustomModal
+              open={open}
+              setOpen={setOpen}
+              setRoute={setRoute}
+              activeItem={activeItem}
+              component={Login}
+            />
+          )}
+        </>
+      )}
+      {route == "Sign-Up" && (
+        <>
+          {open && (
+            <CustomModal
+              open={open}
+              setOpen={setOpen}
+              setRoute={setRoute}
+              activeItem={activeItem}
+              component={SignUp}
+            />
+          )}
+        </>
+      )}
+      {route == "Verification" && (
+        <>
+          {open && (
+            <CustomModal
+              open={open}
+              setOpen={setOpen}
+              setRoute={setRoute}
+              activeItem={activeItem}
+              component={Verification}
+            />
+          )}
+        </>
+      )}
     </div>
   );
 };

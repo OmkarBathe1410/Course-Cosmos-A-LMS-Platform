@@ -1,11 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 }
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
@@ -13,13 +15,26 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
+
 body {
   color: rgb(var(--foreground-rgb));
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 .hero_animation {
   background-image: linear-gradient(90deg, #111827 2.34%, #000000 100.78%);
   animation: changeBackgroundColor 6s infinite alternate;
 }
+
 @keyframes changeBackgroundColor {
   0%,
   100% {
@@ -55,6 +70,31 @@ body {
 
 .white-explore-gradient {
   background: linear-gradient(90deg, #964be1 2.34%, #4d88c4 100.78%);
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-2px);
+  }
+  40% {
+    transform: translateX(2px);
+  }
+  60% {
+    transform: translateX(-2px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 @layer utilities {
