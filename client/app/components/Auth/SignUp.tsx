@@ -9,6 +9,9 @@ import {
 } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { styles } from "../../../app/styles/style";
+import { useRegisterMutation } from "@/redux/features/auth/authApi";
+import { toast } from "react-hot-toast";
+import { IconContext } from "react-icons";
 
 type Props = {
   setRoute: (route: string) => void;
@@ -24,6 +27,21 @@ const validateSchema = Yup.object().shape({
 
 const SignUp: FC<Props> = ({ setRoute }) => {
   const [show, setShow] = useState(false);
+  const [register, { data, error, isSuccess }] = useRegisterMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      const message = data?.message || "Registration Successful!";
+      toast.success(message);
+      setRoute("Verification");
+    }
+    if (error) {
+      if ("data" in error) {
+        const errorData = error as any;
+        toast.error(errorData.data.message);
+      }
+    }
+  }, [isSuccess, error]);
 
   const formik = useFormik({
     initialValues: {
@@ -33,8 +51,8 @@ const SignUp: FC<Props> = ({ setRoute }) => {
     },
     validationSchema: validateSchema,
     onSubmit: async ({ name, email, password }) => {
-      console.log(name, email, password);
-      setRoute("Verification");
+      const data = { name, email, password };
+      await register(data);
     },
   });
 
@@ -99,13 +117,13 @@ const SignUp: FC<Props> = ({ setRoute }) => {
           />
           {!show ? (
             <AiOutlineEyeInvisible
-              className="absolute right-2 bottom-3 z-1 cursor-pointer"
+              className="absolute right-2 bottom-3 z-1 cursor-pointer text-black dark:text-white"
               size={20}
               onClick={() => setShow(true)}
             />
           ) : (
             <AiOutlineEye
-              className="absolute right-2 bottom-3 z-1 cursor-pointer"
+              className="absolute right-2 bottom-3 z-1 cursor-pointer text-black dark:text-white"
               size={20}
               onClick={() => setShow(false)}
             />
@@ -122,10 +140,27 @@ const SignUp: FC<Props> = ({ setRoute }) => {
           Or Login with
         </h5>
         <div className="flex items-center justify-center my-3">
-          <FcGoogle size={30} className="cursor-pointer mr-2" />
-          <AiFillGithub size={30} className="cursor-pointer ml-2" />
+          <FcGoogle
+            size={30}
+            className="cursor-pointer mr-2"
+            // onClick={() => signIn("google")}
+          />
+          <IconContext.Provider
+            value={{
+              className:
+                "global-class-name text-[rgba(0,0,0,0.75)] dark:text-[#fff]",
+            }}
+          >
+            <div>
+              <AiFillGithub
+                size={30}
+                className="cursor-pointer ml-2"
+                // onClick={() => signIn("github")}
+              />
+            </div>
+          </IconContext.Provider>
         </div>
-        <h5 className="text-center pt-4 font-Poppins text-[14px]">
+        <h5 className="text-center pt-4 font-Poppins text-[14px] dark:text-[#fff] text-black">
           Already have an account?{" "}
           <span
             className="text-[#2190ff] pl-1 cursor-pointer"

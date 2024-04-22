@@ -111,7 +111,6 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
           </div>
         )}
         {/* Above code is only for mobile sidebar */}
-
       </div>
       {route == "Login" && (
         <>
