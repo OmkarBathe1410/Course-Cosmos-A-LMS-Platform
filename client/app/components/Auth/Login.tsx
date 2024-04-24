@@ -10,6 +10,9 @@ import {
 } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { styles } from "../../../app/styles/style";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
+import toast from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
 type Props = {
   setRoute: (route: string) => void;
@@ -25,14 +28,32 @@ const validateSchema = Yup.object().shape({
 
 const Login: FC<Props> = ({ setRoute, setOpen }) => {
   const [show, setShow] = useState(false);
+  const [login, { isSuccess, error }] = useLoginMutation();
+
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema: validateSchema,
-    onSubmit: async ({ email, password }) => {},
+    onSubmit: async ({ email, password }) => {
+      await login({ email, password });
+    },
   });
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Login successfully!");
+      setOpen(false);
+    }
+    if (error) {
+      if ("data" in error) {
+        const errorData = error as any;
+        toast.error(errorData.data.message);
+      }
+    }
+  }, [isSuccess, error]);
+
   const { errors, touched, values, handleChange, handleSubmit } = formik;
 
   return (
@@ -96,7 +117,11 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
           Or Login with
         </h5>
         <div className="flex items-center justify-center my-3">
-          <FcGoogle size={30} className="cursor-pointer mr-2" />
+          <FcGoogle
+            size={30}
+            className="cursor-pointer mr-2"
+            onClick={() => signIn("google")}
+          />
           <IconContext.Provider
             value={{
               className:
@@ -104,7 +129,11 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
             }}
           >
             <div>
-              <AiFillGithub size={30} className="cursor-pointer ml-2" />
+              <AiFillGithub
+                size={30}
+                className="cursor-pointer ml-2"
+                onClick={() => signIn("github")}
+              />
             </div>
           </IconContext.Provider>
         </div>

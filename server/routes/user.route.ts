@@ -39,7 +39,7 @@ userRouter.get("/refresh", updateAccessToken);
 userRouter.get("/me", isAuthenticated, getUserInfo);
 
 // Route for authentication through socials
-userRouter.get("/social-auth", socialAuth);
+userRouter.post("/social-auth", socialAuth);
 
 // Route to update user information
 userRouter.put("/update-user-info", isAuthenticated, updateUserInfo);

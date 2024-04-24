@@ -12,6 +12,7 @@ import { styles } from "../../../app/styles/style";
 import { useRegisterMutation } from "@/redux/features/auth/authApi";
 import { toast } from "react-hot-toast";
 import { IconContext } from "react-icons";
+import { signIn } from "next-auth/react";
 
 type Props = {
   setRoute: (route: string) => void;
@@ -143,7 +144,7 @@ const SignUp: FC<Props> = ({ setRoute }) => {
           <FcGoogle
             size={30}
             className="cursor-pointer mr-2"
-            // onClick={() => signIn("google")}
+            onClick={() => signIn("google")}
           />
           <IconContext.Provider
             value={{
@@ -155,7 +156,7 @@ const SignUp: FC<Props> = ({ setRoute }) => {
               <AiFillGithub
                 size={30}
                 className="cursor-pointer ml-2"
-                // onClick={() => signIn("github")}
+                onClick={() => signIn("github")}
               />
             </div>
           </IconContext.Provider>
