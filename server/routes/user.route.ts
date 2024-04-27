@@ -30,7 +30,7 @@ userRouter.post("/activate-user", activateUser);
 userRouter.post("/login", loginUser);
 
 // Route for user logout
-userRouter.get("/logout", isAuthenticated, authorizeRoles("admin"), logoutUser);
+userRouter.get("/logout", isAuthenticated, logoutUser);
 
 // Route for updating and refreshing user's access and refresh token
 userRouter.get("/refresh", updateAccessToken);
