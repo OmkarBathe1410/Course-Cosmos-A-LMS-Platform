@@ -1,11 +1,11 @@
 import React, { FC } from "react";
 import Image from "next/image";
-// import Link from "next/link";
+import Link from "next/link";
 import avatarDefault from "../../../public/assets/avatar.png";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { SiCoursera } from "react-icons/si";
 import { RiLogoutCircleLine } from "react-icons/ri";
-// import { MdOutlineAdminPanelSettings } from "react-icons/md";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
 
 type Props = {
   user: any;
@@ -46,17 +46,22 @@ const SidebarProfile: FC<Props> = ({
 
       {/* My Account Div Ended Here */}
 
-      <div
-        className={`w-full flex items-center px-4 py-4 800px:px-5 800px:py-4 cursor-pointer ${
-          active === 2 ? "dark:bg-slate-800 bg-slate-200" : "bg-transparent"
-        }`}
-        onClick={() => setActive(2)}
-      >
-        <RiLockPasswordLine size={20} className="fill-black dark:fill-white" />
-        <h5 className="pl-4 800px:block hidden font-Poppins dark:text-white text-black">
-          Change Password
-        </h5>
-      </div>
+      {user.password && (
+        <div
+          className={`w-full flex items-center px-4 py-4 800px:px-5 800px:py-4 cursor-pointer ${
+            active === 2 ? "dark:bg-slate-800 bg-slate-200" : "bg-transparent"
+          }`}
+          onClick={() => setActive(2)}
+        >
+          <RiLockPasswordLine
+            size={20}
+            className="fill-black dark:fill-white"
+          />
+          <h5 className="pl-4 800px:block hidden font-Poppins dark:text-white text-black">
+            Change Password
+          </h5>
+        </div>
+      )}
 
       {/* Change Password Div Ended Here */}
 
@@ -74,7 +79,7 @@ const SidebarProfile: FC<Props> = ({
 
       {/* Enrolled Courses Div Ended Here */}
 
-      {/* {user.role === "admin" && (
+      {user.role === "admin" && (
         <Link
           className={`w-full flex items-center px-4 py-4 800px:px-5 800px:py-4 cursor-pointer ${
             active === 6 ? "dark:bg-slate-800 bg-slate-200" : "bg-transparent"
@@ -89,7 +94,7 @@ const SidebarProfile: FC<Props> = ({
             Admin Dashboard
           </h5>
         </Link>
-      )} */}
+      )}
 
       {/* Admin Dashboard Div Ended Here */}
 

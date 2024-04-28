@@ -359,23 +359,11 @@ export const updateUserInfo = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       // Destructuring name and email from the request body
-      const { name, email } = req.body as IUpdateUserInfo;
+      const { name } = req.body as IUpdateUserInfo;
       const userId = req.user?._id;
 
       // Finding the user by ID
       const user = await userModel.findById(userId);
-
-      // Checking if email is provided and user exists
-      if (email && user) {
-        // Checking if the provided email already exists in the database
-        const isEmailExist = await userModel.findOne({ email });
-        if (isEmailExist) {
-          return next(new ErrorHandler("Email Already Exist!", 400));
-        }
-
-        // Updating user's email if it's unique
-        user.email = email;
-      }
 
       // Checking if name is provided and user exists
       if (name && user) {
