@@ -51,21 +51,26 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
     if (data === null) {
       if (isSuccess) {
         toast.success("Login Successfully!");
-      }else{
+      }
+    }
+    if (data === null) {
+      if (user === null) {
         setLogout(true);
       }
     }
   }, [isSuccess, data, user]);
 
-  if (typeof window !== "undefined") {
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 85) {
-        setActive(true);
-      } else {
-        setActive(false);
-      }
-    });
-  }
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 85) {
+          setActive(true);
+        } else {
+          setActive(false);
+        }
+      });
+    }
+  }, []);
 
   const handleClose = (e: any) => {
     if (e.target.id === "screen") {
@@ -119,7 +124,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
                     alt=""
                     width={30}
                     height={30}
-                    className="w-[35px] h-[30px] rounded-full cursor-pointer"
+                    className="w-[30px] h-[30px] rounded-full cursor-pointer"
                     style={{
                       border: activeItem === 5 ? "2px solid #37a39a" : "none",
                     }}
