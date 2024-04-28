@@ -46,7 +46,7 @@ const SidebarProfile: FC<Props> = ({
 
       {/* My Account Div Ended Here */}
 
-      {user.password && (
+      {!user.sociallyAuth && (
         <div
           className={`w-full flex items-center px-4 py-4 800px:px-5 800px:py-4 cursor-pointer ${
             active === 2 ? "dark:bg-slate-800 bg-slate-200" : "bg-transparent"

@@ -326,12 +326,19 @@ export const socialAuth = CatchAsyncError(
 
       // If no user is found, create a new user in the database with the provided email, name, and avatar
       if (!user) {
-        const newUser = await userModel.create({ email, name, avatar });
+        const newUser = await userModel.create({
+          email,
+          name,
+          avatar,
+          sociallyAuth: true,
+        });
         // Call the sendToken function with the newly created user, an HTTP status code of 200 (OK), and the Response object (res) to send an authentication token to the user
         sendToken(newUser, 200, res);
       }
       // If a user is found in the database, call the sendToken function with the existing user, an HTTP status code of 200 (OK), and the Response object (res) to send an authentication token to the user
       else {
+        user.sociallyAuth = true; // Set sociallyAuth to true for existing users
+        await user.save();
         sendToken(user, 200, res);
       }
     } catch (error: any) {
