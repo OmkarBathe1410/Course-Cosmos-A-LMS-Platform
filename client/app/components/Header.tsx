@@ -16,7 +16,7 @@ import { useSession } from "next-auth/react";
 import {
   useLogoutQuery,
   useSocialAuthMutation,
-} from "@/redux/features/auth/authApi";
+} from "../../redux/features/auth/authApi";
 import toast from "react-hot-toast";
 
 type Props = {

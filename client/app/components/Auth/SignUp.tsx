@@ -9,7 +9,7 @@ import {
 } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { styles } from "../../../app/styles/style";
-import { useRegisterMutation } from "@/redux/features/auth/authApi";
+import { useRegisterMutation } from "../../../redux/features/auth/authApi";
 import { toast } from "react-hot-toast";
 import { IconContext } from "react-icons";
 import { signIn } from "next-auth/react";

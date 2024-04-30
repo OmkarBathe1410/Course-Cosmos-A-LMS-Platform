@@ -1,11 +1,11 @@
 "use client";
 import React, { FC, useState } from "react";
 import SidebarProfile from "./SidebarProfile";
-import { useLogoutQuery } from "@/redux/features/auth/authApi";
+import { useLogoutQuery } from "../../../redux/features/auth/authApi";
 import { signOut } from "next-auth/react";
 import ProfileInfo from "./ProfileInfo";
 import ChangePassword from "./ChangePassword";
-import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
+import { useLoadUserQuery } from "../../../redux/features/api/apiSlice";
 
 type Props = {
   user: any;

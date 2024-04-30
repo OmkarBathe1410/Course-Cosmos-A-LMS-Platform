@@ -1,5 +1,5 @@
 "use client";
-import { useActivationMutation } from "@/redux/features/auth/authApi";
+import { useActivationMutation } from "../../../redux/features/auth/authApi";
 import { styles } from "../../../app/styles/style";
 import React, { FC, useRef, useState, use, useEffect } from "react";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
