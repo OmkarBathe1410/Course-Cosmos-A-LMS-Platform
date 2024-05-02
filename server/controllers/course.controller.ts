@@ -10,6 +10,7 @@ import sendEmail from "../utils/sendEmail";
 import ejs from "ejs";
 import path from "path";
 import NotificationModel from "../models/notification.model";
+import axios from "axios";
 
 // Handles course thumbnail upload to Cloudinary and creates a new course using the uploaded thumbnail details
 export const uploadCourse = CatchAsyncError(
@@ -538,6 +539,28 @@ export const deleteCourse = CatchAsyncError(
       });
     } catch (error: any) {
       /* Handle the error by creating an ErrorHandler instance with the error message and HTTP status code 400 (Bad Request), and pass it to next(). */
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+export const generateVideoUrl = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { videoId } = req.body;
+      const response = await axios.post(
+        `https://dev.vdocipher.com/api/videos/${videoId}/otp`,
+        { ttl: 300 },
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Apisecret ${process.env.VDOCIPHER_API_SECRET}`,
+          },
+        }
+      );
+      res.json(response.data);
+    } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
     }
   }
