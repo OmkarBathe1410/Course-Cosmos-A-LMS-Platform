@@ -53,12 +53,10 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
         toast.success("Login Successfully!");
       }
     }
-    if (data === null) {
-      if (user === null) {
-        setLogout(true);
-      }
+    if (user === null) {
+      setLogout(true);
     }
-  }, [isSuccess, data, user]);
+  }, [data, user]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
