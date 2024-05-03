@@ -175,11 +175,11 @@ const CourseInformation: FC<Props> = ({
             <input
               required
               type="text"
-              id="demoUrl"
+              id="demoVideoUrl"
               name=""
-              value={courseInfo.demoUrl}
+              value={courseInfo.demoVideoUrl}
               onChange={(e: any) =>
-                setCourseInfo({ ...courseInfo, demoUrl: e.target.value })
+                setCourseInfo({ ...courseInfo, demoVideoUrl: e.target.value })
               }
               placeholder="Enter course demo url here..."
               className={`${styles.input}`}

@@ -14,6 +14,7 @@ import {
   uploadCourse,
 } from "../controllers/course.controller"; // Importing course controller functions
 import { authorizeRoles, isAuthenticated } from "../middleware/auth"; // Importing authentication and authorization middleware
+import { updateAccessToken } from "../controllers/user.controller";
 
 // Creating a new Express router for handling course-related routes
 const courseRouter = express.Router();
@@ -22,6 +23,7 @@ const courseRouter = express.Router();
 // Middleware checks if the user is authenticated and has the "admin" role
 courseRouter.post(
   "/create-course",
+  updateAccessToken,
   isAuthenticated,
   authorizeRoles("admin"),
   uploadCourse
@@ -31,6 +33,7 @@ courseRouter.post(
 // Middleware checks if the user is authenticated and has the "admin" role
 courseRouter.put(
   "/edit-course/:id",
+  updateAccessToken,
   isAuthenticated,
   authorizeRoles("admin"),
   editCourse
@@ -43,20 +46,36 @@ courseRouter.get("/get-course/:id", getSingleCourse);
 courseRouter.get("/get-courses", getAllCourses);
 
 // Setting up a GET route for fetching a single course's content [only for valid user]
-courseRouter.get("/get-course-content/:id", isAuthenticated, getCourseByUser);
+courseRouter.get(
+  "/get-course-content/:id",
+  updateAccessToken,
+  isAuthenticated,
+  getCourseByUser
+);
 
 // Setting up a PUT route for adding a new question to the specified course
-courseRouter.put("/add-question", isAuthenticated, addQuestion);
+courseRouter.put(
+  "/add-question",
+  updateAccessToken,
+  isAuthenticated,
+  addQuestion
+);
 
 // Setting up a PUT route for adding a new answwer to the specified question in a course
-courseRouter.put("/add-answer", isAuthenticated, addAnswer);
+courseRouter.put("/add-answer", updateAccessToken, isAuthenticated, addAnswer);
 
 // Setting up a PUT route for adding a new review to the specified course
-courseRouter.put("/add-review/:id", isAuthenticated, addReview);
+courseRouter.put(
+  "/add-review/:id",
+  updateAccessToken,
+  isAuthenticated,
+  addReview
+);
 
 // Setting up a PUT route for adding an answer to a review to the specified course
 courseRouter.put(
   "/add-review-reply/",
+  updateAccessToken,
   isAuthenticated,
   authorizeRoles("admin"),
   addReplyToReview
@@ -66,6 +85,7 @@ courseRouter.put(
 // Call the getAllCoursesForAdmin middleware function to fetch and send all courses as a JSON response
 courseRouter.get(
   "/get-all-courses/",
+  updateAccessToken,
   isAuthenticated,
   authorizeRoles("admin"),
   getAllCoursesForAdmin
@@ -76,6 +96,7 @@ courseRouter.post("/getVdoCipherOTP", generateVideoUrl);
 /* Define a DELETE route for deleting a course. */
 courseRouter.delete(
   "/delete-course/:id",
+  updateAccessToken,
   isAuthenticated,
   authorizeRoles("admin"),
   deleteCourse

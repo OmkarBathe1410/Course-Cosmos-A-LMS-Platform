@@ -36,24 +36,40 @@ userRouter.get("/logout", isAuthenticated, logoutUser);
 userRouter.get("/refresh", updateAccessToken);
 
 // Route for retrieving user info
-userRouter.get("/me", isAuthenticated, getUserInfo);
+userRouter.get("/me", updateAccessToken, isAuthenticated, getUserInfo);
 
 // Route for authentication through socials
 userRouter.post("/social-auth", socialAuth);
 
 // Route to update user information
-userRouter.put("/update-user-info", isAuthenticated, updateUserInfo);
+userRouter.put(
+  "/update-user-info",
+  updateAccessToken,
+  isAuthenticated,
+  updateUserInfo
+);
 
 // Route to update user password
-userRouter.put("/update-user-password", isAuthenticated, updateUserPassword);
+userRouter.put(
+  "/update-user-password",
+  updateAccessToken,
+  isAuthenticated,
+  updateUserPassword
+);
 
 // Route to update user avatar
-userRouter.put("/update-user-avatar", isAuthenticated, updateUserAvatar); // Export the user router for use in the main application
+userRouter.put(
+  "/update-user-avatar",
+  updateAccessToken,
+  isAuthenticated,
+  updateUserAvatar
+); // Export the user router for use in the main application
 
 // Define a GET route "/get-all-users" using userRouter
 // Call the getAllUsersForAdmin middleware function to fetch and send all users as a JSON response
 userRouter.get(
   "/get-all-users",
+  updateAccessToken,
   isAuthenticated,
   authorizeRoles("admin"),
   getAllUsersForAdmin
@@ -62,6 +78,7 @@ userRouter.get(
 /* Define a PUT route at the path '/update-user' on the userRouter. */
 userRouter.put(
   "/update-user",
+  updateAccessToken,
   isAuthenticated,
   authorizeRoles("admin"),
   updateUserRole
@@ -70,6 +87,7 @@ userRouter.put(
 /* Define a DELETE route at the path '/delete-user/:id' on the userRouter. The ':id' parameter captures the user ID from the URL. */
 userRouter.delete(
   "/delete-user/:id",
+  updateAccessToken,
   isAuthenticated,
   authorizeRoles("admin"),
   deleteUser

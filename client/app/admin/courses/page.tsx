@@ -1,9 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import Heading from "../utils/Heading";
-import AdminSidebar from "../components/Admin/sidebar/AdminSidebar";
-import AdminProtected from "../hooks/adminProtected";
-import DashboardHero from "../components/Admin/DashboardHero";
+import Heading from "../../utils/Heading";
+import AdminSidebar from "../../components/Admin/sidebar/AdminSidebar";
+import AdminProtected from "../../hooks/adminProtected";
+import DashboardHero from "../../components/Admin/DashboardHero";
+import AllCourses from "../../components/Admin/Course/AllCourses";
 
 type Props = {};
 
@@ -23,6 +24,7 @@ const page = (props: Props) => {
             </div>
             <div className="w-[80%]">
               <DashboardHero />
+              <AllCourses />
             </div>
           </div>
         </div>

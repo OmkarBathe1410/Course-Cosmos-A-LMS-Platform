@@ -279,11 +279,7 @@ export const updateAccessToken = CatchAsyncError(
       // Store the user's session data back in the Redis database with an expiration of 7 days (604800 seconds)
       redis.set(user._id, JSON.stringify(user), "EX", 604800);
 
-      // Return a 200 status code with a JSON object containing the updated access token and a success message
-      res.status(200).json({
-        status: "success",
-        accessToken,
-      });
+      next();
     } catch (error: any) {
       // If an error occurs during the process, return a 400 error response with the error message
       return next(new ErrorHandler(error.message, 400));
