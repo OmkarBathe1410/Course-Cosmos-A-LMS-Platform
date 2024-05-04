@@ -58,7 +58,8 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
 
   return (
     <div className="w-full">
-      <h1 className={`${styles.title}`}>Login with Course Cosmos</h1>
+      <h1 className={`${styles.title} !text-[22px]`}>Login with Course Cosmos</h1>
+      <br/>
       <form onSubmit={handleSubmit}>
         <label className={`${styles.label}`} htmlFor="email">
           Enter your email
@@ -72,7 +73,7 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
           placeholder="example@gmail.com"
           className={`${errors.email && touched.email && "border-red-500"} ${
             styles.input
-          }`}
+          } !text-[14px]`}
         />
         {errors.email && touched.email && (
           <span className="text-red-500 pt-2 block">{errors.email}</span>
@@ -90,18 +91,18 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
             placeholder="password!@%"
             className={`${
               errors.password && touched.password && "border-red-500"
-            } ${styles.input}`}
+            } ${styles.input} !text-[14px]`}
           />
           {!show ? (
             <AiOutlineEyeInvisible
               className="absolute right-2 bottom-3 z-1 cursor-pointer dark:text-[#fff] text-slate-700"
-              size={20}
+              size={19}
               onClick={() => setShow(true)}
             />
           ) : (
             <AiOutlineEye
               className="absolute right-2 bottom-3 z-1 cursor-pointer dark:text-[#fff] text-slate-700"
-              size={20}
+              size={19}
               onClick={() => setShow(false)}
             />
           )}

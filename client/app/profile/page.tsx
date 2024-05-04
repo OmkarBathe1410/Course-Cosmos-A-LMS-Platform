@@ -15,7 +15,7 @@ const page: FC<Props> = (props) => {
   const { user } = useSelector((state: any) => state.auth);
 
   return (
-    <div>
+    <div className="min-h-screen">
       <Protected>
         <div>
           <Heading

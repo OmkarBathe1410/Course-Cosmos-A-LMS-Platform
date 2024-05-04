@@ -12,7 +12,7 @@ const Page: FC<Props> = (props) => {
   const [route, setRoute] = useState("Login");
 
   return (
-    <div>
+    <div className="min-h-screen">
       <Heading
         title="Course Cosmos"
         description="Course Cosmos is a mid-scale Learning Management System (LMS) platform designed to empower learners and educators with a universe of knowledge at their fingertips. With an intuitive interface, a diverse range of courses, and a commitment to continuous growth, Course Cosmos offers an engaging and immersive learning experience for users of all backgrounds and skill levels. Explore the cosmos of learning and unlock your potential with Course Cosmos."

@@ -71,7 +71,7 @@ const CourseData: FC<Props> = ({
   return (
     <div className="w-[80%] m-auto mt-24 block">
       <div>
-        <label htmlFor="email" className={`${styles.label} text-[20px]`}>
+        <label htmlFor="email" className={`${styles.label}`}>
           What are the benefits for students in this course?
         </label>
         <br />
@@ -83,17 +83,17 @@ const CourseData: FC<Props> = ({
               name="benefits"
               placeholder="Benefits of the course..."
               required
-              className={`${styles.input} my-2`}
+              className={`${styles.input} my-2 text-[14px]`}
               value={benefit.title}
               onChange={(e) => handleBenefitChange(index, e.target.value)}
             />
             <div className="flex items-center justify-between">
               <IoIosAddCircle
-                className="my-[10px] mx-[0px] cursor-pointer text-slate-800 text-2xl dark:text-white"
+                className="my-[5px] mx-[0px] cursor-pointer text-slate-800 text-2xl dark:text-white"
                 onClick={handleAddBenefit}
               />
               <AiFillMinusCircle
-                className={`my-[10px] mx-[0px] cursor-pointer text-slate-800 text-2xl dark:text-white ${
+                className={`my-[5px] mx-[0px] cursor-pointer text-slate-800 text-2xl dark:text-white ${
                   benefits.length === 1 ? "hidden" : ""
                 }`}
                 onClick={(e) => handleRemoveBenefit(index)}
@@ -104,7 +104,7 @@ const CourseData: FC<Props> = ({
       </div>
       <br />
       <div>
-        <label htmlFor="email" className={`${styles.label} text-[20px]`}>
+        <label htmlFor="email" className={`${styles.label}`}>
           What are the prerequisites for starting this course?
         </label>
         <br />
@@ -116,17 +116,17 @@ const CourseData: FC<Props> = ({
               name="prerequisites"
               placeholder="Prerequisites of the course..."
               required
-              className={`${styles.input} my-2`}
+              className={`${styles.input} my-2 text-[14px]`}
               value={prerequisite.title}
               onChange={(e) => handlepPrerequisiteChange(index, e.target.value)}
             />
             <div className="flex items-center justify-between">
               <IoIosAddCircle
-                className="my-[10px] mx-[0px] cursor-pointer text-slate-800 text-2xl dark:text-white"
+                className="my-[5px] mx-[0px] cursor-pointer text-slate-800 text-2xl dark:text-white"
                 onClick={handleAddPrerequisite}
               />
               <AiFillMinusCircle
-                className={`my-[10px] mx-[0px] cursor-pointer text-slate-800 text-2xl dark:text-white ${
+                className={`my-[5px] mx-[0px] cursor-pointer text-slate-800 text-2xl dark:text-white ${
                   prerequisites.length === 1 ? "hidden" : ""
                 }`}
                 onClick={(e) => handleRemovePrerequisite(index)}
@@ -137,13 +137,13 @@ const CourseData: FC<Props> = ({
       </div>
       <div className="w-full flex items-center justify-between">
         <div
-          className="w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer"
+          className={`${styles.prev_next_button}`}
           onClick={() => prevButton()}
         >
           Prev
         </div>
         <div
-          className="w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer"
+          className={`${styles.prev_next_button}`}
           onClick={() => handleOptions()}
         >
           Next

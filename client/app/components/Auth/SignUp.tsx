@@ -61,7 +61,8 @@ const SignUp: FC<Props> = ({ setRoute }) => {
 
   return (
     <div className="w-full">
-      <h1 className={`${styles.title}`}>Join to Course Cosmos</h1>
+      <h1 className={`${styles.title} !text-[22px]`}>Join to Course Cosmos</h1>
+      <br/>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className={`${styles.label}`} htmlFor="name">
@@ -76,7 +77,7 @@ const SignUp: FC<Props> = ({ setRoute }) => {
             placeholder="john doe"
             className={`${errors.name && touched.name && "border-red-500"} ${
               styles.input
-            }`}
+            } !text-[14px]`}
           />
           {errors.name && touched.name && (
             <span className="text-red-500 pt-2 block">{errors.name}</span>
@@ -95,13 +96,13 @@ const SignUp: FC<Props> = ({ setRoute }) => {
           placeholder="example@gmail.com"
           className={`${errors.email && touched.email && "border-red-500"} ${
             styles.input
-          }`}
+          } !text-[14px]`}
         />
         {errors.email && touched.email && (
           <span className="text-red-500 pt-2 block">{errors.email}</span>
         )}
 
-        <div className="w-full mt-5 mb-1 relative">
+        <div className="w-full mt-3 mb-1 relative">
           <label className={`${styles.label}`} htmlFor="email">
             Enter your password
           </label>
@@ -114,18 +115,18 @@ const SignUp: FC<Props> = ({ setRoute }) => {
             placeholder="password!@%"
             className={`${
               errors.password && touched.password && "border-red-500"
-            } ${styles.input}`}
+            } ${styles.input} !text-[14px]`}
           />
           {!show ? (
             <AiOutlineEyeInvisible
               className="absolute right-2 bottom-3 z-1 cursor-pointer text-black dark:text-white"
-              size={20}
+              size={19}
               onClick={() => setShow(true)}
             />
           ) : (
             <AiOutlineEye
               className="absolute right-2 bottom-3 z-1 cursor-pointer text-black dark:text-white"
-              size={20}
+              size={19}
               onClick={() => setShow(false)}
             />
           )}

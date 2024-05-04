@@ -8,7 +8,7 @@ type Props = {};
 
 const page = (props: Props) => {
   return (
-    <div>
+    <div className="min-h-screen">
       <Heading
         title="Course Cosmos - Admin"
         description="Course Cosmos is a mid-scale Learning Management System (LMS) platform designed to empower learners and educators with a universe of knowledge at their fingertips. With an intuitive interface, a diverse range of courses, and a commitment to continuous growth, Course Cosmos offers an engaging and immersive learning experience for users of all backgrounds and skill levels. Explore the cosmos of learning and unlock your potential with Course Cosmos."
@@ -18,7 +18,7 @@ const page = (props: Props) => {
         <div className="1500px:w-[16%] w-1/5">
           <AdminSidebar />
         </div>
-        <div className="w-[80%]">
+        <div className="w-[85%]">
           <DashboardHeader />
           <CreateCourse />
         </div>
