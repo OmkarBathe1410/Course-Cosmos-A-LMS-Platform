@@ -16,9 +16,8 @@ import { useSession } from "next-auth/react";
 import {
   useLogoutQuery,
   useSocialAuthMutation,
-} from "../../redux/features/auth/authApi";
+} from "@/redux/features/auth/authApi";
 import toast from "react-hot-toast";
-
 type Props = {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -26,7 +25,6 @@ type Props = {
   route: string;
   setRoute: (route: string) => void;
 };
-
 const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
   const [active, setActive] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
@@ -37,7 +35,6 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
   const {} = useLogoutQuery(undefined, {
     skip: !logout ? true : false,
   });
-
   useEffect(() => {
     if (!user) {
       if (data) {
@@ -53,10 +50,12 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
         toast.success("Login Successfully!");
       }
     }
-    if (user === null) {
-      setLogout(true);
+    if (data === null) {
+      if (user === null) {
+        setLogout(true);
+      }
     }
-  }, [data, user]);
+  }, [isSuccess, data, user]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -77,7 +76,6 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
       }
     }
   };
-
   return (
     <div className="w-full relative">
       <div
@@ -87,24 +85,22 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
             : "w-full h-[80px] z-[80] border-b dark:border-[#ffffff1c] dark:shadow"
         }`}
       >
-        <div className="w-[95%] 800px:w-[92%] m-auto h-full">
+        <div className="m-auto h-full">
           <div className="w-full h-[80px] flex items-center justify-between p-5">
             <div>
               <Link
                 href={"/"}
-                className={`text-[25px] font-Poppins font-[500] text-black dark:text-white`}
               >
                 <Image
                   src={require("../logo/Course_Cosmos_Logo.png")}
                   alt="Logo"
-                  width={300}
+                  width={270}
                 />
               </Link>
             </div>
             <div className="flex items-center">
               <NavItems activeItem={activeItem} isMobile={false} />
               <ThemeSwitcher />
-
               {/* Following code is only for mobile: */}
               <div className="800px:hidden">
                 <HiOutlineMenuAlt3
@@ -114,7 +110,6 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
                 />
               </div>
               {/* Above code is only for mobile: */}
-
               {user ? (
                 <Link href={"/profile"}>
                   <Image
@@ -122,7 +117,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
                     alt=""
                     width={30}
                     height={30}
-                    className="w-[30px] h-[30px] rounded-full cursor-pointer"
+                    className="hidden min-[440px]:!block w-[30px] h-[30px] rounded-full cursor-pointer"
                     style={{
                       border: activeItem === 5 ? "2px solid #37a39a" : "none",
                     }}
@@ -138,7 +133,6 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
             </div>
           </div>
         </div>
-
         {/* Following code is only for mobile sidebar */}
         {openSidebar && (
           <div
@@ -206,5 +200,4 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
     </div>
   );
 };
-
 export default Header;

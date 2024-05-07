@@ -119,7 +119,7 @@ const CourseContent: FC<Props> = ({
   };
 
   return (
-    <div className="w-[80%] m-auto mt-20 p-3">
+    <div className="w-[80%] m-auto p-3">
       <form onSubmit={handleSubmit}>
         {courseContentData?.map((item: any, index: number) => {
           const showSectionInput =
@@ -129,7 +129,7 @@ const CourseContent: FC<Props> = ({
             <>
               <div
                 className={`w-full dark:bg-[#cdc8c817] bg-[#71717117] p-4 ${
-                  showSectionInput ? "mt-10" : "mb-0"
+                  showSectionInput ? "mt-2" : "mb-0"
                 }`}
               >
                 {showSectionInput && (

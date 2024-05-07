@@ -42,7 +42,7 @@ const NavItems: React.FC<Props> = ({ activeItem, isMobile }) => {
                   activeItem === index
                     ? "dark:text-[#37a39a] text-[crimson]"
                     : "dark:text-white text-black"
-                } text-[16px] px-6 font-Poppins font-[400]`}
+                } text-[1rem] px-4 font-Poppins font-[400]`}
               >
                 {item.name}
               </span>
@@ -56,7 +56,7 @@ const NavItems: React.FC<Props> = ({ activeItem, isMobile }) => {
               <Image
                 src={require("../logo/Course_Cosmos_Logo.png")}
                 alt="Logo"
-                width={300}
+                width={270}
               />
             </Link>
           </div>
@@ -68,7 +68,7 @@ const NavItems: React.FC<Props> = ({ activeItem, isMobile }) => {
                     activeItem === index
                       ? "dark:text-[#37a39a] text-[crimson]"
                       : "dark:text-white text-black"
-                  } block py-5 text-[16px] px-6 font-Poppins font-[400]`}
+                  } block py-4 text-[1rem] px-6 font-Poppins font-[400]`}
                 >
                   {item.name}
                 </span>

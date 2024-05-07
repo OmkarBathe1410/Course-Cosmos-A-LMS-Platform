@@ -117,7 +117,7 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
   }
 
   return (
-    <div className="mt-[120px]">
+    <div>
       {isLoading ? (
         <Loader />
       ) : (
@@ -131,7 +131,7 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
             </div>
           </div>
           <Box
-            m="40px 0 0 0"
+            m="20px 0 0 0"
             height="80vh"
             sx={{
               "& .MuiDataGrid-root": {

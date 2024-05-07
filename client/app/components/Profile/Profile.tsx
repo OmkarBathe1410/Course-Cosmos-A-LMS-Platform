@@ -5,7 +5,6 @@ import { useLogoutQuery } from "../../../redux/features/auth/authApi";
 import { signOut } from "next-auth/react";
 import ProfileInfo from "./ProfileInfo";
 import ChangePassword from "./ChangePassword";
-import { useLoadUserQuery } from "../../../redux/features/api/apiSlice";
 
 type Props = {
   user: any;
@@ -37,9 +36,9 @@ const Profile: FC<Props> = ({ user }) => {
 
   return (
     <>
-      <div className="w-[85%] flex mx-auto">
+      <div className="w-[90%] flex mx-auto">
         <div
-          className={`w-[60px] 800px:w-[310px] h-[450px] dark:bg-slate-900 bg-opacity-90 border bg-white dark:border-[#ffffff1d] border-[#00000010] rounded-[5px] dark:shadow-sm shadow-xl mt-[80px] mb-[80px] sticky ${
+          className={`w-[60px] 800px:w-[360px] h-[450px] dark:bg-slate-900 bg-opacity-90 border bg-white dark:border-[#ffffff1d] border-[#00000010] rounded-[5px] dark:shadow-sm shadow-xl mt-[80px] mb-[80px] sticky ${
             scroll ? "top-[120px]" : "top-[30px]"
           } left-[30px]`}
         >
