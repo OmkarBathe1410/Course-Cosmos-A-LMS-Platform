@@ -4,7 +4,6 @@ import {
   createOrder,
   getAllOrdersForAdmin,
 } from "../controllers/order.controller"; // Importing the createOrder controller function
-import { updateAccessToken } from "../controllers/user.controller";
 
 // Initialize the orderRouter using Express Router
 const orderRouter = express.Router();
@@ -13,7 +12,6 @@ const orderRouter = express.Router();
 // The route is protected by the isAuthenticated middleware and invokes the createOrder function when accessed
 orderRouter.post(
   "/create-order",
-  updateAccessToken,
   isAuthenticated,
   createOrder
 );
@@ -22,7 +20,6 @@ orderRouter.post(
 // Call the getAllOrdersForAdmin middleware function to fetch and send all orders as a JSON response
 orderRouter.get(
   "/get-all-orders",
-  updateAccessToken,
   isAuthenticated,
   authorizeRoles("admin"),
   getAllOrdersForAdmin

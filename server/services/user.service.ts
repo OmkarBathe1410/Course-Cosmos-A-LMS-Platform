@@ -39,13 +39,17 @@ export const getAllUsersService = async (res: Response) => {
     - res: The response object used to send a response back to the client.
 */
 export const updateUserRoleService = async (
-  id: string,
+  email: string,
   role: string,
   res: Response
 ) => {
   /* Find the user with the specified id and update their role. The { new: true } option
      ensures that the function returns the updated user document. */
-  const user = await userModel.findByIdAndUpdate(id, { role }, { new: true });
+  const user = await userModel.findOneAndUpdate(
+    { email },
+    { role },
+    { new: true }
+  );
 
   /* Set the HTTP status code to 201 (Created) and send a JSON response with the
      following properties:

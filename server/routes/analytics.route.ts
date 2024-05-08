@@ -5,7 +5,6 @@ import {
   getOrderAnalytics,
   getUserAnalytics,
 } from "../controllers/analytics.controller";
-import { updateAccessToken } from "../controllers/user.controller";
 
 // Instantiate an Express Router for analytics endpoints
 const analyticsRouter = express.Router();
@@ -13,7 +12,6 @@ const analyticsRouter = express.Router();
 // Define a GET route for user analytics, accessible by authenticated admins only
 analyticsRouter.get(
   "/get-users-analytics",
-  updateAccessToken,
   isAuthenticated, // Ensure user is authenticated
   authorizeRoles("admin"), // Ensure user has the "admin" role
   getUserAnalytics // Handle retrieving user analytics data
@@ -22,7 +20,6 @@ analyticsRouter.get(
 // Define a GET route for course analytics, accessible by authenticated admins only
 analyticsRouter.get(
   "/get-courses-analytics",
-  updateAccessToken,
   isAuthenticated, // Ensure user is authenticated
   authorizeRoles("admin"), // Ensure user has the "admin" role
   getCourseAnalytics // Handle retrieving course analytics data
@@ -31,7 +28,6 @@ analyticsRouter.get(
 // Define a GET route for order analytics, accessible by authenticated admins only
 analyticsRouter.get(
   "/get-orders-analytics",
-  updateAccessToken,
   isAuthenticated, // Ensure user is authenticated
   authorizeRoles("admin"), // Ensure user has the "admin" role
   getOrderAnalytics // Handle retrieving order analytics data

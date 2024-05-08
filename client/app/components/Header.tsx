@@ -47,7 +47,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
     }
     if (data === null) {
       if (isSuccess) {
-        toast.success("Login Successfully!");
+        toast.success("Logged in successfully!");
       }
     }
     if (data === null) {
@@ -55,7 +55,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
         setLogout(true);
       }
     }
-  }, [isSuccess, data, user]);
+  }, [data, user]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -88,13 +88,11 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
         <div className="m-auto h-full">
           <div className="w-full h-[80px] flex items-center justify-between p-5">
             <div>
-              <Link
-                href={"/"}
-              >
+              <Link href={"/"}>
                 <Image
                   src={require("../logo/Course_Cosmos_Logo.png")}
                   alt="Logo"
-                  width={270}
+                  width={280}
                 />
               </Link>
             </div>
@@ -142,11 +140,22 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
           >
             <div className="w-[70%] fixed h-screen z-[99999] bg-white dark:bg-neutral-950 top-0 right-0">
               <NavItems activeItem={activeItem} isMobile={true} />
-              <HiOutlineUserCircle
-                size={25}
-                className="cursor-pointer ml-5 my-2 text-black dark:text-white"
-                onClick={() => setOpen(true)}
-              />
+              {!user ? (
+                <>
+                  <span
+                    className="font-Poppins cursor-pointer text-black dark:text-white"
+                    onClick={() => setOpen(true)}
+                  >
+                    <HiOutlineUserCircle
+                      size={25}
+                      className="inline cursor-pointer ml-5 my-2 text-black dark:text-white"
+                    />{" "}
+                    Login / Sign Up
+                  </span>
+                </>
+              ) : (
+                <></>
+              )}
               <br />
               <br />
               <p className="text-[16px] px-2 pl-5 text-black dark:text-white">

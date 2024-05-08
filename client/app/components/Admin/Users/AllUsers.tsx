@@ -1,12 +1,17 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Modal } from "@mui/material";
 import { AiOutlineDelete, AiOutlineMail } from "react-icons/ai";
 import { useTheme } from "next-themes";
 import Loader from "../../Loader/Loader";
 import { format } from "timeago.js";
-import { useGetAllUsersQuery } from "../../../../redux/features/user/userApi";
+import {
+  useDeleteUserMutation,
+  useGetAllUsersQuery,
+  useUpdateUserRoleMutation,
+} from "../../../../redux/features/user/userApi";
 import { styles } from "../../../styles/style";
+import { toast } from "react-hot-toast";
 
 type Props = {
   isTeam: boolean;
@@ -16,6 +21,37 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
   const { theme, setTheme } = useTheme();
   const { isLoading, data, error } = useGetAllUsersQuery({});
   const [active, setActive] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("admin");
+  const [updateUserRole, { error: updateError, isSuccess }] =
+    useUpdateUserRoleMutation();
+  const [deleteUser, { error: deleteError, isSuccess: deleteSuccess }] =
+    useDeleteUserMutation({});
+
+  useEffect(() => {
+    if (updateError) {
+      if ("data") {
+        const errorData = updateError as any;
+        toast.error(errorData.data.message);
+      }
+    }
+    if (isSuccess) {
+      toast.success("User role updated successfully!");
+      setActive(false);
+    }
+    if (deleteSuccess) {
+      toast.success("User delete successfully!");
+      setOpen(false);
+    }
+    if (deleteError) {
+      if ("data" in deleteError) {
+        const errorData = deleteError as any;
+        toast.error(errorData.data.message);
+      }
+    }
+  }, [updateError, isSuccess, deleteSuccess, deleteError]);
 
   const columns = [
     {
@@ -55,7 +91,12 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
       renderCell: (params: any) => {
         return (
           <>
-            <Button>
+            <Button
+              onClick={() => {
+                setOpen(!open);
+                setUserId(params.row.id);
+              }}
+            >
               <AiOutlineDelete
                 className="dark:text-white text-black"
                 size={20}
@@ -116,20 +157,32 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
       });
   }
 
+  const handleSubmit = async () => {
+    await updateUserRole({ email, role });
+  };
+
+  const handleDelete = async () => {
+    const id = userId;
+    await deleteUser(id);
+  };
+
   return (
     <div>
       {isLoading ? (
         <Loader />
       ) : (
         <Box m="20px">
-          <div className="w-full flex justify-end">
-            <div
-              className={`${styles.button} !w-[200px] !h-[35px] dark:bg-[#57c7a3] dark:border dark:border-[#ffffff6c]`}
-              onClick={() => setActive(!active)}
-            >
-              Add New Member
+          {isTeam && (
+            <div className="w-full flex justify-end">
+              <div
+                // className={`${styles.button} !w-max !h-[10px] dark:bg-[#57c7a3] dark:border dark:border-[#ffffff6c] !container rounded-lg`}
+                className="dark:bg-[#4bc59f] bg-[#249d76] border border-[#ffffff6c] px-5 py-2 rounded-lg font-Poppins cursor-pointer"
+                onClick={() => setActive(!active)}
+              >
+                Add New Member
+              </div>
             </div>
-          </div>
+          )}
           <Box
             m="20px 0 0 0"
             height="80vh"
@@ -184,6 +237,73 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
           >
             <DataGrid checkboxSelection rows={rows} columns={columns} />
           </Box>
+          {active && (
+            <Modal
+              open={active}
+              onClose={() => setActive(!active)}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box className="absolute top-[50%] left-[35%] -translate-y-1/2 w-[450px] bg-white dark:bg-slate-900 rounded-[8px] shadow-lg p-4 outline-none">
+                <h1 className={`${styles.title} !text-[22px]`}>
+                  Add New Member
+                </h1>
+                <div className="mt-4">
+                  <input
+                    type="email"
+                    placeholder="Enter member's email id here..."
+                    className={`${styles.input}`}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <select
+                    name=""
+                    id=""
+                    className={`${styles.input} !cursor-pointer dark:bg-slate-800 !mt-6`}
+                    onChange={(e) => setRole(e.target.value)}
+                  >
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                  </select>
+                  <br />
+                  <div
+                    className={`${styles.button} my-6 !h-[30px] !rounded-lg`}
+                    onClick={handleSubmit}
+                  >
+                    Submit
+                  </div>
+                </div>
+              </Box>
+            </Modal>
+          )}
+          {open && (
+            <Modal
+              open={open}
+              onClose={() => setOpen(!open)}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box className="absolute top-[50%] left-[35%] -translate-y-1/2 w-[450px] bg-white dark:bg-slate-900 rounded-[8px] shadow-lg p-4 outline-none">
+                <h1 className={`${styles.title} !text-[22px]`}>
+                  Are you sure you want to delete this user?
+                </h1>
+                <div className="flex w-full items-center justify-between mb-6 mt-4">
+                  <div
+                    className={`${styles.button} !w-[120px] h-[30px] bg-[#57c7a3]`}
+                    onClick={() => setOpen(!open)}
+                  >
+                    Cancel
+                  </div>
+                  <div
+                    className={`${styles.button} !w-[120px] h-[30px] bg-[#d63f3f]`}
+                    onClick={handleDelete}
+                  >
+                    Delete
+                  </div>
+                </div>
+              </Box>
+            </Modal>
+          )}
         </Box>
       )}
     </div>

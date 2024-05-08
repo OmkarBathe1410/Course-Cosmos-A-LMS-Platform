@@ -3,6 +3,7 @@ import { CatchAsyncError } from "./catchAsyncError";
 import ErrorHandler from "../utils/ErrorHandler";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { redis } from "../utils/redis";
+import { updateAccessToken } from "../controllers/user.controller";
 require("dotenv").config();
 
 /**
@@ -25,9 +26,8 @@ export const isAuthenticated = CatchAsyncError(
     }
 
     // Verify and decode the access token using the JWT secret key
-    const decoded = jwt.verify(
+    const decoded = jwt.decode(
       access_token,
-      process.env.ACCESS_TOKEN as string
     ) as JwtPayload;
 
     // If the token is not valid, return an error response
@@ -35,21 +35,29 @@ export const isAuthenticated = CatchAsyncError(
       return next(new ErrorHandler("Invalid Access Token", 400));
     }
 
-    // Fetch the user data from the Redis database using the decoded user ID
-    const user = await redis.get(decoded.id);
+    if (decoded.exp && decoded.exp <= Date.now() / 1000) {
+      try {
+        await updateAccessToken(req, res, next);
+      } catch (error) {
+        return next(error);
+      }
+    } else {
+      // Fetch the user data from the Redis database using the decoded user ID
+      const user = await redis.get(decoded.id);
 
-    // If user data is not found, return an error response
-    if (!user) {
-      return next(
-        new ErrorHandler("Please login to access this resource", 400)
-      );
+      // If user data is not found, return an error response
+      if (!user) {
+        return next(
+          new ErrorHandler("Please login to access this resource", 400)
+        );
+      }
+
+      // Parse the user data and attach it to the request object for later use
+      req.user = JSON.parse(user);
+
+      // If the user is authenticated, pass control to the next middleware or route handler
+      next();
     }
-
-    // Parse the user data and attach it to the request object for later use
-    req.user = JSON.parse(user);
-
-    // If the user is authenticated, pass control to the next middleware or route handler
-    next();
   }
 );
 

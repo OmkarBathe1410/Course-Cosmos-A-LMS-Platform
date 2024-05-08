@@ -279,7 +279,7 @@ export const updateAccessToken = CatchAsyncError(
       // Store the user's session data back in the Redis database with an expiration of 7 days (604800 seconds)
       redis.set(user._id, JSON.stringify(user), "EX", 604800);
 
-      next();
+      return next();
     } catch (error: any) {
       // If an error occurs during the process, return a 400 error response with the error message
       return next(new ErrorHandler(error.message, 400));
@@ -548,10 +548,18 @@ export const updateUserRole = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       /* Extract the id and role from the request body. */
-      const { id, role } = req.body;
+      const { email, role } = req.body;
+      const isUserExist = await userModel.findOne({ email });
 
-      /* Call the updateUserRoleService function with the id, role, and response object. */
-      updateUserRoleService(id, role, res);
+      if (isUserExist) {
+        /* Call the updateUserRoleService function with the id, role, and response object. */
+        updateUserRoleService(email, role, res);
+      } else {
+        res.status(400).json({
+          success: false,
+          message: "User not found!",
+        });
+      }
     } catch (error: any) {
       /* Handle the error by creating an ErrorHandler instance with the error message and HTTP status code 400 (Bad Request), and pass it to next(). */
       return next(new ErrorHandler(error.message, 400));
