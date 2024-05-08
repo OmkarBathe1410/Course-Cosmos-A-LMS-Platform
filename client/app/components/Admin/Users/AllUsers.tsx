@@ -19,7 +19,10 @@ type Props = {
 
 const AllUsers: FC<Props> = ({ isTeam }) => {
   const { theme, setTheme } = useTheme();
-  const { isLoading, data, error } = useGetAllUsersQuery({});
+  const { isLoading, data, error, refetch } = useGetAllUsersQuery(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
   const [active, setActive] = useState(false);
   const [open, setOpen] = useState(false);
   const [userId, setUserId] = useState("");
@@ -38,10 +41,12 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
       }
     }
     if (isSuccess) {
+      refetch();
       toast.success("User role updated successfully!");
       setActive(false);
     }
     if (deleteSuccess) {
+      refetch();
       toast.success("User delete successfully!");
       setOpen(false);
     }
@@ -289,13 +294,13 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
                 </h1>
                 <div className="flex w-full items-center justify-between mb-6 mt-4">
                   <div
-                    className={`${styles.button} !w-[120px] h-[30px] bg-[#57c7a3]`}
+                    className={`${styles.button} !w-[120px] h-[30px] bg-[#57c7a3] !rounded-lg`}
                     onClick={() => setOpen(!open)}
                   >
                     Cancel
                   </div>
                   <div
-                    className={`${styles.button} !w-[120px] h-[30px] bg-[#d63f3f]`}
+                    className={`${styles.button} !w-[120px] h-[30px] bg-[#d63f3f] !rounded-lg`}
                     onClick={handleDelete}
                   >
                     Delete
