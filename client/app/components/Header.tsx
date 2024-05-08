@@ -46,13 +46,9 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
       }
     }
     if (data === null) {
+      setLogout(true);
       if (isSuccess) {
         toast.success("Logged in successfully!");
-      }
-    }
-    if (data === null) {
-      if (user === null) {
-        setLogout(true);
       }
     }
   }, [data, user]);
@@ -148,13 +144,27 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
                   >
                     <HiOutlineUserCircle
                       size={25}
-                      className="inline cursor-pointer ml-5 my-2 text-black dark:text-white"
+                      className="inline cursor-pointer ml-5 my-3 text-black dark:text-white"
                     />{" "}
                     Login / Sign Up
                   </span>
                 </>
               ) : (
-                <></>
+                <Link href={"/profile"}>
+                  <Image
+                    src={user.avatar ? user.avatar.url : avatar}
+                    alt=""
+                    width={25}
+                    height={25}
+                    className="hidden min-[320px]:!inline-block ml-6 my-3 w-[25px] h-[25px] rounded-full cursor-pointer"
+                    style={{
+                      border: activeItem === 5 ? "2px solid #37a39a" : "none",
+                    }}
+                  />
+                  <span className="ml-3 text-black dark:text-white font-Poppins">
+                    User Profile
+                  </span>
+                </Link>
               )}
               <br />
               <br />
