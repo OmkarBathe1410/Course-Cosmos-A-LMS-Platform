@@ -216,14 +216,14 @@ const CourseInformation: FC<Props> = ({
               </span>
             )}
           </label>
-        </div>
-        <br />
-        <div className="w-full flex items-center justify-end">
-          <input
-            type="submit"
-            value="Next"
-            className="w-full 800px:w-[180px] h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer"
-          />
+          <br />
+          <div className="w-full flex items-center justify-end">
+            <input
+              type="submit"
+              value="Next"
+              className="w-full 800px:w-[180px] h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer"
+            />
+          </div>
         </div>
         <br />
         <br />
