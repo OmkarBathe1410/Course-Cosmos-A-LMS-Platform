@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { CatchAsyncError } from "../middleware/catchAsyncError";
 import ErrorHandler from "../utils/ErrorHandler";
 import LayoutModel from "../models/layout.model";
-import cloudinary from "cloudinary";
+import {v2 as cloudinary} from "cloudinary";
 
 // Export the 'createLayout' function wrapped in the CatchAsyncError middleware.
 export const createLayout = CatchAsyncError(
@@ -26,7 +26,7 @@ export const createLayout = CatchAsyncError(
         const { image, title, subtitle } = req.body;
 
         // Upload the image to Cloudinary and save the public ID and secure URL.
-        const myCloud = await cloudinary.v2.uploader.upload(image, {
+        const myCloud = await cloudinary.uploader.upload(image, {
           folder: "layout",
         });
         const banner = {
@@ -109,11 +109,11 @@ export const editLayout = CatchAsyncError(
 
         // If a banner layout exists, delete its image from Cloudinary.
         if (bannerData) {
-          await cloudinary.v2.uploader.destroy(bannerData.image.public_id);
+          await cloudinary.uploader.destroy(bannerData.image.public_id);
         }
 
         // Upload the new image to Cloudinary and save the public ID and secure URL.
-        const myCloud = await cloudinary.v2.uploader.upload(image, {
+        const myCloud = await cloudinary.uploader.upload(image, {
           folder: "layout",
         });
 

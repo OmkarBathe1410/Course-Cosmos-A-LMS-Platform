@@ -19,7 +19,7 @@ import {
   getUserById,
   updateUserRoleService,
 } from "../services/user.service";
-import cloudinary from "cloudinary";
+import {v2 as cloudinary} from "cloudinary";
 
 // Define interface for user registration body
 interface IRegistrationBody {
@@ -484,10 +484,10 @@ export const updateUserAvatar = CatchAsyncError(
         // Handling existing avatar deletion and uploading new avatar to Cloudinary
         if (user?.avatar?.public_id) {
           // Deleting existing avatar from Cloudinary
-          await cloudinary.v2.uploader.destroy(user?.avatar?.public_id);
+          await cloudinary.uploader.destroy(user?.avatar?.public_id);
 
           // Uploading new avatar to Cloudinary with specified settings
-          const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+          const myCloud = await cloudinary.uploader.upload(avatar, {
             folder: "avatars",
             width: 150,
           });
@@ -499,7 +499,7 @@ export const updateUserAvatar = CatchAsyncError(
           };
         } else {
           // Uploading new avatar to Cloudinary if no existing avatar found
-          const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+          const myCloud = await cloudinary.uploader.upload(avatar, {
             folder: "avatars",
             width: 150,
           });

@@ -86,7 +86,7 @@ const AdminSidebar = () => {
           color: "#6870fa !important",
         },
         "& .pro-inner-item": {
-          padding: "5px 30px 5px 5px !important",
+          padding: "5px -1px 5px 5px !important",
           opacity: 1,
         },
         "& .pro-menu-item": {
@@ -102,7 +102,7 @@ const AdminSidebar = () => {
           top: 0,
           left: 0,
           height: "100vh",
-          width: isCollapsed ? "0%" : "16%",
+          width: isCollapsed ? "0%" : "15%",
         }}
       >
         <Menu iconShape="square">
@@ -118,7 +118,6 @@ const AdminSidebar = () => {
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center"
-                ml="7%"
               >
                 <Link href="/">
                   <h3 className="text-[20px] font-Poppins uppercase dark:text-white text-black">
@@ -127,7 +126,7 @@ const AdminSidebar = () => {
                 </Link>
                 <IconButton
                   onClick={() => setIsCollapsed(!isCollapsed)}
-                  className="inline-block"
+                  className="inline-block !p-0"
                 >
                   <ArrowBackIosIcon className="text-black dark:text-[#ffffffc1]" />
                 </IconButton>
@@ -139,14 +138,15 @@ const AdminSidebar = () => {
               <Box display="flex" justifyContent="center" alignItems="center">
                 <Image
                   alt="profile-user"
-                  width={100}
-                  height={100}
+                  width={80}
+                  height={80}
                   src={user.avatar ? user.avatar.url : avatarDefault}
                   style={{
                     cursor: "pointer",
                     borderRadius: "50%",
                     border: "3px solid #5b6fe6",
                   }}
+                  className="w-[80px] h-[80px]"
                 />
               </Box>
               <Box textAlign="center">

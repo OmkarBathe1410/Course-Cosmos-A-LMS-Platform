@@ -18,7 +18,7 @@ const page = (props: Props) => {
             keywords="Learning Management System (LMS), Online learning, Skill development, Educational platform, Course Cosmos, Online courses, Virtual learning, Educational technology, Self-paced learning, Global learning community, Personalized learning"
           />
           <div className="flex">
-            <div className="1500px:w-[16%] w-1/5">
+            <div className="w-[15%]">
               <AdminSidebar />
             </div>
             <div className="w-[85%]">
