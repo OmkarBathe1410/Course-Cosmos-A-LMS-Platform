@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { CatchAsyncError } from "../middleware/catchAsyncError";
 import ErrorHandler from "../utils/ErrorHandler";
-import cloudinary from "cloudinary";
+import {v2 as cloudinary} from "cloudinary";
 import CourseModel from "../models/course.model";
 import { createCourse, getAllCoursesService } from "../services/course.service";
 import { redis } from "../utils/redis";
@@ -21,7 +21,7 @@ export const uploadCourse = CatchAsyncError(
       const thumbnail = data.thumbnail;
 
       if (thumbnail) {
-        const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
+        const myCloud = await cloudinary.uploader.upload(thumbnail, {
           folder: "courses",
         });
 
@@ -42,13 +42,15 @@ export const uploadCourse = CatchAsyncError(
 export const editCourse = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const courseId = req.params.id;
+      const courseData = await CourseModel.findById(courseId) as any;
       const data = req.body;
       const thumbnail = data.thumbnail;
 
-      if (thumbnail) {
-        await cloudinary.v2.uploader.destroy(thumbnail.public_id);
+      if (thumbnail && !thumbnail.startsWith('https')) {
+        await cloudinary.uploader.destroy(courseData?.thumbnail?.public_id);
 
-        const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
+        const myCloud = await cloudinary.uploader.upload(thumbnail, {
           folder: "courses",
         });
 
@@ -58,7 +60,13 @@ export const editCourse = CatchAsyncError(
         };
       }
 
-      const courseId = req.params.id;
+      if (thumbnail.startsWith('https')) {
+        data.thumbnail = {
+          public_id: courseData?.thumbnail.public_id,
+          url: courseData?.thumbnail.url,
+        };
+      }
+
       const course = await CourseModel.findByIdAndUpdate(
         courseId,
         { $set: data },
