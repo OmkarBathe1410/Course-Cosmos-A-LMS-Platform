@@ -234,16 +234,8 @@ const AdminSidebar = () => {
             </Typography>
 
             <Item
-              title="Hero"
-              to="/admin/hero"
-              icon={<WebIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
-            <Item
               title="FAQ"
-              to="/faq"
+              to="/admin/faq"
               icon={<QuizIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -312,14 +304,6 @@ const AdminSidebar = () => {
             >
               {!isCollapsed && "Extras"}
             </Typography>
-
-            <Item
-              title="Settings"
-              to="/admin/settings"
-              icon={<SettingsIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
 
             <Item
               title="Logout"

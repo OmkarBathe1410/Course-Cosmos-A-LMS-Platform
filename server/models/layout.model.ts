@@ -11,22 +11,11 @@ interface ICategory extends Document {
   title: string;
 }
 
-// Define an interface representing banner images for the layout.
-interface IBanerImage extends Document {
-  public_id: string;
-  url: string;
-}
-
 // Define an interface representing the overall page layout structure.
 interface ILayout extends Document {
   type: string;
   faq: IFaqItem[];
   categories: ICategory[];
-  banner: {
-    image: IBanerImage;
-    title: string;
-    subtitle: string;
-  };
 }
 
 // Create Mongoose schema for the FAQ items.
@@ -46,16 +35,6 @@ const categorySchema = new Schema<ICategory>({
   },
 });
 
-// Create Mongoose schema for the banner images.
-const bannerImageSchema = new Schema<IBanerImage>({
-  public_id: {
-    type: String,
-  },
-  url: {
-    type: String,
-  },
-});
-
 // Create Mongoose schema for the overall page layout.
 const layoutSchema = new Schema<ILayout>({
   type: {
@@ -63,15 +42,6 @@ const layoutSchema = new Schema<ILayout>({
   },
   faq: [faqSchema],
   categories: [categorySchema],
-  banner: {
-    image: bannerImageSchema,
-    title: {
-      type: String,
-    },
-    subtitle: {
-      type: String,
-    },
-  },
 });
 
 // Create Mongoose model for the overall page layout and store it under the 'Layout' collection.

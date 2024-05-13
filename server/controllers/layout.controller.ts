@@ -3,7 +3,6 @@ import { Request, Response, NextFunction } from "express";
 import { CatchAsyncError } from "../middleware/catchAsyncError";
 import ErrorHandler from "../utils/ErrorHandler";
 import LayoutModel from "../models/layout.model";
-import {v2 as cloudinary} from "cloudinary";
 
 // Export the 'createLayout' function wrapped in the CatchAsyncError middleware.
 export const createLayout = CatchAsyncError(
@@ -18,28 +17,6 @@ export const createLayout = CatchAsyncError(
       // If a layout with the same 'type' exists, return a 400 error.
       if (isTypeExist) {
         return next(new ErrorHandler(`${type} already exist`, 400));
-      }
-
-      // If 'type' is 'Banner'...
-      if (type === "Banner") {
-        // Destructure relevant properties from the request body.
-        const { image, title, subtitle } = req.body;
-
-        // Upload the image to Cloudinary and save the public ID and secure URL.
-        const myCloud = await cloudinary.uploader.upload(image, {
-          folder: "layout",
-        });
-        const banner = {
-          image: {
-            public_id: myCloud.public_id,
-            url: myCloud.secure_url,
-          },
-          title,
-          subtitle,
-        };
-
-        // Create a new layout with 'type' 'Banner'.
-        await LayoutModel.create(banner);
       }
 
       // If 'type' is 'FAQ'...
@@ -98,38 +75,6 @@ export const editLayout = CatchAsyncError(
     try {
       // Destructure the 'type' property from the request body.
       const { type } = req.body;
-
-      // If the 'type' is 'Banner'...
-      if (type === "Banner") {
-        // Find one layout document with the type 'Banner'.
-        const bannerData: any = await LayoutModel.findOne({ type: "Banner" });
-
-        // Destructure relevant properties from the request body.
-        const { image, title, subtitle } = req.body;
-
-        // If a banner layout exists, delete its image from Cloudinary.
-        if (bannerData) {
-          await cloudinary.uploader.destroy(bannerData.image.public_id);
-        }
-
-        // Upload the new image to Cloudinary and save the public ID and secure URL.
-        const myCloud = await cloudinary.uploader.upload(image, {
-          folder: "layout",
-        });
-
-        // Create a new banner object with the updated image, title, and subtitle.
-        const banner = {
-          image: {
-            public_id: myCloud.public_id,
-            url: myCloud.secure_url,
-          },
-          title,
-          subtitle,
-        };
-
-        // Update the banner layout with the new banner object.
-        await LayoutModel.findByIdAndUpdate(bannerData.id, { banner });
-      }
 
       // If the 'type' is 'FAQ'...
       if (type === "FAQ") {
@@ -196,7 +141,7 @@ export const getLayoutByType = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       // Destructure the 'type' property from the request body.
-      const { type } = req.body;
+      const { type } = req.params;
 
       // Find one layout document with the provided 'type'.
       const layout = await LayoutModel.findOne({ type });

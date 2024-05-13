@@ -27,7 +27,7 @@ layoutRouter.put(
 );
 
 // Create a new GET endpoint for retrieving layout by type
-layoutRouter.get("/get-layout", getLayoutByType);
+layoutRouter.get("/get-layout/:type", getLayoutByType);
 
 // Export layoutRouter for use in the main application
 export default layoutRouter;

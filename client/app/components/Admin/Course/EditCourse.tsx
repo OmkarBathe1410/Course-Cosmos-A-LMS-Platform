@@ -11,7 +11,6 @@ import {
 } from "../../../../redux/features/courses/coursesApi";
 import { toast } from "react-hot-toast";
 import { redirect } from "next/navigation";
-import { useEditProfileMutation } from "@/redux/features/user/userApi";
 import Loader from "../../Loader/Loader";
 
 type Props = {
