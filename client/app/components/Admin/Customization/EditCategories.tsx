@@ -85,7 +85,7 @@ const EditCategories: FC<Props> = (props) => {
                 <div className="p-3">
                   <div className="flex items-center w-full justify-center">
                     <input
-                      className={`${styles.input} !w-[unset] !border-none !text-[20px]`}
+                      className={`${styles.input} !w-[unset] !border-none !text-[16px]`}
                       value={item.title}
                       onChange={(e) =>
                         handleCategoriesAdd(item._id, e.target.value)
@@ -93,7 +93,7 @@ const EditCategories: FC<Props> = (props) => {
                       placeholder="Enter category title here..."
                     />
                     <AiOutlineDelete
-                      className="dark:text-white text-black text-[18px] cursor-pointer"
+                      className="dark:text-white text-black text-[16px] cursor-pointer"
                       onClick={() => {
                         setCategories((prevCategory: any) =>
                           prevCategory.filter((i: any) => i._id !== item._id)
@@ -108,7 +108,7 @@ const EditCategories: FC<Props> = (props) => {
           <br />
           <div className="w-full flex justify-center">
             <IoMdAddCircleOutline
-              className="dark:text-white text-black text-[25px] cursor-pointer"
+              className="dark:text-white text-black text-[20px] cursor-pointer"
               onClick={newCategoriesHandler}
             />
           </div>
