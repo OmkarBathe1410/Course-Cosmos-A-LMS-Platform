@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Heading from "../../utils/Heading";
 import AdminSidebar from "../../components/Admin/sidebar/AdminSidebar";
 import AdminProtected from "../../hooks/adminProtected";
-import DashboardHero from "../../components/Admin/DashboardHero";
+import DashboardHeader from "../../components/Admin/DashboardHeader";
 import AllUsers from "../../components/Admin/Users/AllUsers";
 
 type Props = {};
@@ -23,7 +23,7 @@ const page = (props: Props) => {
               <AdminSidebar />
             </div>
             <div className="w-[85%]">
-              <DashboardHero />
+              <DashboardHeader />
               <AllUsers isTeam={false} />
             </div>
           </div>

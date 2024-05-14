@@ -18,6 +18,7 @@ import {
   useSocialAuthMutation,
 } from "@/redux/features/auth/authApi";
 import toast from "react-hot-toast";
+
 type Props = {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -32,9 +33,12 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
   const [socialAuth, { isSuccess }] = useSocialAuthMutation();
   const { data } = useSession();
   const [logout, setLogout] = useState(false);
-  const {} = useLogoutQuery(undefined, {
-    skip: !logout ? true : false,
+  const {isLoading} = useLogoutQuery(undefined, {
+    skip: !logout ? true : false
   });
+
+  console.log(user);
+
   useEffect(() => {
     if (!user) {
       if (data) {
@@ -45,12 +49,14 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
         });
       }
     }
-    if (data === null) {
-      if (user === null) {
-        setLogout(true);
+    if(data === null){
+      if(isSuccess){
+        toast.success("Logged In Successfully!");
       }
-      if (isSuccess) {
-        toast.success("Logged in successfully!");
+    }
+    if(user){
+      if(data === null){
+        setLogout(true);
       }
     }
   }, [data, user]);

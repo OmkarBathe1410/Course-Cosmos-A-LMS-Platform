@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Heading from "../../utils/Heading";
 import AdminSidebar from "../../components/Admin/sidebar/AdminSidebar";
 import AdminProtected from "../../hooks/adminProtected";
-import DashboardHero from "../../components/Admin/DashboardHero";
+import DashboardHeader from "../../components/Admin/DashboardHeader";
 import AllCourses from "../../components/Admin/Course/AllCourses";
 
 type Props = {};
@@ -19,11 +19,11 @@ const page = (props: Props) => {
             keywords="Learning Management System (LMS), Online learning, Skill development, Educational platform, Course Cosmos, Online courses, Virtual learning, Educational technology, Self-paced learning, Global learning community, Personalized learning"
           />
           <div className="flex">
-            <div className="w-[15%]">
+            <div className="1500px:w-[16%] w-1/5">
               <AdminSidebar />
             </div>
             <div className="w-[85%]">
-              <DashboardHero />
+              <DashboardHeader />
               <AllCourses />
             </div>
           </div>
