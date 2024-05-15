@@ -1,9 +1,10 @@
 "use client";
-import React from "react";
-import Heading from "../utils/Heading";
-import AdminSidebar from "../components/Admin/sidebar/AdminSidebar";
-import AdminProtected from "../hooks/adminProtected";
-import DashboardHero from "../components/Admin/DashboardHero";
+import React, { useState } from "react";
+import Heading from "../../utils/Heading";
+import AdminSidebar from "../../components/Admin/sidebar/AdminSidebar";
+import AdminProtected from "../../hooks/adminProtected";
+import DashboardHeader from "../../components/Admin/DashboardHeader";
+import OrderAnalytics from "../../components/Admin/Analytics/OrderAnalytics";
 
 type Props = {};
 
@@ -22,7 +23,8 @@ const page = (props: Props) => {
               <AdminSidebar />
             </div>
             <div className="w-[85%]">
-              <DashboardHero isDashboard={true} />
+              <DashboardHeader />
+              <OrderAnalytics />
             </div>
           </div>
         </div>
