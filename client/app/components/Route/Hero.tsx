@@ -5,7 +5,7 @@ import Link from "next/link";
 type Props = {};
 const Hero: FC<Props> = (props) => {
   return (
-    <div className="w-[95%] m-auto flex justify-center items-center min-[320px]:h-[70vh] 800px:!h-[80vh] translate-y-0 opacity-100 transition-all duration-1000 ease-in-out">
+    <div className="w-[95%] m-auto flex justify-center items-center min-[320px]:h-[70vh] 800px:!h-[90vh] translate-y-0 opacity-100 transition-all duration-1000 ease-in-out">
       <div className="w-[100%]">
         <h1 className="font-extrabold text-2xl sm:text-3xl lg:text-4xl xl:text-[3rem] xl:!leading-[3.5rem] tracking-tight text-center dark:text-white text-slate-900 font-Poppins">
           Empowering{" "}
