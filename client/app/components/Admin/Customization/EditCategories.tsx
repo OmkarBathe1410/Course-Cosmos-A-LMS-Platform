@@ -13,7 +13,7 @@ import { toast } from "react-hot-toast";
 type Props = {};
 
 const EditCategories: FC<Props> = (props) => {
-  const { data, isLoading } = useGetLayoutDataQuery("Categories", {
+  const { data, isLoading, refetch } = useGetLayoutDataQuery("Categories", {
     refetchOnMountOrArgChange: true,
   });
   const [editLayout, { isSuccess: categoriesSuccess, error }] =
@@ -33,7 +33,7 @@ const EditCategories: FC<Props> = (props) => {
         toast.error(errorData.data.message);
       }
     }
-  }, [data, categoriesSuccess, error]);
+  }, [data, error]);
 
   const handleCategoriesAdd = (id: any, value: string) => {
     setCategories((prevCategory: any) =>
@@ -69,6 +69,7 @@ const EditCategories: FC<Props> = (props) => {
         type: "Categories",
         categories,
       });
+      refetch();
     }
   };
 

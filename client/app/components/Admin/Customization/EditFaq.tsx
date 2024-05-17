@@ -14,7 +14,7 @@ import Loader from "../../Loader/Loader";
 type Props = {};
 
 const EditFaq = (props: Props) => {
-  const { data, isLoading } = useGetLayoutDataQuery("FAQ", {
+  const { data, isLoading, refetch } = useGetLayoutDataQuery("FAQ", {
     refetchOnMountOrArgChange: true,
   });
   const [questions, setQuestions] = useState<any[]>([]);
@@ -34,7 +34,7 @@ const EditFaq = (props: Props) => {
         toast.error(errorData.data.message);
       }
     }
-  }, [data, faqSuccess, error]);
+  }, [data, error]);
 
   const toggleQuestion = (id: any) => {
     setQuestions((prevQuestions) =>
@@ -78,6 +78,7 @@ const EditFaq = (props: Props) => {
         type: "FAQ",
         faq: questions,
       });
+      refetch();
     }
   };
 
