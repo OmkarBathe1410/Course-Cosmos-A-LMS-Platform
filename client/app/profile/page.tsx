@@ -1,10 +1,12 @@
 "use client";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Protected from "../hooks/userProtected";
 import Heading from "../utils/Heading";
 import Header from "../components/Header";
 import { useSelector } from "react-redux";
 import Profile from "../components/Profile/Profile";
+import { useLogoutQuery } from "@/redux/features/auth/authApi";
+import { signOut } from "next-auth/react";
 
 type Props = {};
 
@@ -13,6 +15,13 @@ const page: FC<Props> = (props) => {
   const [activeItem, setActiveItem] = useState(5);
   const [route, setRoute] = useState("Login");
   const { user } = useSelector((state: any) => state.auth);
+  const [logout, setLogout] = useState(false);
+  const {} = useLogoutQuery(undefined, {skip: !logout ? true : false});
+
+  const logoutHandler = async() => {
+    setLogout(true);
+    await signOut()
+  }
 
   return (
     <div className="min-h-screen">
@@ -30,7 +39,7 @@ const page: FC<Props> = (props) => {
             setRoute={setRoute}
             route={route}
           />
-          <Profile user={user} />
+          <Profile user={user} logoutHandler={logoutHandler} />
         </div>
       </Protected>
     </div>

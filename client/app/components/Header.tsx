@@ -33,11 +33,9 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
   const [socialAuth, { isSuccess }] = useSocialAuthMutation();
   const { data } = useSession();
   const [logout, setLogout] = useState(false);
-  const {isLoading} = useLogoutQuery(undefined, {
-    skip: !logout ? true : false
+  const { } = useLogoutQuery(undefined, {
+    skip: !logout ? true : false,
   });
-
-  console.log(user);
 
   useEffect(() => {
     if (!user) {
@@ -49,29 +47,28 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
         });
       }
     }
-    if(data === null){
-      if(isSuccess){
+    
+    if (data === null) {
+      if (isSuccess) {
         toast.success("Logged In Successfully!");
       }
     }
-    if(user){
-      if(data === null){
-        setLogout(true);
-      }
-    }
-  }, [data, user]);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("scroll", () => {
-        if (window.scrollY > 85) {
-          setActive(true);
-        } else {
-          setActive(false);
-        }
-      });
+    if(data === null){
+      setLogout(true);
     }
-  }, []);
+
+  }, [user!, data!]);
+
+  if (typeof window !== "undefined") {
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 85) {
+        setActive(true);
+      } else {
+        setActive(false);
+      }
+    });
+  }
 
   const handleClose = (e: any) => {
     if (e.target.id === "screen") {

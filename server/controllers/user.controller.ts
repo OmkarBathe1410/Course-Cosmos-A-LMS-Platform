@@ -200,8 +200,8 @@ export const logoutUser = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       // Clear cookies and delete session from Redis
-      res.cookie("access_token", "");
-      res.cookie("refresh_token", "");
+      res.cookie("access_token", "", {maxAge: 1});
+      res.cookie("refresh_token", "", {maxAge: 1});
 
       const userId = req.user?._id || "";
       redis.del(userId);
