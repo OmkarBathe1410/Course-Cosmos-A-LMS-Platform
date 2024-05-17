@@ -355,10 +355,11 @@ const AdminSidebar:FC<Props> = ({activeItem}) => {
               {!isCollapsed && "Extras"}
             </Typography>
 
-            <MenuItem onClick={() => logoutHandler()} icon={<ExitToAppIcon />}>
+            <MenuItem active={selected === "Back to Profile Page"} onClick={() => setSelected("Back to Profile Page")} icon={<ExitToAppIcon />}>
               <Typography className="!text-[14px] !font-Poppins">
-                Logout
+                Back to Profile Page
               </Typography>
+              <Link href={"/profile"} />
             </MenuItem>
           </Box>
         </Menu>

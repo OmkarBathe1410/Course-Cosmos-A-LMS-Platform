@@ -184,7 +184,7 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
                 className="dark:bg-[#4bc59f] bg-[#249d76] border border-[#ffffff6c] px-5 py-2 rounded-lg font-Poppins cursor-pointer"
                 onClick={() => setActive(!active)}
               >
-                Add New Member
+                Update Existing User Role
               </div>
             </div>
           )}
@@ -251,7 +251,7 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
             >
               <Box className="absolute top-[50%] left-[35%] -translate-y-1/2 w-[450px] bg-white dark:bg-slate-900 rounded-[8px] shadow-lg p-4 outline-none">
                 <h1 className={`${styles.title} !text-[22px]`}>
-                  Add New Member
+                  Update Existing User Role
                 </h1>
                 <div className="mt-4">
                   <input

@@ -73,7 +73,7 @@ const UserAnalytics: FC<Props> = ({ isDashboard }) => {
 
           <div
             className={`w-full ${
-              isDashboard ? "h-[35vh]" : "h-screen"
+              isDashboard ? "h-[37vh]" : "h-screen"
             } flex items-center justify-center`}
           >
             <ResponsiveContainer
