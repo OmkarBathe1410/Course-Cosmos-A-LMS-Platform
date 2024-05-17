@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { CatchAsyncError } from "../middleware/catchAsyncError";
 import ErrorHandler from "../utils/ErrorHandler";
-import {v2 as cloudinary} from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 import CourseModel from "../models/course.model";
 import { createCourse, getAllCoursesService } from "../services/course.service";
 import { redis } from "../utils/redis";
@@ -29,6 +29,11 @@ export const uploadCourse = CatchAsyncError(
           public_id: myCloud.public_id,
           url: myCloud.secure_url,
         };
+      } else {
+        data.thumbnail = {
+          public_id: "",
+          url: "",
+        };
       }
 
       createCourse(data, res, next);
@@ -43,12 +48,14 @@ export const editCourse = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const courseId = req.params.id;
-      const courseData = await CourseModel.findById(courseId) as any;
+      const courseData = (await CourseModel.findById(courseId)) as any;
       const data = req.body;
       const thumbnail = data.thumbnail;
 
-      if (thumbnail && !thumbnail.startsWith('https')) {
-        await cloudinary.uploader.destroy(courseData?.thumbnail?.public_id);
+      if (thumbnail && !thumbnail.startsWith("https")) {
+        if (courseData?.thumbnail && courseData?.thumbnail.public_id !== "") {
+          await cloudinary.uploader.destroy(courseData?.thumbnail?.public_id);
+        }
 
         const myCloud = await cloudinary.uploader.upload(thumbnail, {
           folder: "courses",
@@ -60,7 +67,7 @@ export const editCourse = CatchAsyncError(
         };
       }
 
-      if (thumbnail.startsWith('https')) {
+      if (thumbnail.startsWith("https")) {
         data.thumbnail = {
           public_id: courseData?.thumbnail.public_id,
           url: courseData?.thumbnail.url,
@@ -122,25 +129,16 @@ export const getSingleCourse = CatchAsyncError(
 export const getAllCourses = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const areCoursesExist = await redis.get("allCourses");
-      if (areCoursesExist) {
-        const courses = JSON.parse(areCoursesExist);
-        res.status(200).json({
-          success: true,
-          courses,
-        });
-      } else {
-        const courses = await CourseModel.find().select(
-          "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
-        );
+      const courses = await CourseModel.find().select(
+        "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+      );
 
-        await redis.set("allCourses", JSON.stringify(courses));
+      await redis.set("allCourses", JSON.stringify(courses), "KEEPTTL");
 
-        res.status(200).json({
-          success: true,
-          courses,
-        });
-      }
+      res.status(200).json({
+        success: true,
+        courses,
+      });
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }

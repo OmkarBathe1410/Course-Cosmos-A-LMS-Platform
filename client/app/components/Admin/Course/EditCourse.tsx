@@ -18,7 +18,8 @@ type Props = {
 };
 
 const EditCourse: FC<Props> = ({ id }) => {
-  const [updateCourse, {isLoading, isSuccess, error }] = useUpdateCourseMutation();
+  const [updateCourse, { isLoading, isSuccess, error }] =
+    useUpdateCourseMutation();
   const { data, refetch } = useGetAllCoursesQuery(
     {},
     { refetchOnMountOrArgChange: true }
@@ -44,6 +45,7 @@ const EditCourse: FC<Props> = ({ id }) => {
   const [courseInfo, setCourseInfo] = useState({
     name: "",
     description: "",
+    category: "",
     price: "",
     estimatedPrice: "",
     tags: "",
@@ -60,6 +62,7 @@ const EditCourse: FC<Props> = ({ id }) => {
       title: "",
       description: "",
       videoSection: "Untitled Section",
+      videoLength: "",
       links: [
         {
           title: "",
@@ -79,6 +82,7 @@ const EditCourse: FC<Props> = ({ id }) => {
         price: editCourseData.price,
         estimatedPrice: editCourseData?.estimatedPrice,
         tags: editCourseData.tags,
+        category: editCourseData.category,
         level: editCourseData.level,
         demoVideoUrl: editCourseData.demoVideoUrl,
         thumbnail: editCourseData?.thumbnail?.url,
@@ -102,6 +106,7 @@ const EditCourse: FC<Props> = ({ id }) => {
     const formattedCourseContentData = courseContentData.map(
       (courseContent) => ({
         videoUrl: courseContent.videoUrl,
+        videoLength: courseContent.videoLength,
         title: courseContent.title,
         description: courseContent.description,
         videoSection: courseContent.videoSection,
@@ -117,8 +122,9 @@ const EditCourse: FC<Props> = ({ id }) => {
       name: courseInfo.name,
       description: courseInfo.description,
       price: courseInfo.price,
-      estimatedPrice: courseInfo?.estimatedPrice,
+      estimatedPrice: courseInfo.estimatedPrice,
       tags: courseInfo.tags,
+      category: courseInfo.category,
       thumbnail: courseInfo.thumbnail,
       level: courseInfo.level,
       demoVideoUrl: courseInfo.demoVideoUrl,

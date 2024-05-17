@@ -31,10 +31,10 @@ interface ICourseData extends Document {
   title: string;
   description: string;
   videoUrl: string;
-  videoThumbnail: object;
+  videoThumbnail?: object;
   videoSection: string;
   videoLength: number;
-  videoPlayer: string;
+  videoPlayer?: string;
   links: ILink[];
   suggestion: string;
   questions: IComment[];
