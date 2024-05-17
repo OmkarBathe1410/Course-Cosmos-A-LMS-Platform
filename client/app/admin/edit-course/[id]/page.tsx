@@ -17,7 +17,7 @@ const page = ({ params }: any) => {
       />
       <div className="flex">
         <div className="1500px:w-[16%] w-1/5">
-          <AdminSidebar />
+          <AdminSidebar activeItem={"Live Courses"}/>
         </div>
         <div className="w-[85%]">
           <DashboardHeader />

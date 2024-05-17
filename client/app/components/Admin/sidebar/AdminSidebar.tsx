@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography } from "@mui/material";
 import "react-pro-sidebar/dist/css/styles.css";
+import { signOut } from "next-auth/react";
 
 import {
   HomeOutlinedIcon,
@@ -15,11 +16,9 @@ import {
   GroupsIcon,
   OndemandVideoIcon,
   VideoCallIcon,
-  WebIcon,
   QuizIcon,
   WysiwygIcon,
   ManageHistoryIcon,
-  SettingsIcon,
   ExitToAppIcon,
 } from "./Icon";
 
@@ -28,44 +27,62 @@ import { useSelector } from "react-redux";
 import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "next-themes";
+import { useLogoutQuery } from "@/redux/features/auth/authApi";
 
-interface itemProps {
-  title: string;
-  to: string;
-  icon: JSX.Element;
-  selected: string;
-  setSelected: any;
+// interface itemProps {
+//   title: string;
+//   to: string;
+//   icon: JSX.Element;
+//   selectedItem: string;
+//   setSelectedItem: any;
+// }
+
+// const Item: FC<itemProps> = ({
+//   title,
+//   to,
+//   icon,
+//   selectedItem,
+//   setSelectedItem,
+// }) => {
+//   return (
+//     <MenuItem
+//       active={selectedItem === title}
+//       onClick={() => setSelectedItem(title)}
+//       icon={icon}
+//     >
+//       <Typography className="!text-[14px] !font-Poppins">{title}</Typography>
+//       <Link href={to} />
+//     </MenuItem>
+//   );
+// };
+
+type Props = {
+  activeItem : string;
 }
 
-const Item: FC<itemProps> = ({ title, to, icon, selected, setSelected }) => {
-  return (
-    <MenuItem
-      active={selected === title}
-      onClick={() => setSelected(title)}
-      icon={icon}
-    >
-      <Typography className="!text-[14px] !font-Poppins">{title}</Typography>
-      <Link href={to} />
-    </MenuItem>
-  );
-};
-
-const AdminSidebar = () => {
+const AdminSidebar:FC<Props> = ({activeItem}) => {
+  
   const { user } = useSelector((state: any) => state.auth);
-  const [logout, setLogout] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [selected, setSelected] = useState("Dashboard");
+  const [selected, setSelected] = useState(activeItem);
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
+  const [logout, setLogout] = useState(false);
+  const { isLoading } = useLogoutQuery(undefined, {
+    skip: !logout ? true : false,
+  });
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   if (!mounted) {
     return null;
   }
 
-  const logoutHandler = () => {
+  const logoutHandler = async () => {
     setLogout(true);
+    await signOut();
   };
 
   return (
@@ -169,13 +186,16 @@ const AdminSidebar = () => {
             </Box>
           )}
           <Box paddingLeft={isCollapsed ? undefined : "5%"}>
-            <Item
-              title="Dashboard"
-              to="/admin"
+            <MenuItem
+              active={selected === "Dashboard"}
+              onClick={() => setSelected("Dashboard")}
               icon={<HomeOutlinedIcon />}
-              setSelected={setSelected}
-              selected={selected}
-            />
+            >
+              <Typography className="!text-[14px] !font-Poppins">
+                Dashboard
+              </Typography>
+              <Link href={"/admin"} />
+            </MenuItem>
 
             <Typography
               variant="h5"
@@ -185,21 +205,27 @@ const AdminSidebar = () => {
               {!isCollapsed && "Data"}
             </Typography>
 
-            <Item
-              title="Users"
-              to="/admin/users"
+            <MenuItem
+              active={selected === "Users"}
+              onClick={() => setSelected("Users")}
               icon={<GroupsIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            >
+              <Typography className="!text-[14px] !font-Poppins">
+                Users
+              </Typography>
+              <Link href={"/admin/users"} />
+            </MenuItem>
 
-            <Item
-              title="Invoices"
-              to="/admin/invoices"
+            <MenuItem
+              active={selected === "Invoices"}
+              onClick={() => setSelected("Invoices")}
               icon={<ReceiptOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            >
+              <Typography className="!text-[14px] !font-Poppins">
+                Invoices
+              </Typography>
+              <Link href={"/admin/invoices"} />
+            </MenuItem>
 
             <Typography
               variant="h5"
@@ -209,21 +235,27 @@ const AdminSidebar = () => {
               {!isCollapsed && "Content"}
             </Typography>
 
-            <Item
-              title="Create Course"
-              to="/admin/create-course"
+            <MenuItem
+              active={selected === "Create Course"}
+              onClick={() => setSelected("Create Course")}
               icon={<VideoCallIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            >
+              <Typography className="!text-[14px] !font-Poppins">
+                Create Course
+              </Typography>
+              <Link href={"/admin/create-course"} />
+            </MenuItem>
 
-            <Item
-              title="Live Courses"
-              to="/admin/courses"
+            <MenuItem
+              active={selected === "Live Courses"}
+              onClick={() => setSelected("Live Courses")}
               icon={<OndemandVideoIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            >
+              <Typography className="!text-[14px] !font-Poppins">
+                Live Courses
+              </Typography>
+              <Link href={"/admin/courses"} />
+            </MenuItem>
 
             <Typography
               variant="h5"
@@ -233,21 +265,27 @@ const AdminSidebar = () => {
               {!isCollapsed && "Customization"}
             </Typography>
 
-            <Item
-              title="FAQ"
-              to="/admin/faq"
+            <MenuItem
+              active={selected === "FAQ"}
+              onClick={() => setSelected("FAQ")}
               icon={<QuizIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            >
+              <Typography className="!text-[14px] !font-Poppins">
+                FAQ
+              </Typography>
+              <Link href={"/admin/faq"} />
+            </MenuItem>
 
-            <Item
-              title="Categories"
-              to="/admin/categories"
+            <MenuItem
+              active={selected === "Categories"}
+              onClick={() => setSelected("Categories")}
               icon={<WysiwygIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            >
+              <Typography className="!text-[14px] !font-Poppins">
+                Categories
+              </Typography>
+              <Link href={"/admin/categories"} />
+            </MenuItem>
 
             <Typography
               variant="h5"
@@ -257,13 +295,16 @@ const AdminSidebar = () => {
               {!isCollapsed && "Controllers"}
             </Typography>
 
-            <Item
-              title="Manage Team"
-              to="/admin/team"
+            <MenuItem
+              active={selected === "Manage Team"}
+              onClick={() => setSelected("Manage Team")}
               icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            >
+              <Typography className="!text-[14px] !font-Poppins">
+                Manage Team
+              </Typography>
+              <Link href={"/admin/team"} />
+            </MenuItem>
 
             <Typography
               variant="h6"
@@ -273,29 +314,38 @@ const AdminSidebar = () => {
               {!isCollapsed && "Analytics"}
             </Typography>
 
-            <Item
-              title="Courses Analytics"
-              to="/admin/courses-analytics"
+            <MenuItem
+              active={selected === "Courses Analytics"}
+              onClick={() => setSelected("Courses Analytics")}
               icon={<BarChartOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            >
+              <Typography className="!text-[14px] !font-Poppins">
+                Courses Analytics
+              </Typography>
+              <Link href={"/admin/courses-analytics"} />
+            </MenuItem>
 
-            <Item
-              title="Orders Analytics"
-              to="/admin/orders-analytics"
+            <MenuItem
+              active={selected === "Orders Analytics"}
+              onClick={() => setSelected("Orders Analytics")}
               icon={<MapOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            >
+              <Typography className="!text-[14px] !font-Poppins">
+                Orders Analytics
+              </Typography>
+              <Link href={"/admin/orders-analytics"} />
+            </MenuItem>
 
-            <Item
-              title="Users Analytics"
-              to="/admin/users-analytics"
+            <MenuItem
+              active={selected === "Users Analytics"}
+              onClick={() => setSelected("Users Analytics")}
               icon={<ManageHistoryIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            >
+              <Typography className="!text-[14px] !font-Poppins">
+                Users Analytics
+              </Typography>
+              <Link href={"/admin/users-analytics"} />
+            </MenuItem>
 
             <Typography
               variant="h6"
@@ -305,13 +355,11 @@ const AdminSidebar = () => {
               {!isCollapsed && "Extras"}
             </Typography>
 
-            <Item
-              title="Logout"
-              to="/admin/logout"
-              icon={<ExitToAppIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            <MenuItem onClick={() => logoutHandler()} icon={<ExitToAppIcon />}>
+              <Typography className="!text-[14px] !font-Poppins">
+                Logout
+              </Typography>
+            </MenuItem>
           </Box>
         </Menu>
       </ProSidebar>

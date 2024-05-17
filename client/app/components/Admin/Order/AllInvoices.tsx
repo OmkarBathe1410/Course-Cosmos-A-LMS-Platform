@@ -37,27 +37,28 @@ const AllInvoices: FC<Props> = ({ isDashboard }) => {
           price: "₹" + course?.price,
         };
       });
-      setOrderData(temp);
+      setOrderData(temp); 
     }
   }, [data, usersData, coursesData]);
 
   const columns: any = [
     { field: "id", headerName: "ID", flex: 0.3 },
-    { field: "userName", headerName: "Name", flex: 0.6 },
+    { field: "userName", headerName: "Name", flex: isDashboard ? 0.5 : 0.5 },
     ...(isDashboard
       ? []
       : [
-          { field: "userEmail", headerName: "Email", flex: 1 },
-          { field: "title", headerName: "Course Title", flex: 0.8 },
+          { field: "userEmail", headerName: "Email", flex: 0.5 },
+          { field: "title", headerName: "Course Title", flex: 0.6 },
         ]),
-    { field: "price", headerName: "Price", flex: 0.4 },
+    { field: "price", headerName: "Price", flex: isDashboard ? 0.3 : 0.2 },
     ...(isDashboard
-      ? [{ field: "created_at", headerName: "Created At", flex: 0.5 }]
+      ? [{ field: "created_at", headerName: "Created At", flex: 0.4 }]
       : [
+        { field: "created_at", headerName: "Created At", flex: 0.3 },
           {
             field: " ",
             headerName: "Email",
-            flex: 0.4,
+            flex: 0.2,
             renderCell: (params: any) => {
               return (
                 <Button>

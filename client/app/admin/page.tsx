@@ -19,7 +19,7 @@ const page = (props: Props) => {
           />
           <div className="flex">
             <div className="1500px:w-[16%] w-1/5">
-              <AdminSidebar />
+              <AdminSidebar activeItem={"Dashboard"} />
             </div>
             <div className="w-[85%]">
               <DashboardHero isDashboard={true} />
