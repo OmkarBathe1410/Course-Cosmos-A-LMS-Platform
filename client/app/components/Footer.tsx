@@ -21,7 +21,7 @@ type Props = {};
 const Footer = (props: Props) => {
   return (
     <footer>
-      <div className="border border-[#0000000e] dark:border-[#ffffff1e]">
+      <div className="border font-Poppins border-[#0000000e] dark:border-[#ffffff1e]">
         <br />
         <div className="w-[95%] 800px:w-full 800px:max-w-[85%] mx-auto px-2 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4">
