@@ -9,6 +9,8 @@ import { styles } from "@/app/styles/style";
 import CourseContentList from "../Course/CourseContentList";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../Payment/CheckoutForm";
+import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
+import { toast } from "react-hot-toast";
 
 type Props = {
   data: any;
@@ -17,7 +19,8 @@ type Props = {
 };
 
 const CourseDetails = ({ data, stripePromise, clientSecret }: Props) => {
-  const { user } = useSelector((state: any) => state.auth);
+  const { data: userData } = useLoadUserQuery(undefined, {});
+  const user = userData?.user;
   const [open, setOpen] = useState(false);
 
   const discountPercentage =
@@ -28,7 +31,11 @@ const CourseDetails = ({ data, stripePromise, clientSecret }: Props) => {
     user && user?.courses?.find((item: any) => item._id === data._id);
 
   const handleOrder = (e: any) => {
-    setOpen(true);
+    if (!userData) {
+      toast.error("Please login to buy this course!");
+    } else {
+      setOpen(true);
+    }
   };
 
   return (
@@ -184,7 +191,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret }: Props) => {
                 {isPurchased ? (
                   <Link
                     className={`${styles.button} !w-max my-3 font-Poppins cursor-pointer !bg-[crimson]`}
-                    href={`/courses-access/${data._id}`}
+                    href={`/course-access/${data._id}`}
                   >
                     Enter to the course
                   </Link>
