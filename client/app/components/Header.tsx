@@ -60,15 +60,17 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
 
   }, [user!, data!]);
 
-  if (typeof window !== "undefined") {
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 85) {
-        setActive(true);
-      } else {
-        setActive(false);
-      }
-    });
-  }
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 85) {
+          setActive(true);
+        } else {
+          setActive(false);
+        }
+      });
+    }
+  }, []);
 
   const handleClose = (e: any) => {
     if (e.target.id === "screen") {
