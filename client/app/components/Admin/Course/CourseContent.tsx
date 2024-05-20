@@ -303,10 +303,14 @@ const CourseContent: FC<Props> = ({
                           value={link.title}
                           onChange={(e) => {
                             const updatedData = [...courseContentData];
-                            updatedData[index].links[linkIndex] = {
-                              ...updatedData[index].links[linkIndex],
-                              title: e.target.value,
-                            };
+                            updatedData[index].links = [
+                              ...updatedData[index].links.slice(0, linkIndex),
+                              {
+                                title: e.target.value,
+                                url: updatedData[index].links[linkIndex].url,
+                              },
+                              ...updatedData[index].links.slice(linkIndex + 1),
+                            ];
                             setCourseContentData(updatedData);
                           }}
                         />
@@ -317,10 +321,15 @@ const CourseContent: FC<Props> = ({
                           value={link.url}
                           onChange={(e) => {
                             const updatedData = [...courseContentData];
-                            updatedData[index].links[linkIndex] = {
-                              ...updatedData[index].links[linkIndex],
-                              url: e.target.value,
-                            };
+                            updatedData[index].links = [
+                              ...updatedData[index].links.slice(0, linkIndex),
+                              {
+                                title:
+                                  updatedData[index].links[linkIndex].title,
+                                url: e.target.value,
+                              },
+                              ...updatedData[index].links.slice(linkIndex + 1),
+                            ];
                             setCourseContentData(updatedData);
                           }}
                         />

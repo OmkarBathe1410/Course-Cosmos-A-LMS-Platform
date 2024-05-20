@@ -80,6 +80,8 @@ export const editCourse = CatchAsyncError(
         { new: true }
       );
 
+      redis.set(courseId, JSON.stringify(course), "EX", 604800);
+
       res.status(200).json({ success: true, course });
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
