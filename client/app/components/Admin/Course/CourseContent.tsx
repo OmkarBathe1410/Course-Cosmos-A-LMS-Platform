@@ -26,10 +26,6 @@ const CourseContent: FC<Props> = ({
 
   const [activeSection, setActiveSection] = useState(1);
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-  };
-
   const handleCollapseToggle = (index: number) => {
     const updatedCollapsed = [...isCollapsed];
     updatedCollapsed[index] = !updatedCollapsed[index];
@@ -44,7 +40,11 @@ const CourseContent: FC<Props> = ({
 
   const handleAddLink = (index: number) => {
     const updatedData = [...courseContentData];
-    updatedData[index].links.push({ title: "", url: "" });
+    updatedData[index] = {
+      ...updatedData[index],
+      links: [...updatedData[index].links, { title: "", url: "" }],
+    };
+    // updatedData[index].links?.push({ title: "", url: "" });
     setCourseContentData(updatedData);
   };
 
@@ -93,6 +93,7 @@ const CourseContent: FC<Props> = ({
       setActiveSection(activeSection + 1);
       const newContent = {
         videoUrl: "",
+        videoLength: "",
         title: "",
         description: "",
         videoSection: `Untitled Section ${activeSection}`,
@@ -111,6 +112,7 @@ const CourseContent: FC<Props> = ({
       courseContentData[courseContentData.length - 1].title === "" ||
       courseContentData[courseContentData.length - 1].description === "" ||
       courseContentData[courseContentData.length - 1].videoUrl === "" ||
+      courseContentData[courseContentData.length - 1].videoLength === "" ||
       courseContentData[courseContentData.length - 1].links[0].title === "" ||
       courseContentData[courseContentData.length - 1].links[0].url === ""
     ) {
@@ -123,7 +125,7 @@ const CourseContent: FC<Props> = ({
 
   return (
     <div className="w-[80%] m-auto p-3">
-      <form onSubmit={handleSubmit}>
+      <form>
         {courseContentData?.map((item: any, index: number) => {
           const showSectionInput =
             index === 0 ||
@@ -148,7 +150,10 @@ const CourseContent: FC<Props> = ({
                         value={item.videoSection}
                         onChange={(e) => {
                           const updatedData = [...courseContentData];
-                          updatedData[index].videoSection = e.target.value;
+                          updatedData[index] = {
+                            ...updatedData[index],
+                            videoSection: e.target.value,
+                          };
                           setCourseContentData(updatedData);
                         }}
                       />
@@ -207,7 +212,10 @@ const CourseContent: FC<Props> = ({
                         value={item.title}
                         onChange={(e) => {
                           const updatedData = [...courseContentData];
-                          updatedData[index].title = e.target.value;
+                          updatedData[index] = {
+                            ...updatedData[index],
+                            title: e.target.value,
+                          };
                           setCourseContentData(updatedData);
                         }}
                       />
@@ -221,7 +229,10 @@ const CourseContent: FC<Props> = ({
                         value={item.videoUrl}
                         onChange={(e) => {
                           const updatedData = [...courseContentData];
-                          updatedData[index].videoUrl = e.target.value;
+                          updatedData[index] = {
+                            ...updatedData[index],
+                            videoUrl: e.target.value,
+                          };
                           setCourseContentData(updatedData);
                         }}
                       />
@@ -237,7 +248,10 @@ const CourseContent: FC<Props> = ({
                         value={item.videoLength}
                         onChange={(e) => {
                           const updatedData = [...courseContentData];
-                          updatedData[index].videoLength = e.target.value;
+                          updatedData[index] = {
+                            ...updatedData[index],
+                            videoLength: e.target.value,
+                          };
                           setCourseContentData(updatedData);
                         }}
                       />
@@ -254,7 +268,10 @@ const CourseContent: FC<Props> = ({
                         value={item.description}
                         onChange={(e) => {
                           const updatedData = [...courseContentData];
-                          updatedData[index].description = e.target.value;
+                          updatedData[index] = {
+                            ...updatedData[index],
+                            description: e.target.value,
+                          };
                           setCourseContentData(updatedData);
                         }}
                       />
@@ -286,8 +303,10 @@ const CourseContent: FC<Props> = ({
                           value={link.title}
                           onChange={(e) => {
                             const updatedData = [...courseContentData];
-                            updatedData[index].links[linkIndex].title =
-                              e.target.value;
+                            updatedData[index].links[linkIndex] = {
+                              ...updatedData[index].links[linkIndex],
+                              title: e.target.value,
+                            };
                             setCourseContentData(updatedData);
                           }}
                         />
@@ -298,8 +317,10 @@ const CourseContent: FC<Props> = ({
                           value={link.url}
                           onChange={(e) => {
                             const updatedData = [...courseContentData];
-                            updatedData[index].links[linkIndex].url =
-                              e.target.value;
+                            updatedData[index].links[linkIndex] = {
+                              ...updatedData[index].links[linkIndex],
+                              url: e.target.value,
+                            };
                             setCourseContentData(updatedData);
                           }}
                         />
