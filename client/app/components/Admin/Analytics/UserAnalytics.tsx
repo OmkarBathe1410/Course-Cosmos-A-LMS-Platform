@@ -53,7 +53,7 @@ const UserAnalytics: FC<Props> = ({ isDashboard }) => {
           className={`${
             !isDashboard
               ? ""
-              : "dark:bg-[#111C43] dark:shadow-md shadow-xl dark:border-none border border-neutral-200 p-4 rounded-md"
+              : "dark:bg-[#111C43] dark:shadow-md shadow-xl dark:border-none border border-slate-300 p-4 rounded-md"
           }`}
         >
           <div className={`${isDashboard ? "!ml-8 mb-2" : ""}`}>

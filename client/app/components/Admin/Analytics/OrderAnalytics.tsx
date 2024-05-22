@@ -50,7 +50,7 @@ const OrderAnalytics: FC<Props> = ({ isDashboard }) => {
       ) : (
         <div
           className={`${
-            !isDashboard ? "" : "dark:bg-[#111C43] dark:shadow-md shadow-xl p-4 dark:border-none border border-neutral-200 rounded-md"
+            !isDashboard ? "" : "dark:bg-[#111C43] dark:shadow-md shadow-xl p-4 dark:border-none border border-slate-300 rounded-md"
           }`}
         >
           <div className={`${isDashboard ? "!ml-8 mb-2" : ""}`}>

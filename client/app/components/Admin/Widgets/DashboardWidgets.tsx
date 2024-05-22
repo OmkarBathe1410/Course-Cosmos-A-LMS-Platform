@@ -46,7 +46,7 @@ const DashboardWidgets: FC<Props> = ({ open }) => {
           <UserAnalytics isDashboard={true} />
         </div>
         <div className="pt-[31px] pr-8">
-          <div className="w-full dark:bg-[#111C43] rounded-md shadow-xl dark:border-none border border-neutral-200">
+          <div className="w-full dark:bg-[#111C43] rounded-md shadow-xl dark:border-none border border-slate-300">
             <div className="flex items-center p-5 justify-between">
               <div className="">
                 <BiBorderLeft className="text-black text-[25px] dark:text-[#45CBA0]" />
@@ -65,7 +65,7 @@ const DashboardWidgets: FC<Props> = ({ open }) => {
               </div>
             </div>
           </div>
-          <div className="w-full dark:bg-[#111C43] rounded-md my-8 shadow-xl dark:border-none border border-neutral-200">
+          <div className="w-full dark:bg-[#111C43] rounded-md my-8 shadow-xl dark:border-none border border-slate-300">
             <div className="flex items-center p-5 justify-between">
               <div className="">
                 <PiUsersFourLight className="text-black text-[25px] dark:text-[#45CBA0]" />

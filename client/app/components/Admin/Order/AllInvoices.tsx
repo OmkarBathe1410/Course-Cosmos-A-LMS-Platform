@@ -111,7 +111,7 @@ const AllInvoices: FC<Props> = ({ isDashboard }) => {
       {isLoading ? (
         <Loader />
       ) : (
-        <Box m={isDashboard ? "0" : "40px"} sx={{}}>
+        <Box m={isDashboard ? "0" : "40px"}>
           <Box
             m={isDashboard ? "0" : "40px 0 0 0"}
             height={isDashboard ? "40vh" : "90vh"}

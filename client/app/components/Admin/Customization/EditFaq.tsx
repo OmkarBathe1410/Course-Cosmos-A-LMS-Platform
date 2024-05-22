@@ -103,7 +103,7 @@ const EditFaq = (props: Props) => {
                       onClick={() => toggleQuestion(q._id)}
                     >
                       <input
-                        className={`${styles.input} border-none !text-[14px]`}
+                        className={`${styles.input} border-none !text-[16px]`}
                         value={q.question}
                         onChange={(e: any) =>
                           handleQuestionChange(q._id, e.target.value)

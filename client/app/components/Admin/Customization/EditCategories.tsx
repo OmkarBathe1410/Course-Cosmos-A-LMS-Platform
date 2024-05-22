@@ -78,15 +78,15 @@ const EditCategories: FC<Props> = (props) => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="text-center">
-          <h1 className={`${styles.title}`}>All Categories</h1>
+        <div className="text-center font-Poppins">
+          <h1 className={`${styles.title} dark:text-white text-blue-600`}>All Categories</h1>
           {categories &&
             categories.map((item: any, index: number) => {
               return (
                 <div className="p-3">
                   <div className="flex items-center w-full justify-center">
                     <input
-                      className={`${styles.input} !w-[unset] !border-none !text-[16px]`}
+                      className={`${styles.input} !w-[unset] !border-none !text-[17px]`}
                       value={item.title}
                       onChange={(e) =>
                         handleCategoriesAdd(item._id, e.target.value)
@@ -94,7 +94,7 @@ const EditCategories: FC<Props> = (props) => {
                       placeholder="Enter category title here..."
                     />
                     <AiOutlineDelete
-                      className="dark:text-white text-black text-[16px] cursor-pointer"
+                      className="dark:text-white text-black text-[18px] cursor-pointer"
                       onClick={() => {
                         setCategories((prevCategory: any) =>
                           prevCategory.filter((i: any) => i._id !== item._id)
@@ -107,11 +107,11 @@ const EditCategories: FC<Props> = (props) => {
             })}
           <br />
           <br />
-          <div className="w-full flex justify-center">
+          <div className="w-max m-auto flex justify-center items-center cursor-pointer dark:bg-transparent bg-green-500 px-4 py-3 rounded-xl" onClick={newCategoriesHandler}>
             <IoMdAddCircleOutline
-              className="dark:text-white text-black text-[20px] cursor-pointer"
-              onClick={newCategoriesHandler}
+              className="!text-[22px] dark:text-white text-black"
             />
+            <p className="!text-[18px] ml-2 !text-white">Click here to add a new category</p>
           </div>
           <br />
           <div className="flex justify-end">
