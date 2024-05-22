@@ -20,7 +20,7 @@ const Courses = (props: Props) => {
       ) : (
         <div>
           <div className={`w-[90%] 800px:w-[80%] m-auto`}>
-            <h1 className="text-center font-Poppins text-[22px] leading-[30px] sm:text-2xl lg:text-3xl xl:text-4xl dark:text-white 800px:!leading-[50px] text-slate-950 font-[700] tracking-tight">
+            <h1 className="text-center font-Poppins text-2xl sm:text-3xl sm:leading-10 md:text-3xl md:leading-snug 1200px:text-4xl 1200px:leading-[3rem] dark:text-white text-slate-950 font-[700] tracking-tight">
               Expand your career {" "}
               <span className="dark:bg-gradient-to-l bg-gradient-to-r from-blue-800 via-blue-600 to-blue-400 bg-clip-text text-transparent transition duration-1000">
                 Opportunity
