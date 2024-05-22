@@ -111,7 +111,6 @@ const CourseDetails = ({ data, stripePromise, clientSecret }: Props) => {
               <CourseContentList data={data?.courseData} isDemo={true} />
             </div>
             <br />
-            <br />
             <div className="w-full">
               <h1 className="text-[23px] font-Poppins font-[600] text-black dark:text-white">
                 Course Details

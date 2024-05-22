@@ -53,16 +53,15 @@ const CourseContentList: FC<Props> = (props) => {
 
         return (
           <div
-            className={`${!props.isDemo && "border-b dark:border-[#ffffff8e] border-slate-400 pb-2"}`}
+            className={`${
+              !props.isDemo &&
+              "border-b dark:border-[#ffffff8e] border-slate-400 mb-4 pb-2"
+            }`}
             key={section}
           >
             <div className="w-full flex">
               <div className="flex w-full justify-between items-center">
-                <h2
-                  className={`${
-                    !props.isDemo ? "!text-[18px]" : "!text-[20px]"
-                  } text-black dark:text-white`}
-                >
+                <h2 className={`!text-[18px] text-black dark:text-white`}>
                   {section}
                 </h2>
                 <button
@@ -77,11 +76,7 @@ const CourseContentList: FC<Props> = (props) => {
                 </button>
               </div>
             </div>
-            <h5
-              className={`${
-                !props.isDemo ? "!text-[16px]" : ""
-              } text-black dark:text-white`}
-            >
+            <h5 className={`!text-[16px] text-black dark:text-white`}>
               {sectionVideoCount} Lessons{" "}
               {sectionVideoLength < 60
                 ? sectionVideoLength
@@ -100,7 +95,7 @@ const CourseContentList: FC<Props> = (props) => {
                         videoIndex === props.activeVideo
                           ? `${
                               theme === `light`
-                                ? `bg-gradient-to-br from-white via-slate-100 to-slate-300 border border-gray-200`
+                                ? `bg-gradient-to-l from-slate-300 via-cyan-100 to-white border border-gray-300`
                                 : `bg-slate-800`
                             } rounded-md`
                           : ``
@@ -119,17 +114,13 @@ const CourseContentList: FC<Props> = (props) => {
                           />
                         </div>
                         <h1
-                          className={`${
-                            !props.isDemo ? "!text-[16px]" : "!text-[18px]"
-                          } inline-block break-words text-black dark:text-white`}
+                          className={`!text-[16px] inline-block break-words text-black dark:text-white`}
                         >
                           {item.title}
                         </h1>
                       </div>
                       <h5
-                        className={`${
-                          !props.isDemo ? "!text-[16px]" : ""
-                        } pl-8 text-black dark:text-white`}
+                        className={`!text-[16px] pl-8 text-black dark:text-white`}
                       >
                         {item.videoLength > 60
                           ? contentLength.toFixed(2)
