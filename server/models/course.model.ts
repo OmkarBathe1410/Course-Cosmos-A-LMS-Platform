@@ -61,15 +61,18 @@ interface ICourse extends Document {
 }
 
 // Define the review schema with properties for user, rating, comment, and comment replies
-const reviewSchema = new Schema<IReview>({
-  user: Object,
-  rating: {
-    type: Number,
-    default: 0,
+const reviewSchema = new Schema<IReview>(
+  {
+    user: Object,
+    rating: {
+      type: Number,
+      default: 0,
+    },
+    comment: String,
+    commentReplies: [Object],
   },
-  comment: String,
-  commentReplies: [Object],
-});
+  { timestamps: true }
+);
 
 // Define the link schema with properties for title and URL
 const linkSchema = new Schema<ILink>({
@@ -78,11 +81,14 @@ const linkSchema = new Schema<ILink>({
 });
 
 // Define the comment schema with properties for user, question, and question replies
-const commentSchema = new Schema<IComment>({
-  user: Object,
-  question: String,
-  questionReplies: [Object],
-});
+const commentSchema = new Schema<IComment>(
+  {
+    user: Object,
+    question: String,
+    questionReplies: [Object],
+  },
+  { timestamps: true }
+);
 
 // Define the course data schema with various properties such as title, description, video URL, links, and questions
 const courseDataSchema = new Schema<ICourseData>({
