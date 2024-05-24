@@ -10,6 +10,7 @@ import {
 import { redirect } from "next/navigation";
 import React, { FC, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import Loader from "../Loader/Loader";
 
 type Props = {
   setOpen: any;

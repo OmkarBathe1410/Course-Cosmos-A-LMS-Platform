@@ -52,6 +52,28 @@ export const createOrder = CatchAsyncError(
         return next(new ErrorHandler("Course not found!", 404));
       }
 
+      const purchasedCount = course.purchased!;
+
+      await CourseModel.findOneAndUpdate(
+        { _id: course._id },
+        { $set: { purchased: purchasedCount + 1 } },
+        { new: true }
+      );
+
+      await course.save(); // Saving the updated course
+
+      user?.courses.push(course?._id); // Adding the course to the user's list of courses
+
+      await user?.save(); // Saving the updated user
+
+      await redis.set(req.user?._id, JSON.stringify(user));
+
+      const courses = await CourseModel.find().select(
+        "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+      );
+
+      await redis.set("allCourses", JSON.stringify(courses));
+
       const data: any = {
         // Creating order data
         courseId: course._id,
@@ -102,29 +124,6 @@ export const createOrder = CatchAsyncError(
         title: "New Order",
         message: `You have a new order for ${course?.name} from ${user?.name}`,
       });
-
-      if (course.purchased) {
-        const purchasedCount = course?.purchased;
-        await CourseModel.findByIdAndUpdate(
-          { id: courseId },
-          { purchased: purchasedCount + 1 },
-          { new: true }
-        );
-      }
-
-      await course.save(); // Saving the updated course
-
-      user?.courses.push(course?._id); // Adding the course to the user's list of courses
-
-      await user?.save(); // Saving the updated user
-
-      await redis.set(req.user?._id, JSON.stringify(user));
-
-      const courses = await CourseModel.find().select(
-        "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
-      );
-
-      await redis.set("allCourses", JSON.stringify(courses));
 
       newOrder(data, res, next); // Calling the newOrder function with the order data, response, and next function
     } catch (error: any) {
