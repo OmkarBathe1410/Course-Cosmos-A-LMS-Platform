@@ -104,8 +104,12 @@ export const createOrder = CatchAsyncError(
       });
 
       if (course.purchased) {
-        const purchasedCount = course.purchased;
-        course.purchased = purchasedCount + 1; // Incrementing the number of purchases for the course
+        const purchasedCount = course?.purchased;
+        await CourseModel.findByIdAndUpdate(
+          { id: courseId },
+          { purchased: purchasedCount + 1 },
+          { new: true }
+        );
       }
 
       await course.save(); // Saving the updated course

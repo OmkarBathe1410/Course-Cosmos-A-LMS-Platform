@@ -63,14 +63,21 @@ const CheckoutForm: FC<Props> = ({ setOpen, data }) => {
       <LinkAuthenticationElement id="link-authentication-element" />
       <PaymentElement id="payment-element" />
       <button disabled={isLoading || !stripe || !elements} id="submit">
-        <span id="button-text" className={`${styles.button} mt-2 !py-0 !h-max !bg-green-600 !rounded-md !px-7`}>
-          {isLoading
-            ? "Payment in progress..."
-            : "Pay Now"}
+        <span
+          id="button-text"
+          className={`${
+            styles.button
+          } mt-3 !py-0 !h-max !bg-gradient-to-b from-green-400 via-green-500 to-green-700 !rounded-md !px-7 ${
+            (isLoading || !stripe || !elements) && "cursor-no-drop"
+          }`}
+        >
+          {isLoading ? "Payment in progress..." : "Pay Now"}
         </span>
       </button>
       {message && (
-        <div className="text-red-600 font-Poppins pt-2">{message}</div>
+        <div className="bg-red-600 text-white font-Poppins mt-2 p-2 rounded-md">
+          ERROR: {message}
+        </div>
       )}
     </form>
   );
