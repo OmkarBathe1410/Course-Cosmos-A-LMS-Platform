@@ -1,3 +1,4 @@
+import { signOut } from "next-auth/react";
 import { apiSlice } from "../api/apiSlice";
 import { userLoggedIn, userLoggedOut, userRegistration } from "./authSlice";
 
@@ -97,6 +98,7 @@ export const authApi = apiSlice.injectEndpoints({
       }),
       async onQueryStarted(arg, { dispatch }) {
         try {
+          await signOut({ redirect: false, callbackUrl: "/" });
           dispatch(userLoggedOut());
         } catch (error: any) {
           console.log(error);

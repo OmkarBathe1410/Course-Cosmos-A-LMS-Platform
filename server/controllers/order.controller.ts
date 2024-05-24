@@ -95,11 +95,6 @@ export const createOrder = CatchAsyncError(
         // If there's an error sending the email, log it and continue with the order creation
         console.error("Error sending email:", error.message);
       }
-      user?.courses.push(course?._id); // Adding the course to the user's list of courses
-
-      await redis.set(req.user?._id, JSON.stringify(user));
-
-      await user?.save(); // Saving the updated user
 
       await NotificationModel.create({
         // Creating a new notification
@@ -108,9 +103,24 @@ export const createOrder = CatchAsyncError(
         message: `You have a new order for ${course?.name} from ${user?.name}`,
       });
 
-      course.purchased ? (course.purchased += 1) : course.purchased; // Incrementing the number of purchases for the course
+      if (course.purchased) {
+        const purchasedCount = course.purchased;
+        course.purchased = purchasedCount + 1; // Incrementing the number of purchases for the course
+      }
 
       await course.save(); // Saving the updated course
+
+      user?.courses.push(course?._id); // Adding the course to the user's list of courses
+
+      await user?.save(); // Saving the updated user
+
+      await redis.set(req.user?._id, JSON.stringify(user));
+
+      const courses = await CourseModel.find().select(
+        "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+      );
+
+      await redis.set("allCourses", JSON.stringify(courses));
 
       newOrder(data, res, next); // Calling the newOrder function with the order data, response, and next function
     } catch (error: any) {

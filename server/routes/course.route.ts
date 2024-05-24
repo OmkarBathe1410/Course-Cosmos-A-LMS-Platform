@@ -43,32 +43,20 @@ courseRouter.get("/get-course/:id", getSingleCourse);
 courseRouter.get("/get-courses", getAllCourses);
 
 // Setting up a GET route for fetching a single course's content [only for valid user]
-courseRouter.get(
-  "/get-course-content/:id",
-  isAuthenticated,
-  getCourseByUser
-);
+courseRouter.get("/get-course-content/:id", isAuthenticated, getCourseByUser);
 
 // Setting up a PUT route for adding a new question to the specified course
-courseRouter.put(
-  "/add-question",
-  isAuthenticated,
-  addQuestion
-);
+courseRouter.put("/add-question", isAuthenticated, addQuestion);
 
 // Setting up a PUT route for adding a new answwer to the specified question in a course
 courseRouter.put("/add-answer", isAuthenticated, addAnswer);
 
 // Setting up a PUT route for adding a new review to the specified course
-courseRouter.put(
-  "/add-review/:id",
-  isAuthenticated,
-  addReview
-);
+courseRouter.put("/add-review/:id", isAuthenticated, addReview);
 
 // Setting up a PUT route for adding an answer to a review to the specified course
 courseRouter.put(
-  "/add-review-reply/",
+  "/add-review-reply",
   isAuthenticated,
   authorizeRoles("admin"),
   addReplyToReview

@@ -59,13 +59,13 @@ const CheckoutForm: FC<Props> = ({ setOpen, data }) => {
   }, [orderData, error]);
 
   return (
-    <form id="payment-form" onSubmit={handleSubmit}>
+    <form id="payment-form" onSubmit={handleSubmit} className="font-Poppins">
       <LinkAuthenticationElement id="link-authentication-element" />
       <PaymentElement id="payment-element" />
       <button disabled={isLoading || !stripe || !elements} id="submit">
-        <span id="button-text" className={`${styles.button} mt-2 !h-[35px]`}>
+        <span id="button-text" className={`${styles.button} mt-2 !py-0 !h-max !bg-green-600 !rounded-md !px-7`}>
           {isLoading
-            ? "Do not reload or refresh the page, payment is processing..."
+            ? "Payment in progress..."
             : "Pay Now"}
         </span>
       </button>

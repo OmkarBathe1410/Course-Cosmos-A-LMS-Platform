@@ -14,7 +14,6 @@ import { useSelector } from "react-redux";
 import avatar from "../../public/assets/avatar.png";
 import { useSession } from "next-auth/react";
 import {
-  useLogoutQuery,
   useSocialAuthMutation,
 } from "@/redux/features/auth/authApi";
 import toast from "react-hot-toast";
@@ -32,10 +31,6 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
   const { user } = useSelector((state: any) => state.auth);
   const [socialAuth, { isSuccess }] = useSocialAuthMutation();
   const { data } = useSession();
-  const [logout, setLogout] = useState(false);
-  const { } = useLogoutQuery(undefined, {
-    skip: !logout ? true : false,
-  });
 
   useEffect(() => {
     if (!user) {
@@ -47,18 +42,13 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
         });
       }
     }
-    
+
     if (data === null) {
       if (isSuccess) {
         toast.success("Logged In Successfully!");
       }
     }
-
-    if(data === null){
-      setLogout(true);
-    }
-
-  }, [user!, data!]);
+  }, [user, data]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -122,6 +112,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
                     style={{
                       border: activeItem === 5 ? "2px solid #37a39a" : "none",
                     }}
+                    unoptimized={true}
                   />
                 </Link>
               ) : (
@@ -167,6 +158,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
                     style={{
                       border: activeItem === 5 ? "2px solid #37a39a" : "none",
                     }}
+                    unoptimized={true}
                   />
                   <span className="ml-3 text-black dark:text-white font-Poppins">
                     User Profile
