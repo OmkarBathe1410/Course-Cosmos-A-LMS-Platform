@@ -127,11 +127,11 @@ const CourseDetails = ({ data, stripePromise, clientSecret }: Props) => {
               <div className="800px:flex items-center">
                 <Ratings rating={data?.ratings} />
                 <div className="mb-2 800px:mb-[unset]" />
-                <h5 className="text-[22px] font-Poppins text-black dark:text-white">
+                <h5 className="text-[20px] font-Poppins text-black dark:text-white">
                   {Number.isInteger(data?.ratings)
                     ? data?.ratings.toFixed(1)
                     : data?.ratings.toFixed(2)}{" "}
-                  Course Rating | {data?.reviews?.length} Reviews
+                  Course Rating | {data?.reviews?.length} Review(s)
                 </h5>
               </div>
               <br />
@@ -154,7 +154,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret }: Props) => {
                       </div>
                       <div className="hidden 800px:block pl-2">
                         <div className="flex item-center">
-                          <h5 className="text-[18px] pr-2 text-black dark:text-white">
+                          <h5 className="text-[16px] pr-2 text-black dark:text-white">
                             {item.user.name}
                           </h5>
                           <Ratings rating={item.rating} />
@@ -167,7 +167,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret }: Props) => {
                         </small>
                       </div>
                       <div className="pl-2 flex 800px:hidden items-center">
-                        <h5 className="text-[18px] pr-2 text-black dark:text-white">
+                        <h5 className="text-[16px] pr-2 text-black dark:text-white">
                           {item.user.name}
                         </h5>
                         <Ratings rating={item.rating} />

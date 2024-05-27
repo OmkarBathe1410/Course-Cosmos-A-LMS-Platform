@@ -10,7 +10,6 @@ import {
 import { redirect } from "next/navigation";
 import React, { FC, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import Loader from "../Loader/Loader";
 
 type Props = {
   setOpen: any;
@@ -25,7 +24,7 @@ const CheckoutForm: FC<Props> = ({ setOpen, data }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [createOrder, { data: orderData, error }] = useCreateOrderMutation();
-  const {} = useLoadUserQuery({ skip: loadUser ? false : true });
+  const {} = useLoadUserQuery({ skip: !loadUser ? true : false });
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -42,14 +41,15 @@ const CheckoutForm: FC<Props> = ({ setOpen, data }) => {
       setIsLoading(false);
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
       setIsLoading(false);
-      createOrder({ courseId: data?._id, payment_info: paymentIntent });
+      await createOrder({ courseId: data?._id, payment_info: paymentIntent });
     }
   };
 
   useEffect(() => {
     if (orderData) {
-      setLoadUser(true);
+      setOpen(false);
       redirect(`/course-access/${data._id}`);
+      setLoadUser(true);
     }
     if (error) {
       if ("data" in error) {
