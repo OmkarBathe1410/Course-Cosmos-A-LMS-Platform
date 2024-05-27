@@ -80,7 +80,13 @@ export const editCourse = CatchAsyncError(
         { new: true }
       );
 
-      redis.set(courseId, JSON.stringify(course), "EX", 604800);
+      redis.set(courseId, JSON.stringify(course), "EX", 604800); // 7 DAYS
+
+      const courses = await CourseModel.find().select(
+        "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+      );
+
+      await redis.set("allCourses", JSON.stringify(courses));
 
       res.status(200).json({ success: true, course });
     } catch (error: any) {
@@ -112,6 +118,7 @@ export const getSingleCourse = CatchAsyncError(
         );
 
         await redis.set(req.params.id, JSON.stringify(course), "EX", 604800); // 7 Days
+
         res.status(200).json({
           success: true,
           course,
@@ -131,16 +138,26 @@ export const getSingleCourse = CatchAsyncError(
 export const getAllCourses = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const courses = await CourseModel.find().select(
-        "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
-      );
+      const areCoursesExist = await redis.get("allCourses");
+      if (areCoursesExist) {
+        const courses = JSON.parse(areCoursesExist);
 
-      await redis.set("allCourses", JSON.stringify(courses), "KEEPTTL");
+        res.status(200).json({
+          success: true,
+          courses,
+        });
+      } else {
+        const courses = await CourseModel.find().select(
+          "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+        );
 
-      res.status(200).json({
-        success: true,
-        courses,
-      });
+        await redis.set("allCourses", JSON.stringify(courses));
+
+        res.status(200).json({
+          success: true,
+          courses,
+        });
+      }
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }
@@ -230,6 +247,8 @@ export const addQuestion = CatchAsyncError(
         user: req.user,
         question: question,
         questionReplies: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
 
       /** Add the new question to the course content's list of questions. */
@@ -243,6 +262,14 @@ export const addQuestion = CatchAsyncError(
 
       /** Save the updated course to the database. */
       await course?.save();
+
+      redis.set(courseId, JSON.stringify(course), "EX", 604800);
+
+      const courses = await CourseModel.find().select(
+        "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+      );
+
+      await redis.set("allCourses", JSON.stringify(courses));
 
       /** Send a successful response with HTTP status code 200 and the course data. */
       res.status(200).json({
@@ -323,6 +350,8 @@ export const addAnswer = CatchAsyncError(
       const newAnswer: any = {
         user: req.user,
         answer: answer,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
 
       /**
@@ -332,6 +361,14 @@ export const addAnswer = CatchAsyncError(
 
       /** Save the updated course to the database. */
       await course?.save();
+
+      redis.set(courseId, JSON.stringify(course), "EX", 604800);
+
+      const courses = await CourseModel.find().select(
+        "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+      );
+
+      await redis.set("allCourses", JSON.stringify(courses));
 
       /** If the user adding the answer is the same as the user who asked the question, a notification will be added. */
       if (req.user?._id === question.user._id) {
@@ -362,6 +399,7 @@ export const addAnswer = CatchAsyncError(
           return next(new ErrorHandler(error.message, 500));
         }
       }
+
       /** If no errors occurred, respond with a success message and status code 200, including the course data in the response. */
       res.status(200).json({
         success: true,
@@ -410,6 +448,8 @@ export const addReview = CatchAsyncError(
         user: req.user, // Include the user who submitted the review
         comment: review, // Add the review comment
         rating, // Add the rating
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
 
       course?.reviews.push(reviewData); // Add the review data to the course's reviews
@@ -428,13 +468,20 @@ export const addReview = CatchAsyncError(
 
       await course?.save(); // Save the updated course data
 
-      const notification = {
-        // Create a notification object
+      redis.set(courseId, JSON.stringify(course), "EX", 604800);
+
+      const courses = await CourseModel.find().select(
+        "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+      );
+
+      await redis.set("allCourses", JSON.stringify(courses));
+
+      // Create Notification
+      await NotificationModel.create({
+        user: req.user?._id,
         title: "New Review Received", // Notification title
         message: `${req.user?.name} has given a review on ${course?.name}`, // Notification message
-      };
-
-      // Create Notification here in upcoming days:
+      });
 
       res.status(200).json({
         // Send success response with course data
@@ -482,6 +529,8 @@ export const addReplyToReview = CatchAsyncError(
         // Creating data for the review reply
         user: req.user, // Assigning the user from request
         comment, // Assigning the comment for the reply
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
 
       if (!review.commentReplies) {
@@ -492,6 +541,14 @@ export const addReplyToReview = CatchAsyncError(
       review.commentReplies?.push(reviewReplyData); // Adding the reply data to the commentReplies array
 
       await course?.save(); // Saving the course
+
+      redis.set(courseId, JSON.stringify(course), "EX", 604800);
+
+      const courses = await CourseModel.find().select(
+        "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+      );
+
+      await redis.set("allCourses", JSON.stringify(courses));
 
       res.status(200).json({
         // Sending success response with updated course
@@ -539,6 +596,12 @@ export const deleteCourse = CatchAsyncError(
 
       /* Delete the course from Redis cache. */
       await redis.del(id);
+
+      const courses = await CourseModel.find().select(
+        "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+      );
+
+      await redis.set("allCourses", JSON.stringify(courses));
 
       /* Set the HTTP status code to 200 (OK) and send a JSON response with a success message. */
       res.status(200).json({

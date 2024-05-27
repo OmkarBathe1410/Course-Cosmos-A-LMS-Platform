@@ -1,6 +1,5 @@
 import Ratings from "@/app/utils/Ratings";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import { IoCheckmarkDoneOutline, IoCloseOutline } from "react-icons/io5";
 import { format } from "timeago.js";
 import CoursePlayer from "@/app/utils/CoursePlayer";
@@ -11,6 +10,9 @@ import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../Payment/CheckoutForm";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import { toast } from "react-hot-toast";
+import Image from "next/image";
+import defaultAvatar from "../../../public/assets/avatar.png";
+import { VscVerifiedFilled } from "react-icons/vsc";
 
 type Props = {
   data: any;
@@ -138,11 +140,17 @@ const CourseDetails = ({ data, stripePromise, clientSecret }: Props) => {
                   <div className="w-full pb-4" key={index}>
                     <div className="flex">
                       <div className="w-[50px] h-[50px]">
-                        <div className="w-[50px] h-[50px] bg-slate-600 rounded-[50px] flex items-center justify-center cursor-pointer">
-                          <h1 className="uppercase text-[18px] text-black dark:text-white">
-                            {item.user.name.slice(0, 2)}
-                          </h1>
-                        </div>
+                        <Image
+                          src={
+                            item.user?.avatar?.url
+                              ? item.user?.avatar?.url
+                              : defaultAvatar
+                          }
+                          alt=""
+                          width={50}
+                          height={50}
+                          className="w-[50px] h-[50px] rounded-full object-cover"
+                        />
                       </div>
                       <div className="hidden 800px:block pl-2">
                         <div className="flex item-center">
@@ -165,6 +173,42 @@ const CourseDetails = ({ data, stripePromise, clientSecret }: Props) => {
                         <Ratings rating={item.rating} />
                       </div>
                     </div>
+                    {item.commentReplies.map((item: any) => (
+                      <div className="w-full flex 800px:!ml-16 my-5 dark:text-white text-black">
+                        <div className="">
+                          <Image
+                            src={
+                              item?.user?.avatar?.url
+                                ? item.user?.avatar?.url
+                                : defaultAvatar
+                            }
+                            alt=""
+                            width={50}
+                            height={50}
+                            className="w-[50px] h-[50px] rounded-full object-cover"
+                          />
+                        </div>
+                        <div className="pl-3">
+                          <div className="flex items-center">
+                            <h5 className="text-[16px] dark:text-white text-black">
+                              {item?.user.name}
+                            </h5>
+                            {item?.user.role === "admin" && (
+                              <VscVerifiedFilled
+                                className="dark:text-green-400 text-blue-700 ml-2"
+                                size={25}
+                              />
+                            )}
+                          </div>
+                          <p className="dark:text-white text-[#000000b8]">
+                            {item?.comment}
+                          </p>
+                          <small className="dark:text-[#ffffff83] text-black capitalize">
+                            {format(item?.createdAt)} •
+                          </small>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )
               )}
@@ -189,7 +233,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret }: Props) => {
               <div className="flex items-center">
                 {isPurchased ? (
                   <Link
-                    className={`${styles.button} !w-max my-3 font-Poppins cursor-pointer !bg-[crimson]`}
+                    className={`${styles.button} !w-max my-4 font-Poppins cursor-pointer !bg-[crimson]`}
                     href={`/course-access/${data._id}`}
                   >
                     Enter to the course
@@ -203,14 +247,14 @@ const CourseDetails = ({ data, stripePromise, clientSecret }: Props) => {
                   </div>
                 )}
               </div>
-              <div className="mt-5">
+              <div className="mt-3">
                 <p className="pb-1 dark:text-white text-slate-900 !text-[16px]">
                   • Source code included
                 </p>
                 <p className="pb-1 dark:text-white text-slate-900 !text-[16px]">
                   • Full lifetime access
                 </p>
-                <p className="pb-3 800px:pb-1 dark:text-white text-slate-900 !text-[16px]">
+                <p className="pb-5 800px:pb-1 dark:text-white text-slate-900 !text-[16px]">
                   • Premium support
                 </p>
               </div>

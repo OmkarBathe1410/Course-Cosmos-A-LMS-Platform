@@ -33,7 +33,7 @@ const CourseContent = ({ id, user }: Props) => {
             setOpen={setOpen}
             activeItem={1}
           />
-          <div className="w-full grid 800px:grid-cols-10">
+          <div className="w-full min-h-screen grid 800px:grid-cols-10">
             <Heading
               title={data[activeVideo]?.title}
               description="Course Cosmos is a mid-scale Learning Management System (LMS) platform designed to empower learners and educators with a universe of knowledge at their fingertips. With an intuitive interface, a diverse range of courses, and a commitment to continuous growth, Course Cosmos offers an engaging and immersive learning experience for users of all backgrounds and skill levels. Explore the cosmos of learning and unlock your potential with Course Cosmos."

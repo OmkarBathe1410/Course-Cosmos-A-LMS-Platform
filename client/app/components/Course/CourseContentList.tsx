@@ -33,8 +33,8 @@ const CourseContentList: FC<Props> = (props) => {
 
   return (
     <div
-      className={`font-Poppins mt-[15px] w-full ${
-        !props.isDemo && "ml-[-30px] sticky top-24 left-0 z-30"
+      className={`font-Poppins mt-[15px] ml-[30px] w-full ${
+        !props.isDemo && "800px:ml-[-30px] 800px:sticky 800px:top-24 800px:left-0 800px:z-30"
       }`}
     >
       {videoSections.map((section: string, sectionIndex: number) => {
