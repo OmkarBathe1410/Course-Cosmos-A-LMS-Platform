@@ -48,8 +48,8 @@ const CheckoutForm: FC<Props> = ({ setOpen, data }) => {
   useEffect(() => {
     if (orderData) {
       setOpen(false);
-      redirect(`/course-access/${data._id}`);
       setLoadUser(true);
+      redirect(`/course-access/${data._id}`);
     }
     if (error) {
       if ("data" in error) {
