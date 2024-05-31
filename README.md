@@ -9,7 +9,7 @@ To get started with Course Cosmos 🪐, follow these steps:
 
 ### Clone the repository: 🔄
 ```
-git clone https://github.com/your-username/course-cosmos.git
+git clone https://github.com/OmkarBathe1410/Course-Cosmos-A-LMS-Platform.git
 ```
 
 ### Install dependencies: 🔧
