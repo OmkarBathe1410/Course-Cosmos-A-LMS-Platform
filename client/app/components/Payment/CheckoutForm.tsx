@@ -23,8 +23,8 @@ const CheckoutForm: FC<Props> = ({ setOpen, data }) => {
   const [loadUser, setLoadUser] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [createOrder, { data: orderData, error }] = useCreateOrderMutation();
-  const {} = useLoadUserQuery({ skip: !loadUser ? true : false });
+  const [createOrder, { isSuccess, error }] = useCreateOrderMutation();
+  const {} = useLoadUserQuery(undefined, { skip: !loadUser ? true : false });
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -40,15 +40,16 @@ const CheckoutForm: FC<Props> = ({ setOpen, data }) => {
       setMessage(error.message);
       setIsLoading(false);
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
-      setIsLoading(false);
+      setIsLoading(true);
       await createOrder({ courseId: data?._id, payment_info: paymentIntent });
     }
   };
 
   useEffect(() => {
-    if (orderData) {
+    if (isSuccess) {
       setOpen(false);
       setLoadUser(true);
+      toast.success("Course purchased successfully!");
       redirect(`/course-access/${data._id}`);
     }
     if (error) {
@@ -57,7 +58,7 @@ const CheckoutForm: FC<Props> = ({ setOpen, data }) => {
         toast.error(errorMessage.data.message);
       }
     }
-  }, [orderData, error]);
+  }, [isSuccess, error]);
 
   return (
     <form id="payment-form" onSubmit={handleSubmit} className="font-Poppins">
@@ -69,7 +70,7 @@ const CheckoutForm: FC<Props> = ({ setOpen, data }) => {
           className={`${
             styles.button
           } mt-3 !py-0 !h-max !bg-gradient-to-b from-green-400 via-green-500 to-green-700 !rounded-md !px-7 ${
-            (isLoading || !stripe || !elements) && "cursor-no-drop"
+            (isLoading || !stripe || !elements) && "!cursor-no-drop"
           }`}
         >
           {isLoading ? "Payment in progress..." : "Pay Now"}

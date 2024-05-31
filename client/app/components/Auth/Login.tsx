@@ -13,6 +13,7 @@ import { styles } from "../../../app/styles/style";
 import { useLoginMutation } from "../../../redux/features/auth/authApi";
 import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
+import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 
 type Props = {
   setRoute: (route: string) => void;
@@ -29,6 +30,8 @@ const validateSchema = Yup.object().shape({
 const Login: FC<Props> = ({ setRoute, setOpen }) => {
   const [show, setShow] = useState(false);
   const [login, { isSuccess, error }] = useLoginMutation();
+  const [loadUser, setLoadUser] = useState(false);
+  const {} = useLoadUserQuery(undefined, { skip: !loadUser ? true : false });
 
   const formik = useFormik({
     initialValues: {
@@ -44,6 +47,7 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
   useEffect(() => {
     if (isSuccess) {
       toast.success("Login successfully!");
+      setLoadUser(true);
       setOpen(false);
     }
     if (error) {
@@ -58,8 +62,10 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
 
   return (
     <div className="w-full">
-      <h1 className={`${styles.title} !text-[22px]`}>Login with Course Cosmos</h1>
-      <br/>
+      <h1 className={`${styles.title} !text-[22px]`}>
+        Login with Course Cosmos
+      </h1>
+      <br />
       <form onSubmit={handleSubmit}>
         <label className={`${styles.label}`} htmlFor="email">
           Enter your email
