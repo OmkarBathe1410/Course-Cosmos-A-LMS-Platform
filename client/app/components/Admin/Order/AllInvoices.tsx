@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import { Box, Button } from "@mui/material";
 import { useTheme } from "next-themes";
 import Loader from "../../Loader/Loader";
@@ -37,7 +37,7 @@ const AllInvoices: FC<Props> = ({ isDashboard }) => {
           price: "₹" + course?.price,
         };
       });
-      setOrderData(temp); 
+      setOrderData(temp);
     }
   }, [data, usersData, coursesData]);
 
@@ -54,7 +54,7 @@ const AllInvoices: FC<Props> = ({ isDashboard }) => {
     ...(isDashboard
       ? [{ field: "created_at", headerName: "Created At", flex: 0.4 }]
       : [
-        { field: "created_at", headerName: "Created At", flex: 0.3 },
+          { field: "created_at", headerName: "Created At", flex: 0.3 },
           {
             field: " ",
             headerName: "Email",
@@ -75,24 +75,7 @@ const AllInvoices: FC<Props> = ({ isDashboard }) => {
         ]),
   ];
 
-  const rows: any = [
-    {
-      id: "1234556777655",
-      userName: "Omkar Satish Bathe",
-      userEmail: "omi.bathe@gmail.com",
-      title: "React JS Course",
-      price: "₹999",
-      created_at: "2 days ago",
-    },
-    {
-      id: "1234556777655",
-      userName: "Omkar Satish Bathe",
-      userEmail: "omi.bathe@gmail.com",
-      title: "React JS Course",
-      price: "₹999",
-      created_at: "2 days ago",
-    },
-  ];
+  const rows: any = [];
 
   orderData &&
     orderData.forEach((item: any) => {

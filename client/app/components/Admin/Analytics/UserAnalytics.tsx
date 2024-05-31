@@ -15,35 +15,16 @@ type Props = {
   isDashboard?: boolean;
 };
 
-const data = [
-  { month: "Jun 2023", count: 440 },
-  { month: "Jul 2023", count: 8200 },
-  { month: "Aug 2023", count: 4033 },
-  { month: "Sept 2023", count: 4502 },
-  { month: "Oct 2023", count: 2042 },
-  { month: "Nov 2023", count: 3454 },
-  { month: "Dec 2023", count: 356 },
-  { month: "Jan 2024", count: 5667 },
-  { month: "Feb 2024", count: 1320 },
-  { month: "Mar 2024", count: 6526 },
-  { month: "Apr 2024", count: 5480 },
-  { month: "May 2024", count: 485 },
-];
-
 const UserAnalytics: FC<Props> = ({ isDashboard }) => {
-  // const { data, isLoading } = useGetUsersAnalyticsQuery({});
-  const { isLoading } = useGetUsersAnalyticsQuery({});
+  const { data, isLoading } = useGetUsersAnalyticsQuery({});
 
   const analyticsData: any = [];
 
-  // data &&
-  //   data.users.last12Months.forEach((item: any) => {
-  //     analyticsData.push({ month: item.month, count: item.count });
-  //   });
   data &&
-    data.forEach((item: any) => {
+    data.users.last12Months.forEach((item: any) => {
       analyticsData.push({ month: item.month, count: item.count });
     });
+
   return (
     <>
       {isLoading ? (

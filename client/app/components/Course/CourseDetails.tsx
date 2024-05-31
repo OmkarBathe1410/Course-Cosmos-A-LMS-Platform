@@ -20,6 +20,7 @@ type Props = {
   clientSecret: string;
   setOpen: any;
   setRoute: any;
+  courseDetailsRefetch: any;
 };
 
 const CourseDetails = ({
@@ -28,8 +29,11 @@ const CourseDetails = ({
   clientSecret,
   setOpen: openAuthModal,
   setRoute,
+  courseDetailsRefetch,
 }: Props) => {
-  const { data: userData } = useLoadUserQuery(undefined, {});
+  const { data: userData, refetch: userRefetch } = useLoadUserQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
   const [user, setUser] = useState<any>();
   const [open, setOpen] = useState(false);
 
@@ -45,7 +49,7 @@ const CourseDetails = ({
     user && user?.courses?.find((item: any) => item._id === data._id);
 
   const handleOrder = (e: any) => {
-    if (user) {
+    if (userData) {
       setOpen(true);
     } else {
       toast.error("First please login to buy this course!");
@@ -290,7 +294,13 @@ const CourseDetails = ({
               <div className="w-full">
                 {stripePromise && clientSecret && (
                   <Elements stripe={stripePromise} options={{ clientSecret }}>
-                    <CheckoutForm setOpen={setOpen} data={data} />
+                    <CheckoutForm
+                      setOpen={setOpen}
+                      data={data}
+                      userRefetch={userRefetch}
+                      user={user}
+                      courseDetailsRefetch={courseDetailsRefetch}
+                    />
                   </Elements>
                 )}
               </div>

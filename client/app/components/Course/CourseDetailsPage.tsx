@@ -21,7 +21,11 @@ const CourseDetailsPage = ({ id }: Props) => {
   const [stripePromise, setStripePromise] = useState<any>(null);
   const [clientSecret, setClientSecret] = useState("");
 
-  const { data, isLoading } = useGetCourseDetailsQuery(id);
+  const {
+    data,
+    isLoading,
+    refetch: courseDetailsRefetch,
+  } = useGetCourseDetailsQuery(id, { refetchOnMountOrArgChange: true });
   const { data: config } = useGetStripePublishableKeyQuery({});
   const [createPaymentIntent, { data: paymentIntentData }] =
     useCreatePaymentIntentMutation({});
@@ -70,6 +74,7 @@ const CourseDetailsPage = ({ id }: Props) => {
               clientSecret={clientSecret}
               setOpen={setOpen}
               setRoute={setRoute}
+              courseDetailsRefetch={courseDetailsRefetch}
             />
           )}
           <Footer />

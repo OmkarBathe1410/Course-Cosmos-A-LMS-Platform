@@ -17,29 +17,13 @@ type Props = {
   isDashboard?: boolean;
 };
 
-const data = [
-  { name: "Nov 2023", count: 4000 },
-  { name: "Dec 2023", count: 3000 },
-  { name: "Jan 2024", count: 5000 },
-  { name: "Feb 2024", count: 1000 },
-  { name: "Mar 2024", count: 4000 },
-  { name: "Apr 2024", count: 800 },
-  { name: "May 2024", count: 200 },
-];
-
 const OrderAnalytics: FC<Props> = ({ isDashboard }) => {
-  // const { data, isLoading } = useGetOrdersAnalyticsQuery({});
-  const { isLoading } = useGetOrdersAnalyticsQuery({});
+  const { data, isLoading } = useGetOrdersAnalyticsQuery({});
 
   const analyticsData: any = [];
 
-  // data &&
-  //   data.orders.last12Months.forEach((item: any) => {
-  //     analyticsData.push({ name: item.name, count: item.count });
-  //   });
-
   data &&
-    data.forEach((item: any) => {
+    data.orders.last12Months.forEach((item: any) => {
       analyticsData.push({ name: item.name, count: item.count });
     });
 
@@ -50,7 +34,9 @@ const OrderAnalytics: FC<Props> = ({ isDashboard }) => {
       ) : (
         <div
           className={`${
-            !isDashboard ? "" : "dark:bg-[#111C43] dark:shadow-md shadow-xl p-4 dark:border-none border border-slate-300 rounded-md"
+            !isDashboard
+              ? ""
+              : "dark:bg-[#111C43] dark:shadow-md shadow-xl p-4 dark:border-none border border-slate-300 rounded-md"
           }`}
         >
           <div className={`${isDashboard ? "!ml-8 mb-2" : ""}`}>

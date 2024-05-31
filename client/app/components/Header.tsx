@@ -10,13 +10,11 @@ import CustomModal from "../utils/CustomModal";
 import Login from "../components/Auth/Login";
 import SignUp from "../components/Auth/SignUp";
 import Verification from "../components/Auth/Verification";
-import { useSelector } from "react-redux";
 import avatar from "../../public/assets/avatar.png";
 import { useSession } from "next-auth/react";
-import {
-  useSocialAuthMutation,
-} from "@/redux/features/auth/authApi";
+import { useSocialAuthMutation } from "@/redux/features/auth/authApi";
 import toast from "react-hot-toast";
+import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 
 type Props = {
   open: boolean;
@@ -26,20 +24,27 @@ type Props = {
   setRoute: (route: string) => void;
 };
 const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
+  const { data } = useSession();
   const [active, setActive] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
-  const { user } = useSelector((state: any) => state.auth);
+  const {
+    data: userData,
+    isLoading,
+    refetch,
+  } = useLoadUserQuery(undefined, {});
   const [socialAuth, { isSuccess }] = useSocialAuthMutation();
-  const { data } = useSession();
 
   useEffect(() => {
-    if (!user) {
-      if (data) {
-        socialAuth({
-          email: data.user?.email,
-          name: data.user?.name,
-          avatar: data.user?.image,
-        });
+    if (!isLoading) {
+      if (!userData) {
+        if (data) {
+          socialAuth({
+            email: data?.user?.email,
+            name: data?.user?.name,
+            avatar: data.user?.image,
+          });
+          refetch();
+        }
       }
     }
 
@@ -48,7 +53,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
         toast.success("Logged In Successfully!");
       }
     }
-  }, [user, data]);
+  }, [data, userData, isLoading]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -101,10 +106,12 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
                 />
               </div>
               {/* Above code is only for mobile: */}
-              {user ? (
+              {userData ? (
                 <Link href={"/profile"}>
                   <Image
-                    src={user.avatar ? user.avatar.url : avatar}
+                    src={
+                      userData.user.avatar ? userData.user.avatar.url : avatar
+                    }
                     alt=""
                     width={30}
                     height={30}
@@ -134,7 +141,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
           >
             <div className="w-[70%] fixed h-screen z-[99999] bg-white dark:bg-neutral-950 top-0 right-0">
               <NavItems activeItem={activeItem} isMobile={true} />
-              {!user ? (
+              {!userData ? (
                 <>
                   <span
                     className="font-Poppins cursor-pointer text-black dark:text-white"
@@ -150,7 +157,9 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
               ) : (
                 <Link href={"/profile"}>
                   <Image
-                    src={user.avatar ? user.avatar.url : avatar}
+                    src={
+                      userData.user.avatar ? userData.user.avatar.url : avatar
+                    }
                     alt=""
                     width={25}
                     height={25}
@@ -185,6 +194,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
               setRoute={setRoute}
               activeItem={activeItem}
               component={Login}
+              refetch={refetch}
             />
           )}
         </>
