@@ -9,7 +9,7 @@ export const createCourse = CatchAsyncError(
     // Create a new course using the provided data
     const course = await CourseModel.create(data);
 
-    redis.set(course._id, JSON.stringify(course), "EX", 604800);
+    await redis.set(course._id, JSON.stringify(course), "EX", 604800);
 
     const courses = await CourseModel.find().select(
       "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"

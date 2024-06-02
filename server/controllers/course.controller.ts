@@ -80,7 +80,7 @@ export const editCourse = CatchAsyncError(
         { new: true }
       );
 
-      redis.set(courseId, JSON.stringify(course), "EX", 604800); // 7 DAYS
+      await redis.set(courseId, JSON.stringify(course), "EX", 604800); // 7 DAYS
 
       const courses = await CourseModel.find().select(
         "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
@@ -263,7 +263,7 @@ export const addQuestion = CatchAsyncError(
       /** Save the updated course to the database. */
       await course?.save();
 
-      redis.set(courseId, JSON.stringify(course), "EX", 604800);
+      await redis.set(courseId, JSON.stringify(course), "EX", 604800);
 
       const courses = await CourseModel.find().select(
         "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
@@ -362,7 +362,7 @@ export const addAnswer = CatchAsyncError(
       /** Save the updated course to the database. */
       await course?.save();
 
-      redis.set(courseId, JSON.stringify(course), "EX", 604800);
+      await redis.set(courseId, JSON.stringify(course), "EX", 604800);
 
       const courses = await CourseModel.find().select(
         "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
@@ -468,7 +468,7 @@ export const addReview = CatchAsyncError(
 
       await course?.save(); // Save the updated course data
 
-      redis.set(courseId, JSON.stringify(course), "EX", 604800);
+      await redis.set(courseId, JSON.stringify(course), "EX", 604800);
 
       const courses = await CourseModel.find().select(
         "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
@@ -542,7 +542,7 @@ export const addReplyToReview = CatchAsyncError(
 
       await course?.save(); // Saving the course
 
-      redis.set(courseId, JSON.stringify(course), "EX", 604800);
+      await redis.set(courseId, JSON.stringify(course), "EX", 604800);
 
       const courses = await CourseModel.find().select(
         "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"

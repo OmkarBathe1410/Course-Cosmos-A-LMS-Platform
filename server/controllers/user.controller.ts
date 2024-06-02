@@ -277,7 +277,7 @@ export const updateAccessToken = CatchAsyncError(
       res.cookie("refresh_token", refreshToken, refreshTokenOptions);
 
       // Store the user's session data back in the Redis database with an expiration of 7 days (604800 seconds)
-      redis.set(user._id, JSON.stringify(user), "EX", 604800);
+      await redis.set(user._id, JSON.stringify(user), "EX", 604800);
 
       return next();
     } catch (error: any) {
