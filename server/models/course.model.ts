@@ -42,7 +42,7 @@ interface ICourseData extends Document {
 
 // Defines a course document interface extending the base Document type
 // It includes various properties related to a course, such as name, description, price, tags, and more
-interface ICourse extends Document {
+export interface ICourse extends Document {
   name: string;
   description: string;
   category: string;
@@ -57,7 +57,7 @@ interface ICourse extends Document {
   reviews: IReview[];
   courseData: ICourseData[];
   ratings?: number;
-  purchased?: number;
+  purchased: number;
 }
 
 // Define the review schema with properties for user, rating, comment, and comment replies

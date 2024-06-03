@@ -49,7 +49,7 @@ const CourseDetails = ({
     user && user?.courses?.find((item: any) => item._id === data._id);
 
   const handleOrder = (e: any) => {
-    if (userData) {
+    if (user) {
       setOpen(true);
     } else {
       toast.error("First please login to buy this course!");
@@ -157,7 +157,7 @@ const CourseDetails = ({
                 (item: any, index: number) => (
                   <div className="w-full pb-4" key={index}>
                     <div className="flex">
-                      <div className="w-[50px] h-[50px]">
+                      <div>
                         <Image
                           src={
                             item.user?.avatar?.url
@@ -165,9 +165,9 @@ const CourseDetails = ({
                               : defaultAvatar
                           }
                           alt=""
-                          width={50}
-                          height={50}
-                          className="w-[50px] h-[50px] rounded-full object-cover"
+                          width={75}
+                          height={75}
+                          className="rounded-full object-cover"
                         />
                       </div>
                       <div className="hidden 800px:block pl-2">
@@ -283,7 +283,7 @@ const CourseDetails = ({
       <>
         {open && (
           <div className="w-full h-screen bg-[#00000036] fixed top-0 left-0 z-50 flex items-center justify-center">
-            <div className="w-[35vw] min-h-[70vh] bg-white rounded-xl shadow p-3">
+            <div className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[50%] h-max bg-white rounded-xl shadow p-3">
               <div className="w-full flex justify-end">
                 <IoCloseOutline
                   size={40}

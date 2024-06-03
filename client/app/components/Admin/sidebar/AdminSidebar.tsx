@@ -164,7 +164,6 @@ const AdminSidebar:FC<Props> = ({activeItem}) => {
                     border: "3px solid #5b6fe6",
                   }}
                   className="w-[80px] h-[80px]"
-                  unoptimized={true}
                 />
               </Box>
               <Box textAlign="center">

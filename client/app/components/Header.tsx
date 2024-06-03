@@ -14,7 +14,7 @@ import avatar from "../../public/assets/avatar.png";
 import { useSession } from "next-auth/react";
 import { useSocialAuthMutation } from "@/redux/features/auth/authApi";
 import toast from "react-hot-toast";
-import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
+import { useSelector } from "react-redux";
 
 type Props = {
   open: boolean;
@@ -27,24 +27,17 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
   const { data } = useSession();
   const [active, setActive] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
-  const {
-    data: userData,
-    isLoading,
-    refetch,
-  } = useLoadUserQuery(undefined, {});
+  const { user } = useSelector((state: any) => state.auth);
   const [socialAuth, { isSuccess }] = useSocialAuthMutation();
 
   useEffect(() => {
-    if (!isLoading) {
-      if (!userData) {
-        if (data) {
-          socialAuth({
-            email: data?.user?.email,
-            name: data?.user?.name,
-            avatar: data.user?.image,
-          });
-          refetch();
-        }
+    if (!user) {
+      if (data) {
+        socialAuth({
+          email: data?.user?.email,
+          name: data?.user?.name,
+          avatar: data.user?.image,
+        });
       }
     }
 
@@ -53,7 +46,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
         toast.success("Logged In Successfully!");
       }
     }
-  }, [data, userData, isLoading]);
+  }, [data, user]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -106,12 +99,10 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
                 />
               </div>
               {/* Above code is only for mobile: */}
-              {userData ? (
+              {user ? (
                 <Link href={"/profile"}>
                   <Image
-                    src={
-                      userData.user.avatar ? userData.user.avatar.url : avatar
-                    }
+                    src={user.avatar ? user.avatar.url : avatar}
                     alt=""
                     width={30}
                     height={30}
@@ -119,13 +110,12 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
                     style={{
                       border: activeItem === 5 ? "2px solid #37a39a" : "none",
                     }}
-                    unoptimized={true}
                   />
                 </Link>
               ) : (
                 <HiOutlineUserCircle
                   size={25}
-                  className="hidden 800px:block cursor-pointer dark:text-white text-black"
+                  className="hidden 800px:block cursor-pointer dark:text-white text-[#000]"
                   onClick={() => setOpen(true)}
                 />
               )}
@@ -141,7 +131,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
           >
             <div className="w-[70%] fixed h-screen z-[99999] bg-white dark:bg-neutral-950 top-0 right-0">
               <NavItems activeItem={activeItem} isMobile={true} />
-              {!userData ? (
+              {!user ? (
                 <>
                   <span
                     className="font-Poppins cursor-pointer text-black dark:text-white"
@@ -157,9 +147,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
               ) : (
                 <Link href={"/profile"}>
                   <Image
-                    src={
-                      userData.user.avatar ? userData.user.avatar.url : avatar
-                    }
+                    src={user.avatar ? user.avatar.url : avatar}
                     alt=""
                     width={25}
                     height={25}
@@ -167,7 +155,6 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
                     style={{
                       border: activeItem === 5 ? "2px solid #37a39a" : "none",
                     }}
-                    unoptimized={true}
                   />
                   <span className="ml-3 text-black dark:text-white font-Poppins">
                     User Profile
@@ -194,7 +181,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, setRoute, route }) => {
               setRoute={setRoute}
               activeItem={activeItem}
               component={Login}
-              refetch={refetch}
+              // refetch={refetch}
             />
           )}
         </>

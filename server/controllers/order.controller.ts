@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express"; // Importing required types
 import { CatchAsyncError } from "../middleware/catchAsyncError"; // Importing error handling middleware
 import ErrorHandler from "../utils/ErrorHandler"; // Importing custom error handler
-import userModel from "../models/user.model"; // Importing user model
+import userModel, { IUser } from "../models/user.model"; // Importing user model
 import { IOrder } from "../models/order.model"; // Importing order model interface
-import CourseModel from "../models/course.model"; // Importing course model
+import CourseModel, { ICourse } from "../models/course.model"; // Importing course model
 import path from "path"; // Importing Node's path module
 import ejs from "ejs"; // Importing EJS library for templating
 import sendEmail from "../utils/sendEmail"; // Importing sendEmail utility function
@@ -19,7 +19,7 @@ export const createOrder = CatchAsyncError(
     // Destructuring request, response, and next function
     try {
       // Starting try block to handle errors
-      const { courseId, payment_info } = req.body as IOrder; // Destructuring courseId and payment_info from request body
+      const { courseId, payment_info } = req.body; // Destructuring courseId and payment_info from request body
 
       if (payment_info) {
         if ("id" in payment_info) {
@@ -46,33 +46,11 @@ export const createOrder = CatchAsyncError(
         );
       }
 
-      const course = await CourseModel.findById(courseId); // Finding course by ID
+      const course: ICourse | null = await CourseModel.findById(courseId); // Finding course by ID
       if (!course) {
         // If course is not found, return error
         return next(new ErrorHandler("Course not found!", 404));
       }
-
-      const purchasedCount = course.purchased!;
-
-      await CourseModel.findOneAndUpdate(
-        { _id: course._id },
-        { $set: { purchased: purchasedCount + 1 } },
-        { new: true }
-      );
-
-      await course.save(); // Saving the updated course
-
-      user?.courses.push(course?._id); // Adding the course to the user's list of courses
-
-      await user?.save(); // Saving the updated user
-
-      await redis.set(req.user?._id, JSON.stringify(user));
-
-      const courses = await CourseModel.find().select(
-        "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
-      );
-
-      await redis.set("allCourses", JSON.stringify(courses));
 
       const data: any = {
         // Creating order data
@@ -84,7 +62,7 @@ export const createOrder = CatchAsyncError(
       const mailData = {
         // Creating data for email
         order: {
-          _id: course._id.toString().slice(0, 6),
+          _id: courseId.toString().slice(0, 6),
           user_name: user?.name,
           name: course.name,
           price: course.price,
@@ -117,6 +95,24 @@ export const createOrder = CatchAsyncError(
         // If there's an error sending the email, log it and continue with the order creation
         console.error("Error sending email:", error.message);
       }
+
+      course.purchased = course.purchased + 1;
+
+      await course.save(); // Saving the updated course
+
+      user?.courses.push(courseId); // Adding the course to the user's list of courses
+
+      await user?.save(); // Saving the updated user
+      
+      const courses = await CourseModel.find().select(
+        "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+        );
+        
+      await redis.set(req.user?._id, JSON.stringify(user));
+
+      await redis.set("allCourses", JSON.stringify(courses));
+      
+      await redis.set(courseId, JSON.stringify(course), "EX", 604800);
 
       await NotificationModel.create({
         // Creating a new notification

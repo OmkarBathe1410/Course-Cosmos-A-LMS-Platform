@@ -12,20 +12,16 @@ import {
 import { loadStripe } from "@stripe/stripe-js";
 
 type Props = {
-  id: string;
+  data: any;
+  courseDetailsRefetch: any;
 };
 
-const CourseDetailsPage = ({ id }: Props) => {
+const CourseDetailsPage = ({ data, courseDetailsRefetch }: Props) => {
   const [route, setRoute] = useState("Login");
   const [open, setOpen] = useState(false);
   const [stripePromise, setStripePromise] = useState<any>(null);
   const [clientSecret, setClientSecret] = useState("");
 
-  const {
-    data,
-    isLoading,
-    refetch: courseDetailsRefetch,
-  } = useGetCourseDetailsQuery(id, { refetchOnMountOrArgChange: true });
   const { data: config } = useGetStripePublishableKeyQuery({});
   const [createPaymentIntent, { data: paymentIntentData }] =
     useCreatePaymentIntentMutation({});
@@ -49,37 +45,33 @@ const CourseDetailsPage = ({ id }: Props) => {
 
   return (
     <>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <div>
-          <Heading
-            title={data?.course.name + " - Course Cosmos"}
-            description={
-              "Course Cosmos is a mid-scale Learning Management System (LMS) platform designed to empower learners and educators with a universe of knowledge at their fingertips. With an intuitive interface, a diverse range of courses, and a commitment to continuous growth, Course Cosmos offers an engaging and immersive learning experience for users of all backgrounds and skill levels. Explore the cosmos of learning and unlock your potential with Course Cosmos."
-            }
-            keywords={data.course.tags}
-          />
-          <Header
-            route={route}
-            setRoute={setRoute}
-            open={open}
+      <div>
+        <Heading
+          title={data?.course.name + " - Course Cosmos"}
+          description={
+            "Course Cosmos is a mid-scale Learning Management System (LMS) platform designed to empower learners and educators with a universe of knowledge at their fingertips. With an intuitive interface, a diverse range of courses, and a commitment to continuous growth, Course Cosmos offers an engaging and immersive learning experience for users of all backgrounds and skill levels. Explore the cosmos of learning and unlock your potential with Course Cosmos."
+          }
+          keywords={data.course.tags}
+        />
+        <Header
+          route={route}
+          setRoute={setRoute}
+          open={open}
+          setOpen={setOpen}
+          activeItem={1}
+        />
+        {stripePromise && (
+          <CourseDetails
+            data={data.course}
+            stripePromise={stripePromise}
+            clientSecret={clientSecret}
             setOpen={setOpen}
-            activeItem={1}
+            setRoute={setRoute}
+            courseDetailsRefetch={courseDetailsRefetch}
           />
-          {stripePromise && (
-            <CourseDetails
-              data={data.course}
-              stripePromise={stripePromise}
-              clientSecret={clientSecret}
-              setOpen={setOpen}
-              setRoute={setRoute}
-              courseDetailsRefetch={courseDetailsRefetch}
-            />
-          )}
-          <Footer />
-        </div>
-      )}
+        )}
+        <Footer />
+      </div>
     </>
   );
 };

@@ -38,7 +38,6 @@ const SidebarProfile: FC<Props> = ({
           height={30}
           alt=""
           className="w-[30px] h-[30px] cursor-pointer rounded-full"
-          unoptimized={true}
         />
         <h5 className="pl-3 800px:block hidden font-Poppins dark:text-white text-black">
           My Account
