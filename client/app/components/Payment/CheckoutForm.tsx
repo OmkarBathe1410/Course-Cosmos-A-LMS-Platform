@@ -7,24 +7,34 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
-import { redirect } from "next/navigation";
 import React, { FC, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import socketIO from "socket.io-client";
+
+const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
+const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
 type Props = {
   setOpen: any;
   data: any;
+  userRefetch: any;
+  user: any;
+  courseDetailsRefetch: any;
 };
 
-const CheckoutForm: FC<Props> = ({ setOpen, data }) => {
+const CheckoutForm: FC<Props> = ({
+  setOpen,
+  data,
+  userRefetch,
+  user,
+  courseDetailsRefetch,
+}) => {
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState<any>("");
-  const [loadUser, setLoadUser] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [createOrder, { isSuccess, error }] = useCreateOrderMutation();
-  const {} = useLoadUserQuery(undefined, { skip: !loadUser ? true : false });
+  const [createOrder, { data: orderData, error }] = useCreateOrderMutation();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -46,11 +56,16 @@ const CheckoutForm: FC<Props> = ({ setOpen, data }) => {
   };
 
   useEffect(() => {
-    if (isSuccess) {
+    if (orderData) {
       setOpen(false);
-      setLoadUser(true);
+      userRefetch();
+      courseDetailsRefetch();
       toast.success("Course purchased successfully!");
-      redirect(`/course-access/${data._id}`);
+      socketId.emit("notification", {
+        userId: user._id,
+        title: "New Order",
+        message: `You have a new order for ${data?.name} from ${user?.name}`,
+      });
     }
     if (error) {
       if ("data" in error) {
@@ -58,7 +73,7 @@ const CheckoutForm: FC<Props> = ({ setOpen, data }) => {
         toast.error(errorMessage.data.message);
       }
     }
-  }, [isSuccess, error]);
+  }, [orderData, error]);
 
   return (
     <form id="payment-form" onSubmit={handleSubmit} className="font-Poppins">
