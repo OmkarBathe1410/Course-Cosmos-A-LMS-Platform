@@ -40,6 +40,10 @@ const CourseDetails = ({
   useEffect(() => {
     setUser(userData?.user);
   }, [userData]);
+  
+  useEffect(() => {
+   userRefetch(); 
+  }, [])
 
   const discountPercentage =
     ((data?.estimatedPrice - data?.price) / data?.estimatedPrice) * 100;
@@ -249,7 +253,7 @@ const CourseDetails = ({
                 </div>
               )}
               <div className="flex items-center">
-                {isPurchased ? (
+                {isPurchased || userData?.user?.role === "admin" ? (
                   <Link
                     className={`${styles.button} !w-max my-4 font-Poppins cursor-pointer !bg-[crimson]`}
                     href={`/course-access/${data._id}`}

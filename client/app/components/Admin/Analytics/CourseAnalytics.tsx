@@ -10,6 +10,7 @@ import {
   Label,
   Bar,
   LabelList,
+  Tooltip,
 } from "recharts";
 
 type Props = {
@@ -65,7 +66,8 @@ const CourseAnalytics: FC<Props> = ({ isDashboard }) => {
                 <XAxis dataKey="month">
                   <Label offset={0} position={"insideBottom"} />
                 </XAxis>
-                <YAxis domain={[minValue, "auto"]} />
+                <YAxis dataKey="count" />
+                <Tooltip />
                 <Bar dataKey="count" fill="#3faf82">
                   <LabelList dataKey="count" position={"top"} />
                 </Bar>

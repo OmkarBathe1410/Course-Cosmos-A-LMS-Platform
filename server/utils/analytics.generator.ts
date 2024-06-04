@@ -49,7 +49,7 @@ export async function generateLast12MonthsData<T extends Document>(
     });
 
     // Add the monthly data (month and count) to the last12Months array
-    last12Months.push({ month: monthYear, count });
+    last12Months.push({ month: monthYear, count: count });
   }
 
   // Return an object containing the last 12 months' data

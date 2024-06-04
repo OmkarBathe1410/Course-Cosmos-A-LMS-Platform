@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Box, Button } from "@mui/material";
 import { useTheme } from "next-themes";
 import Loader from "../../Loader/Loader";
@@ -144,7 +144,7 @@ const AllInvoices: FC<Props> = ({ isDashboard }) => {
                   theme === "dark" ? "#b7ebde !important" : "#000 !important",
               },
               "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-                color: "#fff !important",
+                color: theme === "dark" ? "#fff" : "#000",
               },
             }}
           >
@@ -152,6 +152,10 @@ const AllInvoices: FC<Props> = ({ isDashboard }) => {
               checkboxSelection={isDashboard ? false : true}
               rows={rows}
               columns={columns}
+              className="text-black dark"
+              slots={{
+                toolbar: !isDashboard ? GridToolbar : null,
+              }}
             />
           </Box>
         </Box>

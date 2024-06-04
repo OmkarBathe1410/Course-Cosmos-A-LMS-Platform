@@ -10,6 +10,7 @@ import { styles } from "../styles/style";
 import CourseCard from "../components/Course/CourseCard";
 import { BiSearch } from "react-icons/bi";
 import { toast } from "react-hot-toast";
+import Footer from "../components/Footer";
 
 type Props = {};
 
@@ -49,7 +50,7 @@ const page = (props: Props) => {
   };
 
   return (
-    <div>
+    <div className="min-h-screen">
       {isLoading ? (
         <Loader />
       ) : (
@@ -132,6 +133,8 @@ const page = (props: Props) => {
                 ))}
             </div>
           </div>
+          <br />
+          <Footer />
         </>
       )}
     </div>

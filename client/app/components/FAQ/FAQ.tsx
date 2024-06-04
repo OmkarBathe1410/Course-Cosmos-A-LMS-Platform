@@ -57,7 +57,7 @@ const FAQ = (props: Props) => {
                     </button>
                   </dt>
                   {activeQuestion === q._id && (
-                    <dd className="mt-12 pr-12">
+                    <dd className="mt-5 pr-12">
                       <p className="text-base font-Poppins text-black dark:text-white">
                         {q.answer}
                       </p>

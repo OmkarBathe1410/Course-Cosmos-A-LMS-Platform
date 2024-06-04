@@ -331,6 +331,7 @@ const CourseContentMedia = ({
               setAnswer={setAnswer}
               handleAnswerSubmit={handleAnswerSubmit}
               user={user}
+              questionId={questionId}
               setQuestionId={setQuestionId}
               answerCreationLoading={answerCreationLoading}
             />
@@ -440,24 +441,28 @@ const CourseContentMedia = ({
                     </div>
                   </div>
 
-                  {user?.role === "admin" && (
-                    <div className="w-full flex mt-2" key={index}>
-                      <span
-                        className="800px:!pl-14 dark:text-[#ffffff83] text-[#000000be] cursor-pointer mr-2"
-                        onClick={() => {
-                          setIsReviewReply(!isReviewReply);
-                        }}
-                      >
-                        Add Reply
-                      </span>
-                      <BiMessage
-                        size={20}
-                        className="cursor-pointer dark:text-[#ffffff83] text-[#0000007e]"
-                      />
-                    </div>
-                  )}
+                  {user?.role === "admin" &&
+                    item.commentReplies.length === 0 && (
+                      <div className="w-full flex mt-2" key={index}>
+                        <span
+                          className="800px:!pl-10 dark:text-[#ffffff83] text-[#000000be] cursor-pointer mr-2"
+                          onClick={() => {
+                            setIsReviewReply(!isReviewReply),
+                              setReviewId(item._id);
+                          }}
+                        >
+                          {
+                            !isReviewReply ? "Add Reply" : "Cancel Reply"
+                          }
+                        </span>
+                        <BiMessage
+                          size={20}
+                          className={`${isReviewReply ? "hidden" : "cursor-pointer dark:text-[#ffffff83] text-[#0000007e]"}`}
+                        />
+                      </div>
+                    )}
 
-                  {isReviewReply && (
+                  {isReviewReply && reviewId === item._id && (
                     <>
                       {item.commentReplies.map((item: any) => (
                         <div className="w-full flex 800px:!ml-16 my-5 dark:text-white text-black">
@@ -501,11 +506,10 @@ const CourseContentMedia = ({
                             type="text"
                             placeholder="Enter your reply..."
                             value={reviewReply}
-                            onChange={(e: any) => {
-                              setReviewReply(e.target.value),
-                                setReviewId(item._id);
-                            }}
-                            className={`block 800px:ml-12 mt-2 outline-none bg-transparent border-b border-[#00000027] dark:text-white text-black dark:border-[#fff] p-[5px] w-[95%] ${
+                            onChange={(e: any) =>
+                              setReviewReply(e.target.value)
+                            }
+                            className={`block 800px:ml-10 mt-2 outline-none bg-transparent border-b border-[#00000027] dark:text-white text-black dark:border-[#fff] p-[5px] w-[95%] ${
                               reviewReply === "" ||
                               (replyToReviewCreationLoading &&
                                 "cursor-not-allowed")
@@ -542,6 +546,7 @@ const CommentReply = ({
   answer,
   setAnswer,
   handleAnswerSubmit,
+  questionId,
   setQuestionId,
   answerCreationLoading,
 }: any) => {
@@ -556,6 +561,7 @@ const CommentReply = ({
             activeVideo={activeVideo}
             answer={answer}
             setAnswer={setAnswer}
+            questionId={questionId}
             setQuestionId={setQuestionId}
             handleAnswerSubmit={handleAnswerSubmit}
             answerCreationLoading={answerCreationLoading}
@@ -569,6 +575,7 @@ const CommentReply = ({
 const CommentItem = ({
   item,
   setQuestionId,
+  questionId,
   answer,
   setAnswer,
   handleAnswerSubmit,
@@ -603,7 +610,9 @@ const CommentItem = ({
         <div className="w-full flex">
           <span
             className="800px:pl-16 dark:text-[#ffffff83] text-[#000000b8] cursor-pointer mr-2"
-            onClick={() => setReplyActive(!replyActive)}
+            onClick={() => {
+              setReplyActive(!replyActive), setQuestionId(item._id);
+            }}
           >
             {!replyActive
               ? item?.questionReplies.length !== 0
@@ -619,7 +628,7 @@ const CommentItem = ({
             {item?.questionReplies.length}
           </span>
         </div>
-        {replyActive && (
+        {replyActive && questionId === item._id && (
           <>
             {item.questionReplies.map((item: any) => (
               <div className="w-full flex 800px:!ml-16 my-5 dark:text-white text-black">
@@ -663,9 +672,7 @@ const CommentItem = ({
                   type="text"
                   placeholder="Enter your answer..."
                   value={answer}
-                  onChange={(e: any) => {
-                    setAnswer(e.target.value), setQuestionId(item._id);
-                  }}
+                  onChange={(e: any) => setAnswer(e.target.value)}
                   className={`block 800px:ml-12 mt-2 outline-none bg-transparent border-b border-[#00000027] dark:text-white text-black dark:border-[#fff] p-[5px] w-[95%] ${
                     answer === "" || (answerCreationLoading && "cursor-no-drop")
                   }`}
