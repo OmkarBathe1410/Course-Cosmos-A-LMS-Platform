@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, FC } from "react";
 import Heading from "../utils/Heading";
 import Header from "../components/Header";
 import FAQ from "../components/FAQ/FAQ";
@@ -8,7 +8,7 @@ import Footer from "../components/Footer";
 
 type Props = {};
 
-const page = (props: Props) => {
+const Page: FC<Props> = (props) => {
   const [open, setOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(4);
   const [route, setRoute] = useState("Login");
@@ -34,4 +34,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;

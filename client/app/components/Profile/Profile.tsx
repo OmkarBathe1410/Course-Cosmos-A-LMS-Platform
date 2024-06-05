@@ -85,7 +85,7 @@ const Profile: FC<Props> = ({ user, logoutHandler, logoutLoading }) => {
               </div>
               {courses.length === 0 && (
                 <h1 className="text-center text-[18px] font-Poppins">
-                  You haven't purchased any course!
+                  You haven&apos;t purchased any course!
                 </h1>
               )}
             </div>

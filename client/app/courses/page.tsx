@@ -2,7 +2,7 @@
 
 import { useGetUsersAllCoursesQuery } from "@/redux/features/courses/coursesApi";
 import { useGetLayoutDataQuery } from "@/redux/features/layout/layoutApi";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, FC } from "react";
 import Loader from "../components/Loader/Loader";
 import Header from "../components/Header";
 import Heading from "../utils/Heading";
@@ -14,7 +14,7 @@ import Footer from "../components/Footer";
 
 type Props = {};
 
-const page = (props: Props) => {
+const Page: FC<Props> = (props) => {
   const { data, isLoading } = useGetUsersAllCoursesQuery(undefined, {});
   const { data: categoriesData } = useGetLayoutDataQuery("Categories", {});
 
@@ -141,4 +141,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;

@@ -12,9 +12,9 @@ const Policy = (props: Props) => {
       <br />
       <div className="w-[95%] 800px:w-[85%] m-auto text-justify">
         <p className="min-[240px]:text-sm sm:text-base xl:text-lg">
-          These Terms and Conditions ("Terms") govern your use of the Course
-          Cosmos platform ("Platform"), which includes all services, features,
-          and content provided by Course Cosmos.
+          These Terms and Conditions (&quot;Terms&quot;) govern your use of the
+          Course Cosmos platform (&quot;Platform&quot;), which includes all
+          services, features, and content provided by Course Cosmos.
           <br />
           <br />
           By using the Platform, you agree to be bound by these Terms:
@@ -27,11 +27,11 @@ const Policy = (props: Props) => {
           your account or password with anyone.
           <br />
           2. Content and Ownership: The Platform contains content, including
-          text, images, videos, and other materials ("Content"). The Content is
-          owned by Course Cosmos or its licensors. You are granted a limited
-          license to use the Content for personal, non-commercial purposes. You
-          agree not to reproduce, modify, or distribute the Content without
-          permission.
+          text, images, videos, and other materials (&quot;Content&quot;). The
+          Content is owned by Course Cosmos or its licensors. You are granted a
+          limited license to use the Content for personal, non-commercial
+          purposes. You agree not to reproduce, modify, or distribute the
+          Content without permission.
           <br />
           3. Payment: Course Cosmos offers various payment plans and courses.
           You agree to pay for the services you use, and you are responsible for

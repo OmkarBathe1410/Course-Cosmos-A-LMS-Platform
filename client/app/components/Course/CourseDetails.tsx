@@ -195,8 +195,8 @@ const CourseDetails = ({
                         <Ratings rating={item.rating} />
                       </div>
                     </div>
-                    {item.commentReplies.map((item: any) => (
-                      <div className="w-full flex 800px:!ml-16 my-5 dark:text-white text-black">
+                    {item.commentReplies.map((item: any, index: number) => (
+                      <div key={index} className="w-full flex 800px:!ml-16 my-5 dark:text-white text-black">
                         <div className="">
                           <Image
                             src={

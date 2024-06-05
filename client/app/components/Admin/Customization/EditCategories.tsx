@@ -79,11 +79,13 @@ const EditCategories: FC<Props> = (props) => {
         <Loader />
       ) : (
         <div className="text-center font-Poppins">
-          <h1 className={`${styles.title} dark:text-white text-blue-600`}>All Categories</h1>
+          <h1 className={`${styles.title} dark:text-white text-blue-600`}>
+            All Categories
+          </h1>
           {categories &&
             categories.map((item: any, index: number) => {
               return (
-                <div className="p-3">
+                <div className="p-3" key={index}>
                   <div className="flex items-center w-full justify-center">
                     <input
                       className={`${styles.input} !w-[unset] !border-none !text-[17px]`}
@@ -107,11 +109,14 @@ const EditCategories: FC<Props> = (props) => {
             })}
           <br />
           <br />
-          <div className="w-max m-auto flex justify-center items-center cursor-pointer dark:bg-transparent bg-green-500 px-4 py-3 rounded-xl" onClick={newCategoriesHandler}>
-            <IoMdAddCircleOutline
-              className="!text-[22px] dark:text-white text-black"
-            />
-            <p className="!text-[18px] ml-2 !text-white">Click here to add a new category</p>
+          <div
+            className="w-max m-auto flex justify-center items-center cursor-pointer dark:bg-transparent bg-green-500 px-4 py-3 rounded-xl"
+            onClick={newCategoriesHandler}
+          >
+            <IoMdAddCircleOutline className="!text-[22px] dark:text-white text-black" />
+            <p className="!text-[18px] ml-2 !text-white">
+              Click here to add a new category
+            </p>
           </div>
           <br />
           <div className="flex justify-end">

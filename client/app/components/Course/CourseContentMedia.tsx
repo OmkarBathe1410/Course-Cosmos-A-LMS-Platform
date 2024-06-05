@@ -271,7 +271,7 @@ const CourseContentMedia = ({
       {activeBar === 1 && (
         <div>
           {data[activeVideo]?.links.map((item: any, index: number) => (
-            <div className="mb-5">
+            <div key={index} className="mb-5">
               <div className="800px:!text-[16px] 800px:!inline-block">
                 <h2 className="text-slate-950 dark:text-white">
                   {item.title && item.title + " :"}
@@ -451,21 +451,26 @@ const CourseContentMedia = ({
                               setReviewId(item._id);
                           }}
                         >
-                          {
-                            !isReviewReply ? "Add Reply" : "Cancel Reply"
-                          }
+                          {!isReviewReply ? "Add Reply" : "Cancel Reply"}
                         </span>
                         <BiMessage
                           size={20}
-                          className={`${isReviewReply ? "hidden" : "cursor-pointer dark:text-[#ffffff83] text-[#0000007e]"}`}
+                          className={`${
+                            isReviewReply
+                              ? "hidden"
+                              : "cursor-pointer dark:text-[#ffffff83] text-[#0000007e]"
+                          }`}
                         />
                       </div>
                     )}
 
                   {isReviewReply && reviewId === item._id && (
                     <>
-                      {item.commentReplies.map((item: any) => (
-                        <div className="w-full flex 800px:!ml-16 my-5 dark:text-white text-black">
+                      {item.commentReplies.map((item: any, index: number) => (
+                        <div
+                          key={index}
+                          className="w-full flex 800px:!ml-16 my-5 dark:text-white text-black"
+                        >
                           <div className="">
                             <Image
                               src={
@@ -630,8 +635,11 @@ const CommentItem = ({
         </div>
         {replyActive && questionId === item._id && (
           <>
-            {item.questionReplies.map((item: any) => (
-              <div className="w-full flex 800px:!ml-16 my-5 dark:text-white text-black">
+            {item.questionReplies.map((item: any, index: number) => (
+              <div
+                key={index}
+                className="w-full flex 800px:!ml-16 my-5 dark:text-white text-black"
+              >
                 <div className="">
                   <Image
                     src={

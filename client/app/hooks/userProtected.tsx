@@ -1,12 +1,12 @@
 import { redirect } from "next/navigation";
-import userAuth from "./userAuth";
+import UserAuth from "./userAuth";
 
 interface ProtectedProps {
   children: JSX.Element;
 }
 
 export default function Protected({ children }: ProtectedProps) {
-  const isAuthenticated = userAuth();
+  const isAuthenticated = UserAuth();
 
   return isAuthenticated ? children : redirect("/");
 }
