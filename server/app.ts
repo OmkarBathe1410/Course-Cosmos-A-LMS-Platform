@@ -9,6 +9,7 @@ import orderRouter from "./routes/order.route";
 import notificationRoute from "./routes/notification.route";
 import layoutRouter from "./routes/layout.route";
 import analyticsRouter from "./routes/analytics.route";
+import { rateLimit } from "express-rate-limit";
 
 require("dotenv").config();
 
@@ -23,10 +24,18 @@ app.use(cookieParser());
 // Enable CORS with the specified origin from environment variables
 app.use(
   cors({
-    origin: ['http://localhost:3000'],
+    origin: ["http://localhost:3000"],
     credentials: true,
   })
 );
+
+// API Request Limit:
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+});
 
 // Mount the userRouter under the "/api/v1" path prefix
 app.use(
@@ -56,5 +65,8 @@ app.all("*", (req: Request, res: Response, next: NextFunction) => {
 
 // Apply custom error handling middleware to handle errors
 app.use(ErrorMiddleWare);
+
+// Apply API request limiter:
+app.use(limiter);
 
 export default app;

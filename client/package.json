@@ -9,29 +9,30 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mui/x-data-grid": "^7.3.2",
+    "@mui/x-data-grid": "^7.6.1",
     "@stripe/react-stripe-js": "^2.7.1",
-    "@stripe/stripe-js": "^3.4.0",
-    "axios": "^1.6.8",
-    "next": "14.2.1",
+    "@stripe/stripe-js": "^3.5.0",
+    "axios": "^1.7.2",
+    "next": "^14.2.1",
     "next-auth": "^4.24.7",
     "next-themes": "^0.2.1",
-    "react": "^18",
-    "react-dom": "^18",
-    "react-icons": "^5.1.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-icons": "^5.2.1",
     "react-pro-sidebar": "^0.7.1",
     "recharts": "^2.12.7",
+    "sharp": "^0.33.4",
     "socket.io-client": "^4.7.5",
     "timeago.js": "^4.0.2"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.1",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "@types/node": "^20.14.2",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.2.1",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.4.5"
   }
 }
