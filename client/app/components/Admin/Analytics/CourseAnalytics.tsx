@@ -66,7 +66,7 @@ const CourseAnalytics: FC<Props> = ({ isDashboard }) => {
                 <XAxis dataKey="month">
                   <Label offset={0} position={"insideBottom"} />
                 </XAxis>
-                <YAxis dataKey="count" />
+                <YAxis dataKey="count" domain={[minValue, "auto"]} />
                 <Tooltip />
                 <Bar dataKey="count" fill="#3faf82">
                   <LabelList dataKey="count" position={"top"} />

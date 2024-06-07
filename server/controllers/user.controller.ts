@@ -203,8 +203,8 @@ export const logoutUser = CatchAsyncError(
       res.cookie("access_token", "", {maxAge: 1});
       res.cookie("refresh_token", "", {maxAge: 1});
 
-      const userId = req.user?._id || "";
-      redis.del(userId);
+      const userId = req.user?._id;
+      redis.del(userId as any);
 
       // Return success response
       res.status(200).json({
@@ -295,7 +295,7 @@ export const getUserInfo = CatchAsyncError(
       const userId = req.user?._id;
 
       // Call the getUserById function (defined elsewhere in the codebase) with the user's ID and the Express.js Response object (res)
-      getUserById(userId, res);
+      getUserById(userId as any, res);
     } catch (error: any) {
       // If an error occurs during the execution of getUserById, catch the error and pass it to the next function with an ErrorHandler instance
       return next(new ErrorHandler(error.message, 400));
@@ -378,7 +378,7 @@ export const updateUserInfo = CatchAsyncError(
       await user?.save();
 
       // Updating user data in Redis cache
-      await redis.set(userId, JSON.stringify(user));
+      await redis.set(userId as any, JSON.stringify(user));
 
       // Sending a success response with the updated user information
       res.status(201).json({
@@ -442,7 +442,7 @@ export const updateUserPassword = CatchAsyncError(
       await user.save();
 
       // Updating user data in Redis cache
-      await redis.set(req.user?._id, JSON.stringify(user));
+      await redis.set(req.user?._id as any, JSON.stringify(user));
 
       // Sending a success response with the updated user information
       res.status(201).json({
@@ -516,7 +516,7 @@ export const updateUserAvatar = CatchAsyncError(
       await user?.save();
 
       // Updating user data in Redis cache
-      await redis.set(userId, JSON.stringify(user));
+      await redis.set(userId as any, JSON.stringify(user));
 
       // Sending a success response with the updated user information
       res.status(201).json({

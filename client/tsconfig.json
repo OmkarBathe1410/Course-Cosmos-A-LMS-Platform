@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
-    "target": "ES6",
-    "downlevelIteration": true,
     "allowJs": true,
+    "target": "ESNext",
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
@@ -20,8 +19,8 @@
       }
     ],
     "paths": {
-      "react": [ "./node_modules/@types/react" ],
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "react": ["./node_modules/@types/react"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

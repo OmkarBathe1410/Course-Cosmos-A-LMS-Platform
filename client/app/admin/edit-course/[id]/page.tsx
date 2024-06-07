@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import AdminSidebar from "../../../../app/components/Admin/sidebar/AdminSidebar";
 import Heading from "../../../../app/utils/Heading";
 import DashboardHeader from "../../../../app/components/Admin/DashboardHeader";
@@ -6,7 +7,8 @@ import EditCourse from "../../../components/Admin/Course/EditCourse";
 
 type Props = {};
 
-const page = ({ params }: any) => {
+const Page = ({ params }: any) => {
+  const [open, setOpen] = useState(false);
   const id = params?.id;
   return (
     <div className="min-h-screen">
@@ -20,7 +22,7 @@ const page = ({ params }: any) => {
           <AdminSidebar activeItem={"Live Courses"}/>
         </div>
         <div className="w-[85%]">
-          <DashboardHeader />
+          <DashboardHeader open={open} setOpen={setOpen} />
           <EditCourse id={id} />
         </div>
       </div>
@@ -28,4 +30,4 @@ const page = ({ params }: any) => {
   );
 };
 
-export default page;
+export default Page;

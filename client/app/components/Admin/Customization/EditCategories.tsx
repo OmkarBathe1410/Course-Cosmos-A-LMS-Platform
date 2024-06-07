@@ -5,14 +5,14 @@ import {
 } from "../../../../redux/features/layout/layoutApi";
 import React, { FC, useEffect, useState } from "react";
 import Loader from "../../Loader/Loader";
-import { styles } from "@/app/styles/style";
+import { styles } from "../../../styles/style";
 import { AiOutlineDelete } from "react-icons/ai";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { toast } from "react-hot-toast";
 
 type Props = {};
 
-const EditCategories: FC<Props> = (props) => {
+const EditCategories: FC<Props> = () => {
   const { data, isLoading, refetch } = useGetLayoutDataQuery("Categories", {
     refetchOnMountOrArgChange: true,
   });
@@ -82,8 +82,7 @@ const EditCategories: FC<Props> = (props) => {
           <h1 className={`${styles.title} dark:text-white text-blue-600`}>
             All Categories
           </h1>
-          {categories &&
-            categories.map((item: any, index: number) => {
+          {categories.map((item: any, index: number) => {
               return (
                 <div className="p-3" key={index}>
                   <div className="flex items-center w-full justify-center">

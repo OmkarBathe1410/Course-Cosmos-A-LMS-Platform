@@ -8,7 +8,9 @@ import CourseAnalytics from "../../components/Admin/Analytics/CourseAnalytics";
 
 type Props = {};
 
-const page = (props: Props) => {
+const Page = () => {
+  const [open, setOpen] = useState(false);
+
   return (
     <div className="min-h-screen">
       <AdminProtected>
@@ -23,7 +25,7 @@ const page = (props: Props) => {
               <AdminSidebar activeItem={"Courses Analytics"} />
             </div>
             <div className="w-[85%]">
-              <DashboardHeader />
+              <DashboardHeader open={open} setOpen={setOpen} />
               <CourseAnalytics />
             </div>
           </div>
@@ -33,4 +35,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;

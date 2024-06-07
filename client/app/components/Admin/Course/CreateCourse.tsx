@@ -5,13 +5,13 @@ import CourseOptions from "./CourseOptions";
 import CourseData from "./CourseData";
 import CourseContent from "./CourseContent";
 import CoursePreview from "./CoursePreview";
-import { useCreateCourseMutation } from "@/redux/features/courses/coursesApi";
+import { useCreateCourseMutation } from "../../../../redux/features/courses/coursesApi";
 import { toast } from "react-hot-toast";
 import { redirect } from "next/navigation";
 
 type Props = {};
 
-const CreateCourse = (props: Props) => {
+const CreateCourse = () => {
   const [createCourse, { isLoading, isSuccess, error }] =
     useCreateCourseMutation();
 
@@ -27,7 +27,7 @@ const CreateCourse = (props: Props) => {
         toast.error(errorData.data.message);
       }
     }
-  }, [isLoading, isSuccess, error]);
+  }, [isSuccess, error]);
 
   const [active, setActive] = useState(0);
   const [courseInfo, setCourseInfo] = useState({
@@ -153,7 +153,7 @@ const CreateCourse = (props: Props) => {
         )}
       </div>
       <div className="w-[20%] h-screen fixed z-[-1] right-0">
-        <CourseOptions active={active} setActive={setActive} />
+        <CourseOptions active={active} />
       </div>
     </div>
   );

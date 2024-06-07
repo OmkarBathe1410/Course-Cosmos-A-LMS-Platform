@@ -1,5 +1,5 @@
-import { styles } from "@/app/styles/style";
-import CoursePlayer from "@/app/utils/CoursePlayer";
+import { styles } from "../../../app/styles/style";
+import CoursePlayer from "../../../app/utils/CoursePlayer";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import {
@@ -16,11 +16,11 @@ import {
   useAddReplyToReviewMutation,
   useAddReviewInCourseMutation,
   useGetCourseDetailsQuery,
-} from "@/redux/features/courses/coursesApi";
+} from "../../../redux/features/courses/coursesApi";
 import { format } from "timeago.js";
 import { BiMessage } from "react-icons/bi";
 import { VscVerifiedFilled } from "react-icons/vsc";
-import Ratings from "@/app/utils/Ratings";
+import Ratings from "../../../app/utils/Ratings";
 import socketIO from "socket.io-client";
 
 const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";

@@ -6,7 +6,7 @@ import Loader from "../Loader/Loader";
 
 type Props = {};
 
-const ChangePassword: FC<Props> = (props) => {
+const ChangePassword: FC<Props> = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

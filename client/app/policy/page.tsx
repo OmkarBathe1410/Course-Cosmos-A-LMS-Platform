@@ -8,7 +8,7 @@ import Footer from "../components/Footer";
 
 type Props = {};
 
-const Page: FC<Props> = (props: Props) => {
+const Page: FC<Props> = () => {
   const [open, setOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(3);
   const [route, setRoute] = useState("Login");

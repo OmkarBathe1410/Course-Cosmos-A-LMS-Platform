@@ -1,4 +1,4 @@
-import { styles } from "@/app/styles/style";
+import { styles } from "../../../app/styles/style";
 import Image from "next/image";
 import React from "react";
 import ReviewCard from "../Review/ReviewCard";
@@ -64,7 +64,7 @@ export const reviews = [
   },
 ];
 
-const Reviews = (props: Props) => {
+const Reviews = () => {
   return (
     <div className="w-[90%] 800px:w-[85%] m-auto">
       <div className="w-full 800px:flex items-center">

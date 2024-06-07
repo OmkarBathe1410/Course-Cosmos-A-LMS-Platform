@@ -6,13 +6,13 @@ import Header from "../components/Header";
 import { useSelector } from "react-redux";
 import Profile from "../components/Profile/Profile";
 import Footer from "../components/Footer";
-import { useLogoutQuery } from "@/redux/features/auth/authApi";
+import { useLogoutQuery } from "../../redux/features/auth/authApi";
 import toast from "react-hot-toast";
 import Loader from "../components/Loader/Loader";
 
 type Props = {};
 
-const Page: FC<Props> = (props) => {
+const Page: FC<Props> = () => {
   const [open, setOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(5);
   const [route, setRoute] = useState("Login");

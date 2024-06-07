@@ -4,11 +4,12 @@ import Heading from "../../utils/Heading";
 import AdminSidebar from "../../components/Admin/sidebar/AdminSidebar";
 import AdminProtected from "../../hooks/adminProtected";
 import DashboardHeader from "../../components/Admin/DashboardHeader";
-import AllInvoices from "@/app/components/Admin/Order/AllInvoices";
+import AllInvoices from "../../components/Admin/Order/AllInvoices";
 
 type Props = {};
 
-const page = (props: Props) => {
+const Page = () => {
+  const [open, setOpen] = useState(false);
   return (
     <div className="min-h-screen">
       <AdminProtected>
@@ -23,7 +24,7 @@ const page = (props: Props) => {
               <AdminSidebar activeItem={"Invoices"} />
             </div>
             <div className="w-[85%]">
-              <DashboardHeader />
+              <DashboardHeader open={open} setOpen={setOpen} />
               <AllInvoices />
             </div>
           </div>
@@ -33,4 +34,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;

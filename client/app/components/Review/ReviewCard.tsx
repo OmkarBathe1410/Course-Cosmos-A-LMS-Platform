@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import Image from "next/image";
-import Ratings from "@/app/utils/Ratings";
+import Ratings from "../../../app/utils/Ratings";
 
 type Props = {
   item: any;

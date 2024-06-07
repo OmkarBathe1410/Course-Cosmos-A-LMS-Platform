@@ -12,7 +12,7 @@ import SignUp from "../components/Auth/SignUp";
 import Verification from "../components/Auth/Verification";
 import avatar from "../../public/assets/avatar.png";
 import { useSession } from "next-auth/react";
-import { useSocialAuthMutation } from "@/redux/features/auth/authApi";
+import { useSocialAuthMutation } from "../../redux/features/auth/authApi";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 

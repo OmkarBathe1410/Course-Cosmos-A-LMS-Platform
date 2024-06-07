@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { useSelector } from "react-redux";
 
 interface ProtectedProps {
-  children: JSX.Element;
+  children: React.JSX.Element;
 }
 
 export default function AdminProtected({ children }: ProtectedProps) {

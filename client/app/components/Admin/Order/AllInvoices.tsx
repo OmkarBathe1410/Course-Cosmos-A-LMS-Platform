@@ -4,9 +4,9 @@ import { Box, Button } from "@mui/material";
 import { useTheme } from "next-themes";
 import Loader from "../../Loader/Loader";
 import { format } from "timeago.js";
-import { useGetAllUsersQuery } from "@/redux/features/user/userApi";
-import { useGetAllCoursesQuery } from "@/redux/features/courses/coursesApi";
-import { useGetAllOrdersQuery } from "@/redux/features/orders/ordersApi";
+import { useGetAllUsersQuery } from "../../../../redux/features/user/userApi";
+import { useGetAllCoursesQuery } from "../../../../redux/features/courses/coursesApi";
+import { useGetAllOrdersQuery } from "../../../../redux/features/orders/ordersApi";
 import { AiOutlineMail } from "react-icons/ai";
 
 type Props = {
@@ -64,7 +64,7 @@ const AllInvoices: FC<Props> = ({ isDashboard }) => {
                 <Button>
                   <a href={`mailto:${params.row.userEmail}`}>
                     <AiOutlineMail
-                      className="dark:text-white text-black"
+                      className="text-black dark:text-white"
                       size={20}
                     />
                   </a>

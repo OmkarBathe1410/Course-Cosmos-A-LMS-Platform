@@ -27,41 +27,13 @@ import { useSelector } from "react-redux";
 import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "next-themes";
-import { useLogoutQuery } from "@/redux/features/auth/authApi";
-
-// interface itemProps {
-//   title: string;
-//   to: string;
-//   icon: JSX.Element;
-//   selectedItem: string;
-//   setSelectedItem: any;
-// }
-
-// const Item: FC<itemProps> = ({
-//   title,
-//   to,
-//   icon,
-//   selectedItem,
-//   setSelectedItem,
-// }) => {
-//   return (
-//     <MenuItem
-//       active={selectedItem === title}
-//       onClick={() => setSelectedItem(title)}
-//       icon={icon}
-//     >
-//       <Typography className="!text-[14px] !font-Poppins">{title}</Typography>
-//       <Link href={to} />
-//     </MenuItem>
-//   );
-// };
+import { useLogoutQuery } from "../../../../redux/features/auth/authApi";
 
 type Props = {
-  activeItem : string;
-}
+  activeItem: string;
+};
 
-const AdminSidebar:FC<Props> = ({activeItem}) => {
-  
+const AdminSidebar: FC<Props> = ({ activeItem }) => {
   const { user } = useSelector((state: any) => state.auth);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState(activeItem);
@@ -355,7 +327,11 @@ const AdminSidebar:FC<Props> = ({activeItem}) => {
               {!isCollapsed && "Extras"}
             </Typography>
 
-            <MenuItem active={selected === "Back to Profile Page"} onClick={() => setSelected("Back to Profile Page")} icon={<ExitToAppIcon />}>
+            <MenuItem
+              active={selected === "Back to Profile Page"}
+              onClick={() => setSelected("Back to Profile Page")}
+              icon={<ExitToAppIcon />}
+            >
               <Typography className="!text-[14px] !font-Poppins">
                 Back to Profile Page
               </Typography>

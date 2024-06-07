@@ -20,10 +20,7 @@ type Props = {
 const EditCourse: FC<Props> = ({ id }) => {
   const [updateCourse, { isLoading, isSuccess, error }] =
     useUpdateCourseMutation();
-  const { data, refetch } = useGetAllCoursesQuery(
-    {},
-    { refetchOnMountOrArgChange: true }
-  );
+  const { data } = useGetAllCoursesQuery({});
 
   const editCourseData = data && data.courses.find((i: any) => i._id === id);
 
@@ -187,7 +184,7 @@ const EditCourse: FC<Props> = ({ id }) => {
             )}
           </div>
           <div className="w-[20%] h-screen fixed z-[-1] right-0">
-            <CourseOptions active={active} setActive={setActive} />
+            <CourseOptions active={active} />
           </div>
         </div>
       )}

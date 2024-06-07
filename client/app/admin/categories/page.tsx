@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import AdminSidebar from "../../components/Admin/sidebar/AdminSidebar";
 import Heading from "../../utils/Heading";
 import DashboardHeader from "../../components/Admin/DashboardHeader";
@@ -6,7 +7,8 @@ import EditCategories from "../../components/Admin/Customization/EditCategories"
 
 type Props = {};
 
-const page = (props: Props) => {
+const Page = () => {
+  const [open, setOpen] = useState(false);
   return (
     <div className="min-h-screen">
       <Heading
@@ -19,7 +21,7 @@ const page = (props: Props) => {
           <AdminSidebar activeItem={"Categories"} />
         </div>
         <div className="w-[85%]">
-          <DashboardHeader />
+          <DashboardHeader open={open} setOpen={setOpen} />
           <EditCategories />
         </div>
       </div>
@@ -27,4 +29,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;

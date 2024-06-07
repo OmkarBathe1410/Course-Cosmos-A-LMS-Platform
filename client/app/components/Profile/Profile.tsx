@@ -3,11 +3,9 @@ import React, { FC, useEffect, useState } from "react";
 import SidebarProfile from "./SidebarProfile";
 import ProfileInfo from "./ProfileInfo";
 import ChangePassword from "./ChangePassword";
-import { useLogoutQuery } from "@/redux/features/auth/authApi";
 import Loader from "../Loader/Loader";
 import CourseCard from "../Course/CourseCard";
-import { useGetUsersAllCoursesQuery } from "@/redux/features/courses/coursesApi";
-import { toast } from "react-hot-toast";
+import { useGetUsersAllCoursesQuery } from "../../../redux/features/courses/coursesApi";
 
 type Props = {
   user: any;

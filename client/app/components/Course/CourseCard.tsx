@@ -1,4 +1,4 @@
-import Ratings from "@/app/utils/Ratings";
+import Ratings from "../../../app/utils/Ratings";
 import Image from "next/image";
 import Link from "next/link";
 import React, { FC } from "react";

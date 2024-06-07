@@ -1,14 +1,14 @@
-import Ratings from "@/app/utils/Ratings";
+import Ratings from "../../../app/utils/Ratings";
 import React, { useEffect, useState } from "react";
 import { IoCheckmarkDoneOutline, IoCloseOutline } from "react-icons/io5";
 import { format } from "timeago.js";
-import CoursePlayer from "@/app/utils/CoursePlayer";
+import CoursePlayer from "../../../app/utils/CoursePlayer";
 import Link from "next/link";
-import { styles } from "@/app/styles/style";
+import { styles } from "../../../app/styles/style";
 import CourseContentList from "../Course/CourseContentList";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../Payment/CheckoutForm";
-import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
+import { useLoadUserQuery } from "../../../redux/features/api/apiSlice";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
 import defaultAvatar from "../../../public/assets/avatar.png";

@@ -256,7 +256,7 @@ export const addQuestion = CatchAsyncError(
 
       await NotificationModel.create({
         user: req.user?._id,
-        title: "New Question Received",
+        title: "New Question",
         message: `You have a new question in ${courseContent.title}`,
       });
 
@@ -374,7 +374,7 @@ export const addAnswer = CatchAsyncError(
       if (req.user?._id === question.user._id) {
         await NotificationModel.create({
           user: req.user?._id,
-          title: "New Question Reply Received",
+          title: "New Question Reply",
           message: `You have a new question reply in ${courseContent.title}`,
         });
       } else {
@@ -479,7 +479,7 @@ export const addReview = CatchAsyncError(
       // Create Notification
       await NotificationModel.create({
         user: req.user?._id,
-        title: "New Review Received", // Notification title
+        title: "New Review", // Notification title
         message: `${req.user?.name} has given a review on ${course?.name}`, // Notification message
       });
 

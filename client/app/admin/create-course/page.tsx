@@ -1,12 +1,14 @@
-import React from "react";
-import AdminSidebar from "../../../app/components/Admin/sidebar/AdminSidebar";
-import Heading from "../../../app/utils/Heading";
+"use client";
+import React, { useState } from "react";
+import AdminSidebar from "../../components/Admin/sidebar/AdminSidebar";
+import Heading from "../../utils/Heading";
 import CreateCourse from "../../components/Admin/Course/CreateCourse";
-import DashboardHeader from "../../../app/components/Admin/DashboardHeader";
+import DashboardHeader from "../../components/Admin/DashboardHeader";
 
 type Props = {};
 
-const page = (props: Props) => {
+const Page = () => {
+  const [open, setOpen] = useState(false);
   return (
     <div className="min-h-screen">
       <Heading
@@ -19,7 +21,7 @@ const page = (props: Props) => {
           <AdminSidebar activeItem={"Create Course"} />
         </div>
         <div className="w-[85%]">
-          <DashboardHeader />
+          <DashboardHeader open={open} setOpen={setOpen} />
           <CreateCourse />
         </div>
       </div>
@@ -27,4 +29,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;

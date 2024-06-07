@@ -1,9 +1,9 @@
 "use client";
-import { styles } from "@/app/styles/style";
+import { styles } from "../../../styles/style";
 import {
   useEditLayoutMutation,
   useGetLayoutDataQuery,
-} from "@/redux/features/layout/layoutApi";
+} from "../../../../redux/features/layout/layoutApi";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { AiOutlineDelete } from "react-icons/ai";
@@ -11,9 +11,7 @@ import { HiMinus, HiPlus } from "react-icons/hi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import Loader from "../../Loader/Loader";
 
-type Props = {};
-
-const EditFaq = (props: Props) => {
+const EditFaq = () => {
   const { data, isLoading, refetch } = useGetLayoutDataQuery("FAQ", {
     refetchOnMountOrArgChange: true,
   });

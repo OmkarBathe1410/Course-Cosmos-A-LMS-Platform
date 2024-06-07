@@ -8,7 +8,8 @@ import AllCourses from "../../components/Admin/Course/AllCourses";
 
 type Props = {};
 
-const page = (props: Props) => {
+const Page = () => {
+  const [open, setOpen] = useState(false);
   return (
     <div className="min-h-screen">
       <AdminProtected>
@@ -23,7 +24,7 @@ const page = (props: Props) => {
               <AdminSidebar activeItem={"Live Courses"} />
             </div>
             <div className="w-[85%]">
-              <DashboardHeader />
+              <DashboardHeader open={open} setOpen={setOpen} />
               <AllCourses />
             </div>
           </div>
@@ -33,4 +34,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;

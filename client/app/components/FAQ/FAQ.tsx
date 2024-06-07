@@ -1,12 +1,12 @@
-import { styles } from "@/app/styles/style";
-import { useGetLayoutDataQuery } from "@/redux/features/layout/layoutApi";
+import { styles } from "../../../app/styles/style";
+import { useGetLayoutDataQuery } from "../../../redux/features/layout/layoutApi";
 import React, { useEffect, useState } from "react";
 import { HiMinus, HiPlus } from "react-icons/hi";
 import Loader from "../Loader/Loader";
 
 type Props = {};
 
-const FAQ = (props: Props) => {
+const FAQ = () => {
   const { data, isLoading } = useGetLayoutDataQuery("FAQ", {});
   const [questions, setQuestions] = useState<any[]>([]);
   const [activeQuestion, setActiveQuestion] = useState(null);

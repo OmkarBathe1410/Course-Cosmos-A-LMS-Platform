@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import Link from "next/link";
 
 type Props = {};
-const Hero: FC<Props> = (props) => {
+const Hero: FC<Props> = () => {
   return (
     <div className="w-[95%] m-auto flex justify-center items-center min-[280px]:h-[70vh] 800px:!h-[90vh] translate-y-0 opacity-100 transition-all duration-1000 ease-in-out">
       <div className="w-[100%]">

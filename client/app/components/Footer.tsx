@@ -18,7 +18,7 @@ import { SiCoursera } from "react-icons/si";
 
 type Props = {};
 
-const Footer = (props: Props) => {
+const Footer = () => {
   return (
     <footer>
       <div className="border font-Poppins border-[#00000034] dark:border-[#ffffff1e]">

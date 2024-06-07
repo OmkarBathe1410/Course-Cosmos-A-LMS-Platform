@@ -2,7 +2,7 @@
 import {
   useGetAllNotificationsQuery,
   useUpdateNotificationStatusMutation,
-} from "@/redux/features/notifications/notificationsApi";
+} from "../../../redux/features/notifications/notificationsApi";
 import { ThemeSwitcher } from "../../../app/utils/ThemeSwitcher";
 import React, { FC, useEffect, useState } from "react";
 import { IoMdNotificationsOutline } from "react-icons/io";
@@ -25,12 +25,12 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
   const [updateNotificationStatus, { isSuccess }] =
     useUpdateNotificationStatusMutation();
 
-  const [notifications, setNotifications] = useState<any>([]);
-  const [audio] = useState(
-    new Audio(
-      "https://res.cloudinary.com/dlglvxu6c/video/upload/v1717143771/notificationRingtone.mp3"
-    )
+  const audioObj = new Audio(
+    "https://res.cloudinary.com/dlglvxu6c/video/upload/v1717143771/notificationRingtone.mp3"
   );
+
+  const [notifications, setNotifications] = useState<any>([]);
+  const [audio, setAudio] = useState(audioObj);
 
   const notificationSoundPlayer = () => {
     audio.play();
@@ -93,8 +93,7 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
             </>
           ) : (
             <>
-              {notifications &&
-                notifications.map((item: any, index: number) => (
+              {notifications.map((item: any, index: number) => (
                   <div
                     key={index}
                     className="dark:bg-[#2d3a4ea1] bg-[#fff] my-2 mx-2 font-Poppins border border-[rgba(0,0,0,0.1)] dark:border-none rounded-lg pb-1 shadow-xl"

@@ -1,7 +1,7 @@
 "use client";
 
-import { useGetUsersAllCoursesQuery } from "@/redux/features/courses/coursesApi";
-import { useGetLayoutDataQuery } from "@/redux/features/layout/layoutApi";
+import { useGetUsersAllCoursesQuery } from "../../redux/features/courses/coursesApi";
+import { useGetLayoutDataQuery } from "../../redux/features/layout/layoutApi";
 import React, { useEffect, useState, FC } from "react";
 import Loader from "../components/Loader/Loader";
 import Header from "../components/Header";
@@ -14,7 +14,7 @@ import Footer from "../components/Footer";
 
 type Props = {};
 
-const Page: FC<Props> = (props) => {
+const Page: FC<Props> = () => {
   const { data, isLoading } = useGetUsersAllCoursesQuery(undefined, {});
   const { data: categoriesData } = useGetLayoutDataQuery("Categories", {});
 

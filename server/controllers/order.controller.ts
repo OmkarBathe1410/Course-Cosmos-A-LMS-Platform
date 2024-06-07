@@ -108,7 +108,7 @@ export const createOrder = CatchAsyncError(
         "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
         );
         
-      await redis.set(req.user?._id, JSON.stringify(user));
+      await redis.set(req.user?._id as any, JSON.stringify(user));
 
       await redis.set("allCourses", JSON.stringify(courses));
       

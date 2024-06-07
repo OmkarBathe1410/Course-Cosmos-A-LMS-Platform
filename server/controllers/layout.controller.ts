@@ -95,7 +95,7 @@ export const editLayout = CatchAsyncError(
         );
 
         // Update the FAQ layout with the new 'faq' items.
-        await LayoutModel.findOneAndUpdate(faqData?._id, {
+        await LayoutModel.findOneAndUpdate(faqData?._id as any, {
           type: "FAQ",
           faq: faqItems,
         });

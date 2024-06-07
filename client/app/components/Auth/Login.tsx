@@ -13,7 +13,6 @@ import { styles } from "../../../app/styles/style";
 import { useLoginMutation } from "../../../redux/features/auth/authApi";
 import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
-import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 
 type Props = {
   setRoute: (route: string) => void;
@@ -30,11 +29,6 @@ const validateSchema = Yup.object().shape({
 const Login: FC<Props> = ({ setRoute, setOpen }) => {
   const [show, setShow] = useState(false);
   const [login, { isSuccess, error }] = useLoginMutation();
-  const [fetchUser, setFetchUser] = useState(false);
-  const { refetch } = useLoadUserQuery(undefined, {
-    skip: !fetchUser ? true : false,
-    refetchOnMountOrArgChange: true,
-  });
 
   const formik = useFormik({
     initialValues: {
@@ -44,8 +38,6 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
     validationSchema: validateSchema,
     onSubmit: async ({ email, password }) => {
       await login({ email, password });
-      setFetchUser(true);
-      refetch();
     },
   });
 

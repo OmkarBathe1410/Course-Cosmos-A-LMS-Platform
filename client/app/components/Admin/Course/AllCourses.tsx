@@ -9,13 +9,13 @@ import {
 } from "../../../../redux/features/courses/coursesApi";
 import Loader from "../../Loader/Loader";
 import { format } from "timeago.js";
-import { styles } from "@/app/styles/style";
+import { styles } from "../../../styles/style";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
 
 type Props = {};
 
-const AllCourses = (props: Props) => {
+const AllCourses = () => {
   const { theme, setTheme } = useTheme();
   const { isLoading, data, refetch } = useGetAllCoursesQuery(
     {},

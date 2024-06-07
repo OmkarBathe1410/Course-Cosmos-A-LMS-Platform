@@ -7,7 +7,7 @@ import DashboardHero from "../components/Admin/DashboardHero";
 
 type Props = {};
 
-const page = (props: Props) => {
+const Page = () => {
   return (
     <div className="min-h-screen">
       <AdminProtected>
@@ -31,4 +31,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;
