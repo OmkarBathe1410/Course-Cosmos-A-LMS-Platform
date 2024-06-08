@@ -37,7 +37,7 @@ const EditCategories: FC<Props> = () => {
 
   const handleCategoriesAdd = (id: any, value: string) => {
     setCategories((prevCategory: any) =>
-      prevCategory.map((i: any) => (i._id === id ? { ...i, title: value } : i))
+      prevCategory?.map((i: any) => (i._id === id ? { ...i, title: value } : i))
     );
   };
 
@@ -82,30 +82,30 @@ const EditCategories: FC<Props> = () => {
           <h1 className={`${styles.title} dark:text-white text-blue-600`}>
             All Categories
           </h1>
-          {categories.map((item: any, index: number) => {
-              return (
-                <div className="p-3" key={index}>
-                  <div className="flex items-center w-full justify-center">
-                    <input
-                      className={`${styles.input} !w-[unset] !border-none !text-[17px]`}
-                      value={item.title}
-                      onChange={(e) =>
-                        handleCategoriesAdd(item._id, e.target.value)
-                      }
-                      placeholder="Enter category title here..."
-                    />
-                    <AiOutlineDelete
-                      className="dark:text-white text-black text-[18px] cursor-pointer"
-                      onClick={() => {
-                        setCategories((prevCategory: any) =>
-                          prevCategory.filter((i: any) => i._id !== item._id)
-                        );
-                      }}
-                    />
-                  </div>
+          {categories?.map((item: any, index: number) => {
+            return (
+              <div className="p-3" key={index}>
+                <div className="flex items-center w-full justify-center">
+                  <input
+                    className={`${styles.input} !w-[unset] !border-none !text-[17px]`}
+                    value={item.title}
+                    onChange={(e) =>
+                      handleCategoriesAdd(item._id, e.target.value)
+                    }
+                    placeholder="Enter category title here..."
+                  />
+                  <AiOutlineDelete
+                    className="dark:text-white text-black text-[18px] cursor-pointer"
+                    onClick={() => {
+                      setCategories((prevCategory: any) =>
+                        prevCategory.filter((i: any) => i._id !== item._id)
+                      );
+                    }}
+                  />
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
           <br />
           <br />
           <div
@@ -131,7 +131,7 @@ const EditCategories: FC<Props> = () => {
               onClick={
                 areCategoriesUnchanged(data?.layout?.categories, categories) ||
                 isAnyCategoryTitleEmpty(categories)
-                  ? () => null
+                  ? () => {}
                   : editCategoriesHandler
               }
             >

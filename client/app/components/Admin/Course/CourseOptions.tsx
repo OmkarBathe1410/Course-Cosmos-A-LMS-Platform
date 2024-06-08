@@ -1,3 +1,4 @@
+"use client";
 import React, { FC } from "react";
 import { IoMdCheckmark } from "react-icons/io";
 
@@ -14,7 +15,7 @@ const CourseOptions: FC<Props> = ({ active }) => {
   ];
   return (
     <div>
-      {options.map((option: any, index: number) => (
+      {options?.map((option: any, index: number) => (
         <div key={index} className={`w-full flex py-5`}>
           <div
             className={`w-[2rem] h-[2rem] rounded-full flex items-center justify-center ${

@@ -3,7 +3,6 @@ import { FC, useEffect, useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography } from "@mui/material";
 import "react-pro-sidebar/dist/css/styles.css";
-import { signOut } from "next-auth/react";
 
 import {
   HomeOutlinedIcon,
@@ -27,7 +26,6 @@ import { useSelector } from "react-redux";
 import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "next-themes";
-import { useLogoutQuery } from "../../../../redux/features/auth/authApi";
 
 type Props = {
   activeItem: string;
@@ -39,23 +37,12 @@ const AdminSidebar: FC<Props> = ({ activeItem }) => {
   const [selected, setSelected] = useState(activeItem);
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
-  const [logout, setLogout] = useState(false);
-  const { isLoading } = useLogoutQuery(undefined, {
-    skip: !logout ? true : false,
-  });
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  useEffect(() => setMounted(true), []);
 
   if (!mounted) {
     return null;
   }
-
-  const logoutHandler = async () => {
-    setLogout(true);
-    await signOut();
-  };
 
   return (
     <Box

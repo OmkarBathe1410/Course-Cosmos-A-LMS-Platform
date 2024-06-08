@@ -92,22 +92,22 @@ const EditCourse: FC<Props> = ({ id }) => {
   }, [editCourseData]);
 
   const handleSubmit = async () => {
-    const formattedBenefits = benefits.map((benefit) => ({
+    const formattedBenefits = benefits?.map((benefit) => ({
       title: benefit.title,
     }));
 
-    const formattedPrerequisites = prerequisites.map((prerequisite) => ({
+    const formattedPrerequisites = prerequisites?.map((prerequisite) => ({
       title: prerequisite.title,
     }));
 
-    const formattedCourseContentData = courseContentData.map(
+    const formattedCourseContentData = courseContentData?.map(
       (courseContent) => ({
         videoUrl: courseContent.videoUrl,
         videoLength: courseContent.videoLength,
         title: courseContent.title,
         description: courseContent.description,
         videoSection: courseContent.videoSection,
-        links: courseContent.links.map((link) => ({
+        links: courseContent?.links?.map((link) => ({
           title: link.title,
           url: link.url,
         })),

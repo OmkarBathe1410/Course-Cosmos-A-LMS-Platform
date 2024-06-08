@@ -38,7 +38,7 @@ const CourseContentList: FC<Props> = (props) => {
         "800px:ml-[-30px] 800px:sticky 800px:top-24 800px:left-0 800px:z-30"
       }`}
     >
-      {videoSections.map((section: string, sectionIndex: number) => {
+      {videoSections?.map((section: string, sectionIndex: number) => {
         const isSectionVisible = visibleSections.has(section);
         const sectionVideos: any[] = props.data.filter(
           (item: any) => item.videoSection === section
@@ -87,7 +87,7 @@ const CourseContentList: FC<Props> = (props) => {
             <br />
             {isSectionVisible && (
               <div className="w-full">
-                {sectionVideos.map((item: any, index: number) => {
+                {sectionVideos?.map((item: any, index: number) => {
                   const videoIndex: number = sectionStartIndex + index;
                   const contentLength: number = item.videoLength / 60;
                   return (

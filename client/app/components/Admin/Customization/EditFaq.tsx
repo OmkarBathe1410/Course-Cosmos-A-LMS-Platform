@@ -4,20 +4,23 @@ import {
   useEditLayoutMutation,
   useGetLayoutDataQuery,
 } from "../../../../redux/features/layout/layoutApi";
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { AiOutlineDelete } from "react-icons/ai";
 import { HiMinus, HiPlus } from "react-icons/hi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import Loader from "../../Loader/Loader";
 
-const EditFaq = () => {
+type Props = {};
+
+const EditFaq: FC<Props> = () => {
   const { data, isLoading, refetch } = useGetLayoutDataQuery("FAQ", {
     refetchOnMountOrArgChange: true,
   });
-  const [questions, setQuestions] = useState<any[]>([]);
   const [editLayout, { isSuccess: faqSuccess, error }] =
-    useEditLayoutMutation();
+  useEditLayoutMutation();
+  
+  const [questions, setQuestions] = useState<any[]>([]);
 
   useEffect(() => {
     if (data) {
@@ -36,19 +39,21 @@ const EditFaq = () => {
 
   const toggleQuestion = (id: any) => {
     setQuestions((prevQuestions) =>
-      prevQuestions.map((q) => (q._id === id ? { ...q, active: !q.active } : q))
+      prevQuestions?.map((q) =>
+        q._id === id ? { ...q, active: !q.active } : q
+      )
     );
   };
 
   const handleQuestionChange = (id: any, value: string) => {
     setQuestions((prevQuestions) =>
-      prevQuestions.map((q) => (q._id === id ? { ...q, question: value } : q))
+      prevQuestions?.map((q) => (q._id === id ? { ...q, question: value } : q))
     );
   };
 
   const handleAnswerChange = (id: any, value: string) => {
     setQuestions((prevQuestions) =>
-      prevQuestions.map((q) => (q._id === id ? { ...q, answer: value } : q))
+      prevQuestions?.map((q) => (q._id === id ? { ...q, answer: value } : q))
     );
   };
 
@@ -88,7 +93,7 @@ const EditFaq = () => {
         <div className="w-[90%] 800px:w-[80%] m-auto">
           <div className="mt-12">
             <dl className="space-y-8">
-              {questions.map((q: any) => (
+              {questions?.map((q: any) => (
                 <div
                   key={q._id}
                   className={`${
@@ -165,7 +170,7 @@ const EditFaq = () => {
                 onClick={
                   areQuestionsUnchanged(data?.layout?.faq, questions) ||
                   isAnyQuestionEmpty(questions)
-                    ? () => null
+                    ? () => {}
                     : handleEdit
                 }
               >

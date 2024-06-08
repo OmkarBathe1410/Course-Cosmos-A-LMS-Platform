@@ -18,49 +18,67 @@ type Props = {
 
 const ProfileInfo: FC<Props> = ({ avatar, user }) => {
   const [name, setName] = useState(user && user.name);
-  const [updateAvatar, { isSuccess, error }] = useUpdateAvatarMutation();
+  const [updateAvatar, { isSuccess: avatarSuccess, error: avatarError }] =
+    useUpdateAvatarMutation();
   const [loadUser, setLoadUser] = useState(false);
   const { isLoading } = useLoadUserQuery(undefined, {
     skip: loadUser ? false : true,
   });
-  const [editProfile, { isSuccess: success, error: updateError }] =
+  const [editProfile, { isSuccess: profileSuccess, error: profileError }] =
     useEditProfileMutation();
 
   const imageHandler = async (e: any) => {
-    const fileReader = new FileReader();
+    const file = e.target.files[0];
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
+    const maxSize = 5 * 1024 * 1024;
 
-    fileReader.onload = () => {
-      if (fileReader.readyState === 2) {
-        const avatar = fileReader.result;
-        updateAvatar(avatar);
-      }
-    };
-
-    fileReader.readAsDataURL(e.target.files[0]);
+    if (file && allowedTypes.includes(file.type) && file.size <= maxSize) {
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        if (fileReader.readyState === 2) {
+          const avatar = fileReader.result;
+          updateAvatar(avatar);
+        }
+      };
+      fileReader.readAsDataURL(e.target.files[0]);
+    } else {
+      toast.error(
+        "Please upload a valid image file (PNG, JPEG, JPG, WEBP) and ensure it's less than 5MB."
+      );
+    }
   };
 
   useEffect(() => {
-    if (isSuccess || success) {
+    if (avatarSuccess || profileSuccess) {
       setLoadUser(true);
-    }
-    if (error || updateError) {
-      console.log(error);
-    }
-    if (isSuccess || success) {
       toast.success("Profile updated successfully!");
     }
-  }, [isSuccess, success, loadUser, error, updateError]);
+    if (avatarError) {
+      if ("data" in avatarError) {
+        const errorData = avatarError as any;
+        toast.error(errorData.data.message);
+      }
+    }
+    if (profileError) {
+      if ("data" in profileError) {
+        const errorData = profileError as any;
+        toast.error(errorData.data.message);
+      }
+    }
+  }, [avatarSuccess, profileSuccess, avatarError, profileError]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (name !== "" && name !== user.name) {
+    if (name.trim() === "") {
+      toast.error("Name cannot be empty.");
+      return;
+    }
+
+    if (name !== user.name) {
       await editProfile({
         name: name,
       });
-    }
-    if (updateError) {
-      console.log(updateError);
     }
   };
 
@@ -118,15 +136,15 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
                     Email Address
                   </label>
                   <input
-                    type="text"
+                    type="email"
                     className={`${styles.input} mb-1 800px:mb-0 text-black dark:text-[#fff]`}
                     required
                     value={user?.email}
+                    disabled
                   />
                 </div>
                 <input
                   className={`w-full h-[40px] border border-[#37a39a] text-center dark:text-[#fff] text-black rounded-[3px] mt-8 cursor-pointer`}
-                  required
                   value="Update"
                   type="submit"
                 />

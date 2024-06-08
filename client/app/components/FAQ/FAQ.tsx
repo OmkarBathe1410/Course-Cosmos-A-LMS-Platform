@@ -32,7 +32,7 @@ const FAQ = () => {
           </h1>
           <div className="mt-12">
             <dl className="space-y-8">
-              {questions.map((q: any) => (
+              {questions?.map((q: any) => (
                 <div
                   key={q._id}
                   className={`${

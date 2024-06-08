@@ -1,3 +1,4 @@
+"use client";
 import { styles } from "../../../../app/styles/style";
 import React, { FC } from "react";
 import { IoIosAddCircle } from "react-icons/io";
@@ -75,7 +76,7 @@ const CourseData: FC<Props> = ({
           What are the benefits for students in this course?
         </label>
         <br />
-        {benefits.map((benefit: any, index: number) => (
+        {benefits?.map((benefit: any, index: number) => (
           <>
             <input
               type="text"
@@ -108,7 +109,7 @@ const CourseData: FC<Props> = ({
           What are the prerequisites for starting this course?
         </label>
         <br />
-        {prerequisites.map((prerequisite: any, index: number) => (
+        {prerequisites?.map((prerequisite: any, index: number) => (
           <>
             <input
               type="text"

@@ -180,6 +180,7 @@ const CourseContentMedia = ({
     reviewSuccess,
     reviewError,
     replyToReviewSuccess,
+    replyToReviewError
   ]);
 
   const handleAnswerSubmit = () => {
@@ -250,7 +251,7 @@ const CourseContentMedia = ({
       </h1>
       <br />
       <div className="w-full p-4 flex items-center justify-between text-black dark:text-white bg-white border border-neutral-200 dark:border-none dark:bg-slate-500 dark:bg-opacity-20 backdrop-blur shadow-lg dark:shadow-inner dark:shadow-slate-700 rounded">
-        {["Overview", "Resources", "Q&A", "Reviews"].map((text, index) => (
+        {["Overview", "Resources", "Q&A", "Reviews"]?.map((text, index) => (
           <h5
             key={index}
             className={`!text-[18px] cursor-pointer ${
@@ -270,7 +271,7 @@ const CourseContentMedia = ({
       )}
       {activeBar === 1 && (
         <div>
-          {data[activeVideo]?.links.map((item: any, index: number) => (
+          {data[activeVideo]?.links?.map((item: any, index: number) => (
             <div key={index} className="mb-5">
               <div className="800px:!text-[16px] 800px:!inline-block">
                 <h2 className="text-slate-950 dark:text-white">
@@ -356,7 +357,7 @@ const CourseContentMedia = ({
                       Give a rating <span className="text-red-500">*</span>
                     </h5>
                     <div className="ml-2 pb-3 w-full flex">
-                      {[1, 2, 3, 4, 5].map((i) =>
+                      {[1, 2, 3, 4, 5]?.map((i) =>
                         rating >= i ? (
                           <AiFillStar
                             key={i}
@@ -409,7 +410,7 @@ const CourseContentMedia = ({
             )}
           </div>
           <div className="w-full">
-            {(course?.reviews && [...course.reviews].reverse()).map(
+            {(course?.reviews && [...course.reviews].reverse())?.map(
               (item: any, index: number) => (
                 <div className="w-full my-5" key={index}>
                   <div className="w-full flex">
@@ -466,7 +467,7 @@ const CourseContentMedia = ({
 
                   {isReviewReply && reviewId === item._id && (
                     <>
-                      {item.commentReplies.map((item: any, index: number) => (
+                      {item?.commentReplies?.map((item: any, index: number) => (
                         <div
                           key={index}
                           className="w-full flex 800px:!ml-16 my-5 dark:text-white text-black"
@@ -558,7 +559,7 @@ const CommentReply = ({
   return (
     <>
       <div className="w-full my-3">
-        {data[activeVideo]?.questions.map((item: any, index: number) => (
+        {data[activeVideo]?.questions?.map((item: any, index: number) => (
           <CommentItem
             key={index}
             item={item}
@@ -635,7 +636,7 @@ const CommentItem = ({
         </div>
         {replyActive && questionId === item._id && (
           <>
-            {item.questionReplies.map((item: any, index: number) => (
+            {item?.questionReplies?.map((item: any, index: number) => (
               <div
                 key={index}
                 className="w-full flex 800px:!ml-16 my-5 dark:text-white text-black"

@@ -22,7 +22,7 @@ const AllInvoices: FC<Props> = ({ isDashboard }) => {
 
   useEffect(() => {
     if (data) {
-      const temp = data.orders.map((item: any) => {
+      const temp = data?.orders?.map((item: any) => {
         const user = usersData?.users.find(
           (user: any) => user._id === item.userId
         );

@@ -1,3 +1,4 @@
+"use client";
 import { useGetLayoutDataQuery } from "../../../../redux/features/layout/layoutApi";
 import { styles } from "../../../../app/styles/style";
 import React, { FC, useEffect, useState } from "react";
@@ -172,10 +173,13 @@ const CourseInformation: FC<Props> = ({
                 setCourseInfo({ ...courseInfo, category: e.target.value })
               }
             >
-              <option value="" className="dark:bg-neutral-900 bg-gray-200 text-black dark:text-white">
+              <option
+                value=""
+                className="dark:bg-neutral-900 bg-gray-200 text-black dark:text-white"
+              >
                 Select Category
               </option>
-              {categories.map((item: any) => (
+              {categories?.map((item: any) => (
                 <option
                   className="dark:bg-neutral-900 bg-gray-200 text-black dark:text-white"
                   value={item.title}
@@ -243,11 +247,13 @@ const CourseInformation: FC<Props> = ({
             onDrop={handleDrop}
           >
             {courseInfo.thumbnail ? (
-              <img
-                src={courseInfo.thumbnail}
-                alt=""
-                className="max-h-full w-full object-cover"
-              />
+              <picture>
+                <img
+                  src={courseInfo.thumbnail}
+                  alt=""
+                  className="!max-h-full !w-full object-cover"
+                />
+              </picture>
             ) : (
               <span className="text-black dark:text-white">
                 Drag and drop your thumbnail here or click to browse

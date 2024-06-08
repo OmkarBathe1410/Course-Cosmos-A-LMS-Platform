@@ -1,3 +1,4 @@
+"use client";
 import { toast } from "react-hot-toast";
 import { styles } from "../../../../app/styles/style";
 import React, { FC, useState } from "react";

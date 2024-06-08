@@ -25,12 +25,12 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
   const [updateNotificationStatus, { isSuccess }] =
     useUpdateNotificationStatusMutation();
 
-  const audioObj = new Audio(
-    "https://res.cloudinary.com/dlglvxu6c/video/upload/v1717143771/notificationRingtone.mp3"
-  );
-
   const [notifications, setNotifications] = useState<any>([]);
-  const [audio, setAudio] = useState(audioObj);
+  const [audio, setAudio] = useState(
+    new Audio(
+      "https://res.cloudinary.com/dlglvxu6c/video/upload/v1717143771/notificationRingtone.mp3"
+    )
+  );
 
   const notificationSoundPlayer = () => {
     audio.play();
@@ -93,34 +93,32 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
             </>
           ) : (
             <>
-              {notifications.map((item: any, index: number) => (
-                  <div
-                    key={index}
-                    className="dark:bg-[#2d3a4ea1] bg-[#fff] my-2 mx-2 font-Poppins border border-[rgba(0,0,0,0.1)] dark:border-none rounded-lg pb-1 shadow-xl"
-                  >
-                    <div className="w-full flex items-center justify-between p-2 text-[14px]">
-                      <p className="text-white bg-gradient-to-tr rounded-md from-blue-400 via-purple-500 to-blue-400 px-3 py-1">
-                        {item?.title}
-                      </p>
-                      <p
-                        className="text-white cursor-pointer rounded-md bg-red-500 px-3 py-1"
-                        onClick={() =>
-                          handleNotificationStatusChange(item?._id)
-                        }
-                      >
-                        Mark as read
-                      </p>
-                    </div>
-                    <div className="w-full p-2">
-                      <p className="px-1 text-black dark:text-white text-[14px] mb-2">
-                        {item?.message}
-                      </p>
-                      <p className="!w-max text-black capitalize dark:text-white text-[12px] px-3 py-1 rounded-full bg-gray-200 dark:bg-[#546278]">
-                        {format(item.createdAt)}
-                      </p>
-                    </div>
+              {notifications?.map((item: any, index: number) => (
+                <div
+                  key={index}
+                  className="dark:bg-[#2d3a4ea1] bg-[#fff] my-2 mx-2 font-Poppins border border-[rgba(0,0,0,0.1)] dark:border-none rounded-lg pb-1 shadow-xl"
+                >
+                  <div className="w-full flex items-center justify-between p-2 text-[14px]">
+                    <p className="text-white bg-gradient-to-tr rounded-md from-blue-400 via-purple-500 to-blue-400 px-3 py-1">
+                      {item?.title}
+                    </p>
+                    <p
+                      className="text-white cursor-pointer rounded-md bg-red-500 px-3 py-1"
+                      onClick={() => handleNotificationStatusChange(item?._id)}
+                    >
+                      Mark as read
+                    </p>
                   </div>
-                ))}
+                  <div className="w-full p-2">
+                    <p className="px-1 text-black dark:text-white text-[14px] mb-2">
+                      {item?.message}
+                    </p>
+                    <p className="!w-max text-black capitalize dark:text-white text-[12px] px-3 py-1 rounded-full bg-gray-200 dark:bg-[#546278]">
+                      {format(item.createdAt)}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </>
           )}
         </div>

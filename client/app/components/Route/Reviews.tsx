@@ -99,7 +99,7 @@ const Reviews = () => {
       <br />
       <div className="grid grid-cols-1 gap-[25px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-2 lg:gap-[25px] xl:grid-cols-2 xl:gap-[35px] mb-12 border-[0]">
         {reviews &&
-          reviews.map((item: any, index: number) => (
+          reviews?.map((item: any, index: number) => (
             <ReviewCard item={item} key={index} />
           ))}
       </div>

@@ -33,8 +33,8 @@ const Profile: FC<Props> = ({ user, logoutHandler, logoutLoading }) => {
 
   useEffect(() => {
     if (data) {
-      const filteredCourses = user.courses
-        .map((userCourse: any) =>
+      const filteredCourses = user?.courses
+        ?.map((userCourse: any) =>
           data.courses.find((course: any) => course._id === userCourse._id)
         )
         .filter((course: any) => course._id !== undefined);
@@ -75,7 +75,7 @@ const Profile: FC<Props> = ({ user, logoutHandler, logoutLoading }) => {
             <div className="w-full pl-7 px-2 800px:px-10 800px:pl-8 mt-[80px]">
               <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] 1500px:grid-cols-4 1500px:gap-[35px] mb-12 border-0">
                 {courses &&
-                  courses.map((item: any, index: number) => (
+                  courses?.map((item: any, index: number) => (
                     <>
                       <CourseCard item={item} key={index} isProfile={true} />
                     </>
